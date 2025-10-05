@@ -27,7 +27,7 @@
             <br><br>
             <label for="contrasena">contraseña: </label>
             <input type="password" name="contrasena" id="contrasena" required>
-            <br><br>
+            <br>
             <p>sexo</p>
             <input type="radio" name="sexo" id="varon" value="varon">
             <label for="varon">Varón</label>
@@ -78,7 +78,31 @@
                 puedes mandar tu artículo sobre cualquier tema de los que tratamos. Nosotros lo valoraremos
                 para que pueda ser publicado.
             </p>
-            <label for="articulo">mandar artículo:</label>
+            <label for="archivo">mandar artículo:</label>
+            <input type="file" id="archivo" name="archivo">
+            <br><br>
+            <label for="comentario">Si deseas mandar simplemente una opinión o comentario escríbelo aquí</label>
+            <br><br>
+            <textarea placeholder="Escribe tu comentario:"></textarea>
+            <br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Comenzar de nuevo</legend>
+            <br>
+            <label for="borrar">Borrar todos los datos del formulario y volver a empezar:</label>
+            <input type="reset" id="borrar" name="borrar" value="borrar todo">
+            <br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>enviar</legend>
+            <br>
+            <p>
+                Enviar formulario por correo electrónico: Al pulsar el botón se abrirá la página de envío de correo: en esa página pulsa enviar:
+            </p>
+
+
         </fieldset>
     </form>
 </body>
