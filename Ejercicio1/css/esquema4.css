@@ -1,0 +1,65 @@
+*, *::before, *::after {
+ box-sizing: border-box;
+ }
+
+
+ body{
+    display: grid;
+    grid-template-areas:
+    "header header header"
+    "nav nav nav"
+    "opciones contenido articulo1"
+    "opciones contenido articulo2"
+    "footer footer footer";
+    gap: 5px;
+    margin: 0;
+    grid-template-rows: 20vh 10vh repeat(2, 30vh) 1fr;
+    grid-template-columns: 35vh 1fr 35vh;
+    height: 100vh;
+}
+
+.titulo{
+    background-color: #7260a3;
+    display: flex;
+    grid-area: header;
+}
+
+.contenido{
+    background-color: rgb(255, 127, 191);
+    grid-area: contenido;
+}
+
+.opciones{
+    background-color: rgb(68, 0, 255);
+    grid-area: opciones;
+}
+
+.pie{
+    background-color: #85cd87;
+    grid-area: footer;
+}
+
+.barra{
+    background-color: #eb6827;
+    grid-area: nav;
+}
+
+.articulo1{
+    background-color: #770082;
+    grid-area: articulo1;
+}
+
+.articulo2{
+    background-color: #0786a3;
+    grid-area: articulo2;
+}
+
+.logo{
+    background-color: #a30707;
+    width: 10%;
+    margin: 1%;
+}
+
+.identificacion, .complementario, .textoTitulo{
+    display: none;
+}

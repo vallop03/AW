@@ -1,0 +1,41 @@
+*, *::before, *::after {
+ box-sizing: border-box;
+ }
+
+ body{
+    display: grid;
+    grid-template-areas:
+    "header header"
+    "opciones contenido"
+    "footer footer";    
+    gap: 5px;
+    margin: 0;
+    grid-template-rows: 20vh 70vh 1fr;
+    grid-template-columns: 35vh 1fr;
+    height: 100vh;
+}
+
+.titulo{
+    background-color: #7260a3;
+    display: flex;
+    grid-area: header;
+}
+
+.contenido{
+    background-color: rgb(255, 127, 191);
+    grid-area: contenido;
+}
+
+.opciones{
+    background-color: rgb(68, 0, 255);
+    grid-area: opciones;
+}
+
+.pie{
+    background-color: #85cd87;
+    grid-area: footer;
+}
+
+.barra, .articulo1, .articulo2, .logo, .identificacion, .complementario, .textoTitulo{
+    display:none;
+}

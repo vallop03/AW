@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Ejercicio 1 - Cabecera -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial scale=1.0">
+    <title>Gestión de Flota de Vehículos Eléctricos</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+    <!-- Ejercicio 2 - Titulos y Parrafos -->
+
+    <h1>CarriCocheRenting</h1>
+    <h2>Plataforma de movilidad sostenible</h2>
+    <p>Nuestra plataforma permite gestionar de manera sencilla y
+    eficiente una flota de <strong>vehículos eléctricos</strong> de alquiler.
+    Con herramientas de monitoreo, control de disponibilidad y
+    gestión de mantenimiento, ofrecemos una solución práctica y <em>ecofriendly</em> para
+    empresas que buscan optimizar sus operaciones y mejorar la experiencia de alquiler.</p>
+    <!-- Ejercicio 3 - Listas -->
+
+        <!--Lista Ordenada-->
+    <ol>
+        <li>Cero emisiones directas</li>
+        <li>Menor costo de operaciones</li>
+        <li>Conducción silenciosa y eficiente</li>
+    </ol>
+
+        <!--Lista Desordenada-->
+    <ul>
+        <li>Gestión de empleados, concesionarios y vehículos</li>
+        <li>Reserva de vehículos</li>
+        <li>Visualización de estadísticas</li>
+        <li>Ver historial de reserva</li>
+        <li>Visualizar los vehículos disponibles de su concesionario</li>
+        <li>Configuración de accesibilidad</li>
+    </ul>
+
+        <!--Lista de Definiciones-->
+    <dl>
+        <dt>HTML</dt><dd>Lenguaje de marcado para estructurar el contenido de páginas web.</dd>
+        <dt>CSS</dt><dd>Lenguaje de estilos que da diseño y apariencia a las páginas web.</dd>
+        <dt>JSON</dt><dd>Formato ligero de intercambio de datos basado en texto, fácil de leer y procesar.</dd>
+    </dl>
+
+<!--Ejercicio 4 - Enlaces-->
+
+<a href="https://www.ucm.es/">Universidad Complutense de Madrid</a>
+<a href="contacto.html">Contacto</a>
+
+<!--Ejercicio 5 - Imagenes-->
+<br>
+<img src="../public/img/vehiculos/volvo1.png" alt="Vehículo eléctrico" width="30%">
+
+<a href="../public/img/vehiculos/volvo1.png">
+    <img src="../public/img/vehiculos/volvo1.png" alt="Vehículos eléctricos" width="30%">
+</a>
+<br>
+<a href="#vehiculos">Ir a Vehículos</a>
+<br>
+<br>
+<section id="vehiculos">
+    <table border="2">
+        <caption>Vehículos disponibles</caption>
+        <thead>
+            <tr>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Autonomía (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>123456</td>
+                <td>BMW</td>
+                <td>10000</td>
+            </tr>
+            <tr>
+                <td>654321</td>
+                <td>Mercedes</td>
+                <td>20000</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+<br><br>
+<section id="reservas">
+    <form>
+        <fieldset>
+            <legend>Datos personales</legend>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <br><br>
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" required>
+            <br><br>
+            <label for="vehiculo">Vehículo:</label>
+            <select id="vehiculo" name="vehiculo" aria-required = "true" required> 
+                <option value="1">Tesla</option>
+                <option value="2">Volvo</option>
+                <option value="3">VW</option>
+            </select>
+        </fieldset>
+        <fieldset>
+            <legend>Periodo</legend>
+            <label for="recogida">Recogida: </label>
+            <input type="datetime-local" id="recogida" name="recogida" required>
+            <label for="devolucion: ">Devolución: </label>
+            <input type="datetime-local" id="devolucion" name="devolucion" required>
+        </fieldset>
+        <fieldset>
+            <legend>Preferencias</legend>
+            <input type="checkbox" name="condiciones" required>
+            <label for="terminos">Términos y condiciones </label>
+
+            <br>
+            <input type="checkbox" name="condiciones">
+            <label for="terminos">Recibir notificaciones y promociones</label>
+        </fieldset>
+        <br>
+        <input type="submit" value="Enviar">
+        <input type="reset" value="Limpiar">
+    </form>
+</section>
+</body>
+</html>
