@@ -3,7 +3,7 @@
 <head>
     <!-- Ejercicio 1 - Cabecera -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,14 +13,16 @@
         <fieldset>
             <legend>datos personales</legend>
             <br>
-            <label for="nombre">Nombre: </label>
-            <input type="text" name="nombre" id="nombre" required>
-            <label for="apellido1">Primer apellido: </label>
-            <input type="text" name="apellido1" id="apellido1" required>
-            <label for="apellido2">Segundo apellido: </label>
-            <input type="text" name="apellido2" id="apellido2" required>
-            <br><br>
-            <label for="direccion">Direccón: </label>
+            <div id="nombreCompleto">
+                <label for="nombre">Nombre: </label>
+                <input type="text" name="nombre" id="nombre" required>
+                <label for="apellido1">Primer apellido: </label>
+                <input type="text" name="apellido1" id="apellido1" required>
+                <label for="apellido2">Segundo apellido: </label>
+                <input type="text" name="apellido2" id="apellido2" required>
+            </div>
+            <br>
+            <label for="direccion">Dirección: </label>
             <input type="text" name="direccion" id="direccion" placeholder="calle o plaza, número y piso." required>
             <br><br>
             <label for="mail">e-mail: </label>
@@ -28,13 +30,15 @@
             <br><br>
             <label for="contrasena">contraseña: </label>
             <input type="password" name="contrasena" id="contrasena" required>
-            <br>
-            <p>sexo</p>
-            <input type="radio" name="sexo" id="varon" value="varon">
-            <label for="varon">Varón</label>
-            <br>
-            <input type="radio" name="sexo" id="mujer" value="mujer">
-            <label for="mujer">Mujer</label>
+            <br><br>
+            <fieldset>
+                <legend class="legend-interna">sexo</legend>
+                <input type="radio" name="sexo" id="varon" value="varon">
+                <label for="varon">Varón</label>
+                <br>
+                <input type="radio" name="sexo" id="mujer" value="mujer">
+                <label for="mujer">Mujer</label>
+            </fieldset>
         </fieldset>
         <fieldset>
             <legend>Nivel de estudios e intereses</legend>
@@ -47,7 +51,6 @@
             </select>
             <br>
             <p>Recibir artículos sobre los siguientes temas:</p>
-            <br>
             <input type="checkbox" id="musica" name="musica">
             <label for="musica">Música</label>
             <br>
@@ -62,7 +65,7 @@
             <br>
             <input type="checkbox" id="ciencia" name="ciencia">
             <label for="ciencia">Ciencia</label>
-            <br>
+            <br><br>
         </fieldset>
         <fieldset>
             <legend>Datos sobre la revista</legend>
@@ -84,7 +87,7 @@
             <br><br>
             <label for="comentario">Si deseas mandar simplemente una opinión o comentario escríbelo aquí</label>
             <br><br>
-            <textarea id="comentario" placeholder="Escribe tu comentario:"></textarea>
+            <textarea id="comentario" name="comentario" placeholder="Escribe tu comentario:"></textarea>
             <br><br>
         </fieldset>
 
@@ -98,13 +101,11 @@
 
         <fieldset>
             <legend>enviar</legend>
-            <br>
             <p>
                 Enviar formulario por correo electrónico: Al pulsar el botón se abrirá la página de envío de correo: en esa página pulsa enviar:
             </p>
             <input type="submit" id="enviar" name="enviar" value="enviar por correo">
             <br><br>
-
         </fieldset>
     </form>
 </body>
