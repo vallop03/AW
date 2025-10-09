@@ -17,14 +17,22 @@
     </header>
 
     <nav>
-        <div class="container">
-            <div class="item"></div>
-            <div class="item">
-                <a href="#vehiculos">Vehículos</a>
+        <div class="menu-bar">
+            <div class="logo">
+                <img src="../public/img/logo.jpg" alt="Logo de la empresa" width="80">
             </div>
-            <div class="item"></div>
-            <div class="item"></div>
-
+            <div class="item">
+                <a class="item-text" href="index.html" aria-label="Ir al inicio">Inicio</a>
+            </div>
+            <div class="item">
+                <a class="item-text" href="#vehiculos" aria-label="Ir a vehículos disponibles">Vehículos</a>
+            </div>
+            <div class="item">
+                <a class="item-text" href="#reservas"  aria-label="Ir a reservas">Reservas</a>
+            </div>
+            <div class="item">
+                <a class="item-text" href="contacto.html" aria-label="Ir a contacto">Contacto</a>
+            </div>
 
         </div>
     </nav>
@@ -67,14 +75,14 @@
 
         <!--Ejercicio 4 - Enlaces-->
 
-        <a href="https://www.ucm.es/">Universidad Complutense de Madrid</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="https://www.ucm.es/" aria-label="Ir a la página de la Universidad Complutense de Madrid">Universidad Complutense de Madrid</a>
+        <a href="contacto.html" aria-label="Ir al area de contacto">Contacto</a>
 
         <!--Ejercicio 5 - Imagenes-->
         <br>
         <img src="../public/img/vehiculos/volvo1.png" alt="Vehículo eléctrico" width="360">
 
-        <a href="../public/img/vehiculos/volvo1.png">
+        <a href="../public/img/vehiculos/volvo1.png" aria-label="Imagen de vehículo eléctrico ampliada">
             <img src="../public/img/vehiculos/volvo1.png" alt="Vehículos eléctricos" width="360">
         </a>
         <br>
@@ -107,7 +115,7 @@
         <br>
         <section id="reservas">
             <h3>Reservas</h3>
-            <form>
+            <form aria-label="Formulario de reserva de vehículo">
                 <fieldset>
                     <legend>Datos personales</legend>
                     <label for="nombre">Nombre*:</label>
@@ -145,8 +153,8 @@
                     <label for="notificaciones">Recibir notificaciones y promociones</label>
                 </fieldset>
                 <br>
-                <input type="submit" value="Enviar">
-                <input type="reset" value="Limpiar">
+                <input type="submit" value="Enviar" aria-label="Enviar formulario de reserva">
+                <input type="reset" value="Limpiar" aria-label="Limpiar formulario de reserva">
             </form>
         </section>
     </main>

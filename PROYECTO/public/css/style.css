@@ -1,3 +1,6 @@
+*, *::before, *::after {
+ box-sizing: border-box;
+ }
 
 body {
     font-family: Arial, sans-serif;
@@ -9,5 +12,25 @@ h1 {
 }
 a {
     text-decoration: none;
-    color: #1b5e20;
+    color: #225c25;
+}
+
+.menu-bar {
+    display: flex;
+    align-items: flex-start; /* alinea en el eje secundario */
+    background-color: #225c25;
+    height: 5vh;
+    align-items: center;
+
+}
+
+.item-text{
+    color: white;
+}
+
+.item {
+    margin: 0.5%;
+    border-radius: 5px;
+    background-color: #2e7d32;
+    padding: 10px;
 }
