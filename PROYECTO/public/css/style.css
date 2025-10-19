@@ -5,12 +5,23 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    color: #000000;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: white;
 }
 
 .titulo{
     background-color: #000000;
     color: white;
     padding: 20px;
+}
+
+.titulo.dark-mode{
+    background-color: #2f096c;
+    color: #ffffff;
 }
 
 a {
