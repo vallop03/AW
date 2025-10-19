@@ -4,159 +4,177 @@
 <head>
     <!-- Ejercicio 1 - Cabecera -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Flota de Vehículos Eléctricos</title>
     <link rel="stylesheet" href="../public/css/style.css">
+    <link href="../public/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
     <!-- Ejercicio 2 - Titulos y Parrafos -->
 
     <header>
-        <h1>CarriCocheRenting</h1>
+        <div class="container-fluid titulo">
+            <h1>CarriCocheRenting</h1>
+        </div>
     </header>
 
-    <nav>
-        <div class="menu-bar">
-            <div class="logo">
-                <img src="../public/img/logo.jpg" alt="Logo de la empresa" width="80">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="../public/img/logoCarriCoche.png" alt="Logo de la empresa" width="80">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html" aria-label="Ir al inicio" title="alt + I"
+                        accesskey="i">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#vehiculos" aria-label="Ir a vehículos disponibles" 
+                        title="alt + V" accesskey="v">Vehículos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reservas" aria-label="Ir a reservas" 
+                        title="alt + R" accesskey="r">Reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html" aria-label="Ir a contacto" title="alt + A"
+                        accesskey="a">Contacto</a>
+                    </li>
+                </ul>
             </div>
-            <div class="item">
-                <a class="item-text" href="index.html" aria-label="Ir al inicio">Inicio</a>
-            </div>
-            <div class="item">
-                <a class="item-text" href="#vehiculos" aria-label="Ir a vehículos disponibles">Vehículos</a>
-            </div>
-            <div class="item">
-                <a class="item-text" href="#reservas"  aria-label="Ir a reservas">Reservas</a>
-            </div>
-            <div class="item">
-                <a class="item-text" href="contacto.html" aria-label="Ir a contacto">Contacto</a>
-            </div>
-
         </div>
     </nav>
 
     <main>
-        <h2>Plataforma de movilidad sostenible</h2>
-        <p>Nuestra plataforma permite gestionar de manera sencilla y
-            eficiente una flota de <strong>vehículos eléctricos</strong> de alquiler.
-            Con herramientas de monitoreo, control de disponibilidad y
-            gestión de mantenimiento, ofrecemos una solución práctica y <em>ecofriendly</em> para
-            empresas que buscan optimizar sus operaciones y mejorar la experiencia de alquiler.</p>
-        <!-- Ejercicio 3 - Listas -->
-
-        <!--Lista Ordenada-->
-        <ol>
-            <li>Cero emisiones directas</li>
-            <li>Menor costo de operaciones</li>
-            <li>Conducción silenciosa y eficiente</li>
-        </ol>
-
-        <!--Lista Desordenada-->
-        <ul>
-            <li>Gestión de empleados, concesionarios y vehículos</li>
-            <li>Reserva de vehículos</li>
-            <li>Visualización de estadísticas</li>
-            <li>Ver historial de reserva</li>
-            <li>Visualizar los vehículos disponibles de su concesionario</li>
-            <li>Configuración de accesibilidad</li>
-        </ul>
-
-        <!--Lista de Definiciones-->
-        <dl>
-            <dt>HTML</dt>
-            <dd>Lenguaje de marcado para estructurar el contenido de páginas web.</dd>
-            <dt>CSS</dt>
-            <dd>Lenguaje de estilos que da diseño y apariencia a las páginas web.</dd>
-            <dt>JSON</dt>
-            <dd>Formato ligero de intercambio de datos basado en texto, fácil de leer y procesar.</dd>
-        </dl>
-
-        <!--Ejercicio 4 - Enlaces-->
-
-        <a href="https://www.ucm.es/" aria-label="Ir a la página de la Universidad Complutense de Madrid">Universidad Complutense de Madrid</a>
-        <a href="contacto.html" aria-label="Ir al area de contacto">Contacto</a>
-
-        <!--Ejercicio 5 - Imagenes-->
-        <br>
-        <img src="../public/img/vehiculos/volvo1.png" alt="Vehículo eléctrico" width="360">
-
-        <a href="../public/img/vehiculos/volvo1.png" aria-label="Imagen de vehículo eléctrico ampliada">
-            <img src="../public/img/vehiculos/volvo1.png" alt="Vehículos eléctricos" width="360">
-        </a>
-        <br>
-        <br>
-        <section id="vehiculos">
-            <h3>Vehículos</h3>
-            <table border="2">
-                <caption>Vehículos disponibles</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Matrícula</th>
-                        <th scope="col">Marca</th>
-                        <th scope="col">Autonomía (km)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>123456</td>
-                        <td>BMW</td>
-                        <td>10000</td>
-                    </tr>
-                    <tr>
-                        <td>654321</td>
-                        <td>Mercedes</td>
-                        <td>20000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <br>
-        <section id="reservas">
-            <h3>Reservas</h3>
-            <form aria-label="Formulario de reserva de vehículo">
-                <fieldset>
-                    <legend>Datos personales</legend>
-                    <label for="nombre">Nombre*:</label>
-                    <input type="text" id="nombre" name="nombre" required>
-                    <br><br>
-                    <label for="correo">Correo*:</label>
-                    <input type="email" id="correo" name="correo" required>
-                    <br><br>
-                    <label for="telefono">Teléfono:</label>
-                    <input type="tel" pattern="[0-9]{9}" name="telefono" id="telefono"
-                        title="El teléfono debe tener 9 dígitos">
-                </fieldset>
-                <fieldset>
-                    <legend>Datos de la reserva</legend>
-                    <label for="vehiculo">Vehículo*:</label>
-                    <select id="vehiculo" name="vehiculo" required>
-                        <option value="" disabled selected>Seleccione una opción</option>
-                        <option value="1">Tesla</option>
-                        <option value="2">Volvo</option>
-                        <option value="3">VW</option>
-                    </select>
-                    <br><br>
-                    <label for="recogida">Recogida*: </label>
-                    <input type="datetime-local" id="recogida" name="recogida" required>
-                    <label for="devolucion">Devolución*: </label>
-                    <input type="datetime-local" id="devolucion" name="devolucion" required>
-                </fieldset>
-                <fieldset>
-                    <legend>Preferencias</legend>
-                    <input type="checkbox" name="condiciones" id="condiciones" required>
-                    <label for="condiciones">Términos y condiciones*</label>
-
+        <div class="container">
+            <h2>Plataforma de movilidad sostenible</h2>
+            <p>Nuestra plataforma permite gestionar de manera sencilla y
+                eficiente una flota de <strong>vehículos eléctricos</strong> de alquiler.
+                Con herramientas de monitoreo, control de disponibilidad y
+                gestión de mantenimiento, ofrecemos una solución práctica y <em>ecofriendly</em> para
+                empresas que buscan optimizar sus operaciones y mejorar la experiencia de alquiler.</p>
+            <!-- Ejercicio 3 - Listas -->
+    
+            <!--Lista Ordenada-->
+            <ol>
+                <li>Cero emisiones directas</li>
+                <li>Menor costo de operaciones</li>
+                <li>Conducción silenciosa y eficiente</li>
+            </ol>
+    
+            <!--Lista Desordenada-->
+            <ul>
+                <li>Gestión de empleados, concesionarios y vehículos</li>
+                <li>Reserva de vehículos</li>
+                <li>Visualización de estadísticas</li>
+                <li>Ver historial de reserva</li>
+                <li>Visualizar los vehículos disponibles de su concesionario</li>
+                <li>Configuración de accesibilidad</li>
+            </ul>
+    
+            <!--Lista de Definiciones-->
+            <dl>
+                <dt>HTML</dt>
+                <dd>Lenguaje de marcado para estructurar el contenido de páginas web.</dd>
+                <dt>CSS</dt>
+                <dd>Lenguaje de estilos que da diseño y apariencia a las páginas web.</dd>
+                <dt>JSON</dt>
+                <dd>Formato ligero de intercambio de datos basado en texto, fácil de leer y procesar.</dd>
+            </dl>
+    
+            <!--Ejercicio 4 - Enlaces-->
+    
+            <a href="https://www.ucm.es/" aria-label="Ir a la página de la Universidad Complutense de Madrid">Universidad
+                Complutense de Madrid</a>
+            <a href="contacto.html" aria-label="Ir al area de contacto">Contacto</a>
+    
+            <!--Ejercicio 5 - Imagenes-->
+            <br>
+            <img src="../public/img/vehiculos/volvo1.png" alt="Vehículo eléctrico" width="360">
+    
+            <a href="../public/img/vehiculos/volvo1.png" aria-label="Imagen de vehículo eléctrico ampliada">
+                <img src="../public/img/vehiculos/volvo1.png" alt="Vehículos eléctricos" width="360">
+            </a>
+            <br>
+            <br>
+            <section id="vehiculos">
+                <h3>Vehículos</h3>
+                <table border="2">
+                    <caption>Vehículos disponibles</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Matrícula</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Autonomía (km)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>123456</td>
+                            <td>BMW</td>
+                            <td>10000</td>
+                        </tr>
+                        <tr>
+                            <td>654321</td>
+                            <td>Mercedes</td>
+                            <td>20000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <br>
+            <section id="reservas">
+                <h3>Reservas</h3>
+                <form aria-label="Formulario de reserva de vehículo">
+                    <fieldset>
+                        <legend>Datos personales</legend>
+                        <label for="nombre">Nombre*:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                        <br><br>
+                        <label for="correo">Correo*:</label>
+                        <input type="email" id="correo" name="correo" required>
+                        <br><br>
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" pattern="[0-9]{9}" name="telefono" id="telefono"
+                            title="El teléfono debe tener 9 dígitos">
+                    </fieldset>
+                    <fieldset>
+                        <legend>Datos de la reserva</legend>
+                        <label for="vehiculo">Vehículo*:</label>
+                        <select id="vehiculo" name="vehiculo" required>
+                            <option value="" disabled selected>Seleccione una opción</option>
+                            <option value="1">Tesla</option>
+                            <option value="2">Volvo</option>
+                            <option value="3">VW</option>
+                        </select>
+                        <br><br>
+                        <label for="recogida">Recogida*: </label>
+                        <input type="datetime-local" id="recogida" name="recogida" required>
+                        <label for="devolucion">Devolución*: </label>
+                        <input type="datetime-local" id="devolucion" name="devolucion" required>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Preferencias</legend>
+                        <input type="checkbox" name="condiciones" id="condiciones" required>
+                        <label for="condiciones">Términos y condiciones*</label>
+    
+                        <br>
+                        <input type="checkbox" name="notificaciones" id="notificaciones">
+                        <label for="notificaciones">Recibir notificaciones y promociones</label>
+                    </fieldset>
                     <br>
-                    <input type="checkbox" name="notificaciones" id="notificaciones">
-                    <label for="notificaciones">Recibir notificaciones y promociones</label>
-                </fieldset>
-                <br>
-                <input type="submit" value="Enviar" aria-label="Enviar formulario de reserva">
-                <input type="reset" value="Limpiar" aria-label="Limpiar formulario de reserva">
-            </form>
-        </section>
+                    <input type="submit" value="Enviar" aria-label="Enviar formulario de reserva">
+                    <input type="reset" value="Limpiar" aria-label="Limpiar formulario de reserva">
+                </form>
+            </section>
+        </div>
     </main>
     <br>
     <footer>CarriCoche&amp;Renting&reg;</footer>

@@ -5,32 +5,24 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+}
+
+.titulo{
+    background-color: #000000;
+    color: white;
     padding: 20px;
 }
-h1 {
-    color: #2e7d32;
-}
+
 a {
     text-decoration: none;
-    color: #225c25;
+    color: #6610f2;
 }
 
-.menu-bar {
-    display: flex;
-    align-items: flex-start; /* alinea en el eje secundario */
-    background-color: #225c25;
-    height: 5vh;
-    align-items: center;
-
+.navbar{
+    background-color: #6610f2;
 }
 
-.item-text{
-    color: white;
-}
-
-.item {
-    margin: 0.5%;
-    border-radius: 5px;
-    background-color: #2e7d32;
-    padding: 10px;
+.navbar .nav-link:hover {
+  background-color: #945cf05f;
+  border-radius: 5%;
 }
