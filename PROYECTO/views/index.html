@@ -26,7 +26,7 @@
                 <img src="../public/img/logoCarriCoche.png" alt="Logo de la empresa" width="80">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Barra de navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -69,6 +69,7 @@
 
     <main>
         <div class="container">
+            <br>
             <h2>Plataforma de movilidad sostenible</h2>
 
             <p>Nuestra plataforma permite gestionar de manera sencilla y
@@ -149,55 +150,88 @@
                 </table>
             </section>
             <br>
+
             <section id="reservas">
-                <h3>Reservas</h3>
-                <form aria-label="Formulario de reserva de vehículo">
+                <form id="reservaForm" class="needs-validation" novalidate>
                     <fieldset>
                         <legend>Datos personales</legend>
-                        <label for="nombre">Nombre*:</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                        <br><br>
-                        <label for="correo">Correo*:</label>
-                        <input type="email" id="correo" name="correo" required>
-                        <br><br>
-                        <label for="telefono">Teléfono:</label>
-                        <input type="tel" pattern="[0-9]{9}" name="telefono" id="telefono"
-                            title="El teléfono debe tener 9 dígitos">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre*</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce tu nombre.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico*</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce un correo electrónico válido.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tel" class="form-label">Teléfono*</label>
+                            <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce un número de teléfono válido de 9 dígitos.
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset>
                         <legend>Datos de la reserva</legend>
-                        <label for="vehiculo">Vehículo*:</label>
-                        <select id="vehiculo" name="vehiculo" required>
-                            <option value="" disabled selected>Seleccione una opción</option>
-                            <option value="1">Tesla</option>
-                            <option value="2">Volvo</option>
-                            <option value="3">VW</option>
-                        </select>
-                        <br><br>
-                        <label for="recogida">Recogida*: </label>
-                        <input type="datetime-local" id="recogida" name="recogida" required>
-                        <label for="devolucion">Devolución*: </label>
-                        <input type="datetime-local" id="devolucion" name="devolucion" required>
+                        <div class="mb-3">
+                            <label for="vehiculo" class="form-label">Vehículo*</label>
+                            <select class="form-select" id="vehiculo" name="vehiculo" required>
+                                <option selected disabled value="">Selecciona un vehículo</option>
+                                <option value="1">Tesla</option>
+                                <option value="2">Volvo</option>
+                                <option value="3">VW</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor, selecciona un vehículo.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="recogida" class="form-label">Recogida* </label>
+                                <input class="form-control" type="datetime-local" id="recogida" name="recogida" required>
+                                <div class="invalid-feedback">
+                                    Por favor, introduce una fecha y hora de recogida válidas.
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="devolucion" class="form-label">Devolución* </label>
+                                <input class="form-control" type="datetime-local" id="devolucion" name="devolucion" required>
+                                <div class="invalid-feedback">
+                                    Por favor, introduce una fecha y hora de devolución válidas.
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset>
                         <legend>Preferencias</legend>
-                        <input type="checkbox" name="condiciones" id="condiciones" required>
-                        <label for="condiciones">Términos y condiciones*</label>
-
-                        <br>
-                        <input type="checkbox" name="notificaciones" id="notificaciones">
-                        <label for="notificaciones">Recibir notificaciones y promociones</label>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terminos" required>
+                            <label class="form-check-label" for="terminos">Acepto los términos y condiciones*</label>
+                            <div class="invalid-feedback">
+                                Debes aceptar los términos y condiciones para continuar.
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="notificaciones">
+                            <label class="form-check-label" for="notificaciones">Deseo recibir notificaciones y
+                                promociones</label>
+                        </div>
                     </fieldset>
-                    <br>
-                    <input type="submit" value="Enviar" aria-label="Enviar formulario de reserva">
-                    <input type="reset" value="Limpiar" aria-label="Limpiar formulario de reserva">
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                    <button id="resetBtn" class="btn btn-secondary" type="reset">Limpiar</button>
                 </form>
             </section>
         </div>
     </main>
     <br>
     <footer>CarriCoche&amp;Renting&reg;</footer>
-    <script src="../public/js/tema.js"></script>
+    <script src="../public/js/paginaPrincipal.js"></script>
 
 </body>
 
