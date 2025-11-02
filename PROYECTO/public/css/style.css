@@ -9,7 +9,7 @@ body {
 }
 
 body.dark-mode {
-  background-color: #121212;
+  background-color: #000000;
   color: white;
 }
 
@@ -19,8 +19,13 @@ body.dark-mode {
     padding: 20px;
 }
 
-.titulo.dark-mode{
+body.dark-mode .titulo{
     background-color: #2f096c;
+    color: #ffffff;
+}
+
+body.dark-mode table{
+    background-color: #202020;
     color: #ffffff;
 }
 

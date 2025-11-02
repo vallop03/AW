@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Ejercicio 1 - Cabecera -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de un vehículo eléctrico</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+    <link href="../public/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="../public/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <section id="reservas">
+            <h3>Reservar</h3>
+            <form id="reservaForm" class="needs-validation" novalidate>
+                <fieldset>
+                    <legend>Datos personales</legend>
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="nombre" class="form-label">Nombre*</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce tu nombre.
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="apellidos" class="form-label">Apellido*</label>
+                            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce tu apellido.
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico*</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="invalid-feedback">
+                            Por favor, introduce un correo electrónico válido.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">Teléfono*</label>
+                        <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
+                        <div class="invalid-feedback">
+                            Por favor, introduce un número de teléfono válido de 9 dígitos.
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Datos de la reserva</legend>
+                    <div class="mb-3">
+                        <label for="vehiculo" class="form-label">Vehículo*</label>
+                        <select class="form-select" id="vehiculo" name="vehiculo" required>
+                            <option selected disabled value="">Selecciona un vehículo</option>
+                            <option value="1">Tesla</option>
+                            <option value="2">Volvo</option>
+                            <option value="3">VW</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, selecciona un vehículo.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="recogida" class="form-label">Recogida* </label>
+                            <input class="form-control" type="datetime-local" id="recogida" name="recogida" required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce una fecha y hora de recogida válidas.
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="devolucion" class="form-label">Devolución* </label>
+                            <input class="form-control" type="datetime-local" id="devolucion" name="devolucion"
+                                required>
+                            <div class="invalid-feedback">
+                                Por favor, introduce una fecha y hora de devolución válidas.
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Preferencias</legend>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terminos" required>
+                        <label class="form-check-label" for="terminos">Acepto los términos y condiciones*</label>
+                        <div class="invalid-feedback">
+                            Debes aceptar los términos y condiciones para continuar.
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="notificaciones">
+                        <label class="form-check-label" for="notificaciones">Deseo recibir notificaciones y
+                            promociones</label>
+                    </div>
+                </fieldset>
+                <button class="btn btn-primary" type="submit">Enviar</button>
+                <button id="resetBtn" class="btn btn-secondary" type="reset">Limpiar</button>
+            </form>
+        </section>
+    </div>
+    <script src="../public/js/paginaPrincipal.js"></script>
+    <script src="../public/js/formulario.js"></script>
+    <script src="../public/js/funcionalidades.js"></script>
+
+
+</body>
