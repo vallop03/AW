@@ -17,5 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("tema", "oscuro");
   });
 
+  const temaGuardado = localStorage.getItem("tema");
+  if (temaGuardado === "oscuro") {
+    body.classList.add("dark-mode");
+  }
+
 });
 
