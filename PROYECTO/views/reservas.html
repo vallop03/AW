@@ -83,33 +83,33 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="nombre" class="form-label">Nombre*</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                <div class="invalid-feedback">
+                                <input type="text" class="form-control" id="nombre" name="nombre" required minlength = "3" oninput="comprobarNombre(this)">
+                                <span class="invalid-feedback" aria-live = "polite">
                                     Por favor, introduce tu nombre.
-                                </div>
+                                </span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="apellidos" class="form-label">Apellido*</label>
                                 <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-                                <div class="invalid-feedback">
+                                <span class="invalid-feedback">
                                     Por favor, introduce tu apellido.
-                                </div>
+                                </span>
                             </div>
 
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo electrónico*</label>
                             <input type="email" class="form-control" id="email" name="email" required>
-                            <div class="invalid-feedback">
+                            <span class="invalid-feedback">
                                 Por favor, introduce un correo electrónico válido.
-                            </div>
+                            </span>
                         </div>
                         <div class="mb-3">
                             <label for="tel" class="form-label">Teléfono*</label>
                             <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
-                            <div class="invalid-feedback">
+                            <span class="invalid-feedback">
                                 Por favor, introduce un número de teléfono válido de 9 dígitos.
-                            </div>
+                            </span>
                         </div>
                     </fieldset>
                     <fieldset>
@@ -122,26 +122,26 @@
                                 <option value="2">Volvo</option>
                                 <option value="3">VW</option>
                             </select>
-                            <div class="invalid-feedback">
+                            <span class="invalid-feedback">
                                 Por favor, selecciona un vehículo.
-                            </div>
+                            </span>
                         </div>
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="recogida" class="form-label">Recogida* </label>
-                                <input class="form-control" type="datetime-local" id="recogida" name="recogida"
+                                <input class="form-control" type="datetime-local" id="recogida" name="recogida" oninput="comprobarRecogida(this)"
                                     required>
-                                <div class="invalid-feedback">
+                                <span class="invalid-feedback">
                                     Por favor, introduce una fecha y hora de recogida válidas.
-                                </div>
+                                </span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="devolucion" class="form-label">Devolución* </label>
                                 <input class="form-control" type="datetime-local" id="devolucion" name="devolucion"
                                     required>
-                                <div class="invalid-feedback">
+                                <span class="invalid-feedback">
                                     Por favor, introduce una fecha y hora de devolución válidas.
-                                </div>
+                                </span>
                             </div>
                         </div>
                     </fieldset>
@@ -150,9 +150,9 @@
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="terminos" required>
                             <label class="form-check-label" for="terminos">Acepto los términos y condiciones*</label>
-                            <div class="invalid-feedback">
+                            <span class="invalid-feedback">
                                 Debes aceptar los términos y condiciones para continuar.
-                            </div>
+                            </span>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="notificaciones">
@@ -170,7 +170,5 @@
 
     <script src="../public/js/paginaPrincipal.js"></script>
     <script src="../public/js/formulario.js"></script>
-    <script src="../public/js/funcionalidades.js"></script>
-
 
 </body>
