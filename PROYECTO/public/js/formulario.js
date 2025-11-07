@@ -25,42 +25,62 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             event.stopPropagation();
         }
+        actualizarBarraProgreso();
+
     });
 
     nombre.addEventListener("input", function () {
         comprobarNombre(nombre);
+        actualizarBarraProgreso();
+
     });
 
     apellidos.addEventListener("input", function () {
         comprobarNombre(apellidos);
+        actualizarBarraProgreso();
+
     });
 
     email.addEventListener("input", function () {
         comprobarValidacion(email);
+        actualizarBarraProgreso();
+
     });
 
     password.addEventListener("input", function () {
         comprobarValidacion(password);
+        actualizarBarraProgreso();
+
     });
 
     telefono.addEventListener("input", function () {
         comprobarValidacion(telefono);
+        actualizarBarraProgreso();
+
     });
 
     vehiculo.addEventListener("input", function () {
         comprobarValidacion(vehiculo);
+        actualizarBarraProgreso();
+
     });
 
     recogida.addEventListener("input", function () {
         comprobarRecogida(recogida);
+        actualizarBarraProgreso();
+
     });
 
     devolucion.addEventListener("input", function () {
         comprobarDevolucion(devolucion);
+        actualizarBarraProgreso();
+
     });
 
     terminos.addEventListener("change", function () {
         comprobarValidacion(terminos);
+        actualizarBarraProgreso();
+
     });
 
     resetBtn.addEventListener("click", function () {
@@ -68,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         form.querySelectorAll(".is-valid, .is-invalid").forEach(elemento => {
             elemento.classList.remove("is-valid", "is-invalid");
         });
+        actualizarBarraProgreso();
     });
 
     document.querySelectorAll("input, select").forEach(campo => {
@@ -75,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             campo.classList.remove("is-valid", "is-invalid");
         });
     });
-    
+
     function comprobarNombre(input) {
         const valor = input.value.trim();
         let valido = valor.length >= 3;
@@ -126,5 +147,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
+    function actualizarBarraProgreso() {
+        const totalCampos = 9;
+        let camposValidos = 0;
+        document.querySelectorAll("#reservaForm .is-valid").forEach(() => {
+            camposValidos++;
+        });
+        const porcentaje = (camposValidos / totalCampos) * 100;
+        const barraProgreso = document.querySelector(".progress-bar");
+        barraProgreso.style.width = porcentaje + "%";
+        barraProgreso.setAttribute("aria-valuenow", porcentaje);
+    }
 });
