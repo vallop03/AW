@@ -1,20 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const nombre = document.getElementById("nombre");
+    const apellidos = document.getElementById("apellidos");
     const recogida = document.getElementById("recogida");
     const devolucion = document.getElementById("devolucion");
     const form = document.getElementById("reservaForm");
     form.addEventListener('submit', function (event) {
-        const valido = comprobarNombre(nombre) && comprobarRecogida(recogida) && comprobarDevolucion(devolucion);
-        if (!comprobarNombre(nombre)) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        if (!comprobarRecogida(recogida)) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        if (!comprobarDevolucion(devolucion)) {
+        let valido = comprobarNombre(nombre);
+        valido = comprobarNombre(apellidos) && valido;
+        valido = comprobarRecogida(recogida) && valido;
+        valido = comprobarDevolucion(devolucion) && valido;
+        if (!valido) {
             event.preventDefault();
             event.stopPropagation();
         }
@@ -29,6 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
         comprobarNombre(nombre);
     });
 
+    apellidos.addEventListener("input", function () {
+        comprobarNombre(apellidos);
+    });
+
     recogida.addEventListener("input", function () {
         comprobarRecogida(recogida);
     });
@@ -41,13 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const valor = input.value.trim();
         let valido = valor.length >= 3;
         if (valido) {
-            nombre.classList.add('is-valid');
-            nombre.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+            input.classList.remove('is-invalid');
         } else {
-            nombre.classList.add('is-invalid');
-            nombre.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+            input.classList.remove('is-valid');
         }
-
         return valido;
     }
 
