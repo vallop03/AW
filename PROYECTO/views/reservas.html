@@ -96,7 +96,7 @@
                             <div class="mb-3 col-md-6">
                                 <label for="apellidos" class="form-label">Apellido*</label>
                                 <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-                                <span class="invalid-feedback">
+                                <span class="invalid-feedback" aria-live="polite">
                                     Por favor, introduce un apellido válido con mínimo 3 carácteres.
                                 </span>
                             </div>
@@ -105,7 +105,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">Correo electrónico*</label>
                             <input type="email" class="form-control" id="email" name="email" required>
-                            <span class="invalid-feedback">
+                            <span class="invalid-feedback" aria-live="polite">
                                 Por favor, introduce un correo electrónico válido.
                             </span>
                         </div>
@@ -113,7 +113,7 @@
                             <label for="password" class="form-label">Contraseña*</label>
                             <input type="password" class="form-control" id="password" name="password"
                                 pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
-                            <span class="invalid-feedback">
+                            <span class="invalid-feedback" aria-live="polite">
                                 La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter
                                 especial.
                             </span>
@@ -121,7 +121,7 @@
                         <div class="mb-3">
                             <label for="tel" class="form-label">Teléfono*</label>
                             <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
-                            <span class="invalid-feedback">
+                            <span class="invalid-feedback" aria-live="polite">
                                 Por favor, introduce un número de teléfono válido de 9 dígitos.
                             </span>
                         </div>
@@ -136,7 +136,7 @@
                                 <option value="Moto">Moto</option>
                                 <option value="Patinete">Patinete eléctrico</option>
                             </select>
-                            <span class="invalid-feedback">
+                            <span class="invalid-feedback" aria-live="polite">
                                 Por favor, selecciona un vehículo.
                             </span>
                         </div>
@@ -145,7 +145,7 @@
                                 <label for="recogida" class="form-label">Recogida* </label>
                                 <input class="form-control" type="datetime-local" id="recogida" name="recogida"
                                     required>
-                                <span class="invalid-feedback">
+                                <span class="invalid-feedback" aria-live="polite">
                                     Por favor, introduce una fecha y hora de recogida válidas actuales.
                                 </span>
                             </div>
@@ -153,7 +153,7 @@
                                 <label for="devolucion" class="form-label">Devolución* </label>
                                 <input class="form-control" type="datetime-local" id="devolucion" name="devolucion"
                                     required>
-                                <span class="invalid-feedback">
+                                <span class="invalid-feedback" aria-live="polite">
                                     Por favor, introduce una fecha y hora de devolución válidas actuales.
                                 </span>
                             </div>
@@ -164,7 +164,7 @@
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="terminos" required>
                             <label class="form-check-label" for="terminos">Acepto los términos y condiciones*</label>
-                            <span class="invalid-feedback">
+                            <span class="invalid-feedback" aria-live="polite">
                                 Debes aceptar los términos y condiciones para continuar.
                             </span>
                         </div>
