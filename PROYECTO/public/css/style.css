@@ -29,6 +29,12 @@ body.dark-mode table{
     color: #ffffff;
 }
 
+body.dark-mode input, body.dark-mode select{
+    background-color: #1e1e1e;
+    color: #f0f0f0;           
+    border-color: #333;
+}
+
 a {
     text-decoration: none;
     color: #6610f2;

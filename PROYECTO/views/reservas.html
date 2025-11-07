@@ -77,22 +77,22 @@
         <div class="container">
             <section id="reservas">
                 <h3>Reservar</h3>
-                <form id="reservaForm" class="needs-validation" novalidate>
+                <form id="reservaForm" novalidate>
                     <fieldset>
                         <legend>Datos personales</legend>
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="nombre" class="form-label">Nombre*</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required oninput="comprobarNombre(this)">
-                                <span class="invalid-feedback" aria-live = "polite">
-                                    Por favor, introduce tu nombre.
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <span class="invalid-feedback" aria-live="polite">
+                                    Por favor, introduce tu nombre con mínimo 3 carácteres.
                                 </span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="apellidos" class="form-label">Apellido*</label>
                                 <input type="text" class="form-control" id="apellidos" name="apellidos" required>
                                 <span class="invalid-feedback">
-                                    Por favor, introduce tu apellido.
+                                    Por favor, introduce un apellido válido con mínimo 3 carácteres.
                                 </span>
                             </div>
 
@@ -102,6 +102,15 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                             <span class="invalid-feedback">
                                 Por favor, introduce un correo electrónico válido.
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña*</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
+                            <span class="invalid-feedback">
+                                La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter
+                                especial.
                             </span>
                         </div>
                         <div class="mb-3">
@@ -118,9 +127,9 @@
                             <label for="vehiculo" class="form-label">Vehículo*</label>
                             <select class="form-select" id="vehiculo" name="vehiculo" required>
                                 <option selected disabled value="">Selecciona un vehículo</option>
-                                <option value="1">Tesla</option>
-                                <option value="2">Volvo</option>
-                                <option value="3">VW</option>
+                                <option value="Coche">Coche</option>
+                                <option value="Moto">Moto</option>
+                                <option value="Patinete">Patinete eléctrico</option>
                             </select>
                             <span class="invalid-feedback">
                                 Por favor, selecciona un vehículo.
@@ -132,7 +141,7 @@
                                 <input class="form-control" type="datetime-local" id="recogida" name="recogida"
                                     required>
                                 <span class="invalid-feedback">
-                                    Por favor, introduce una fecha y hora de recogida válidas.
+                                    Por favor, introduce una fecha y hora de recogida válidas actuales.
                                 </span>
                             </div>
                             <div class="mb-3 col-md-6">
@@ -140,7 +149,7 @@
                                 <input class="form-control" type="datetime-local" id="devolucion" name="devolucion"
                                     required>
                                 <span class="invalid-feedback">
-                                    Por favor, introduce una fecha y hora de devolución válidas.
+                                    Por favor, introduce una fecha y hora de devolución válidas actuales.
                                 </span>
                             </div>
                         </div>
@@ -160,8 +169,10 @@
                                 promociones</label>
                         </div>
                     </fieldset>
-                    <button class="btn btn-primary" type="submit">Enviar</button>
-                    <button id="resetBtn" class="btn btn-secondary" type="reset">Limpiar</button>
+                    <div class="mt-3">
+                        <button id="resetBtn" class="btn btn-secondary" type="reset">Limpiar</button>
+                        <button class="btn btn-primary ms-2" type="submit">Enviar</button>
+                    </div>
                 </form>
                 <br>
             </section>

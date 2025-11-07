@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnClaro.addEventListener("click", function (e) {
     body.classList.remove("dark-mode");
-
     localStorage.setItem("tema", "claro");
   });
 
