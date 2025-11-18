@@ -32,10 +32,10 @@ const usuarios = [
 ];
 app.locals.usuarios = usuarios;
 
-const productos = require('./data/productos.json');
+/*const productos = require('./data/productos.json');
 const productosDetalle = require('./data/productos_detalle.json');
 app.locals.productos = productos;
-app.locals.productosDetalle = productosDetalle;
+app.locals.productosDetalle = productosDetalle;*/
 
 // Routes
 const mainRoutes = require('./routes/index');

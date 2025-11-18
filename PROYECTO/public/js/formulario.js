@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    vehiculo.addEventListener("input", function () {
+    vehiculo.addEventListener("change", function () {
         comprobarValidacion(vehiculo);
         actualizarBarraProgreso();
 
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll("input, select").forEach(campo => {
         campo.addEventListener("focus", function () {
-            campo.classList.remove("is-valid", "is-invalid");
+            campo.classList.remove("is-invalid");
         });
     });
 
