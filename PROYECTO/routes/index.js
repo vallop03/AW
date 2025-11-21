@@ -5,7 +5,7 @@ const router = express.Router();
 const usuarios = [];
 
 router.get("/", function (request, response) {
-    response.render("index.ejs");
+    response.render("index.ejs", {usuario: null});
 });
 
 router.get("/reservas", function (request, response) {
@@ -13,7 +13,7 @@ router.get("/reservas", function (request, response) {
 });
 
 router.get("/registro", function (request, response) {
-    response.render("registroUsuario.ejs");
+    response.render("registroUsuario.ejs", {usuario: null});
 });
 
 router.post("/registro", function (request, response) {
@@ -23,22 +23,38 @@ router.post("/registro", function (request, response) {
         password: request.body.password
     }
 
-    if (usuarios.includes(email))
+    if (usuarios.some(v => v.email === request.body.email))
         console.log("Usuario con email repetido");
-    else
+    else {
         console.log("Usuario nuevo introducido:", usuario);
+        usuarios.push(usuario);
+    }
 
-    usuarios.push(usuario);
     response.end();
 });
 
 router.get("/verusuarios", function (request, response) {
-    console.log(usuarios);
     response.render("verusuarios.ejs", { usuarios });
 });
 
 router.get("/login", function (reques, response) {
-    response.render("login");
+    response.render("login", {error: null});
+});
+
+router.post("/login", function (request, response) {
+    const { email, password } = request.body;
+
+    const usuario = usuarios.find(u =>
+        u.email === email && u.password === password
+    );
+
+    if (!usuario) {
+        return response.render("login.ejs", { error: "Usuario o contraseña incorrectos" });
+    }
+
+    request.session.user = usuario;
+
+    response.render("index.ejs", {usuario: usuario});
 });
 
 

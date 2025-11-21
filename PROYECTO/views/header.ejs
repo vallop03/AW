@@ -61,6 +61,27 @@
                         <li><a class="dropdown-item" href="#">Inglés</a></li>
                     </ul>
                 </li>
+
+                <% if(!usuario){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Iniciar sesión</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/registro">Registrarse</a>
+                    </li>
+                <% } else {%>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <%= usuario.nombre %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/perfil">Mi perfil</a></li>
+                            <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+
             </ul>
         </div>
     </div>

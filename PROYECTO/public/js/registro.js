@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("ESTA MAL");
         }
         actualizarBarraProgreso();
-        console.log("holi");
     });
 
     nombre.addEventListener("input", function () {
