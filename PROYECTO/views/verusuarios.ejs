@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vehículos</title>
+        <meta-charset="utf-8">
+    </head>
+
+    <body>
+        <ul>
+            <% usuarios.forEach(usuario => { %>
+            <li><%= usuario.email %></li>
+            <% }); %>
+        </ul>
+    </body>
+</html>
+
+<script>
+
+    console.log("<%- usuarios %>");
+</script>

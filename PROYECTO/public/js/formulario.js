@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
             event.stopPropagation();
         }
         actualizarBarraProgreso();
-
     });
 
     nombre.addEventListener("input", function () {
@@ -113,8 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function comprobarRecogida(input) {
         const fechaSeleccionada = new Date(input.value);
         const fechaActual = new Date();
+        const valido = fechaSeleccionada >= fechaActual;
         fechaActual.setHours(0, 0, 0, 0);
-        if (fechaSeleccionada >= fechaActual) {
+        if (valido) {
             input.classList.add('is-valid');
             input.classList.remove('is-invalid');
         }
@@ -122,12 +122,14 @@ document.addEventListener("DOMContentLoaded", function () {
             input.classList.add('is-invalid');
             input.classList.remove('is-valid');
         }
+        return valido;
     }
 
     function comprobarDevolucion(input) {
         const fechaRecogida = new Date(recogida.value);
         const fechaDevolucion = new Date(input.value);
-        if (fechaDevolucion > fechaRecogida) {
+        const valido = fechaDevolucion > fechaRecogida;
+        if (valido) {
             input.classList.add('is-valid');
             input.classList.remove('is-invalid');
         }
@@ -135,16 +137,19 @@ document.addEventListener("DOMContentLoaded", function () {
             input.classList.add('is-invalid');
             input.classList.remove('is-valid');
         }
+        return valido;
     }
 
     function comprobarValidacion(input) {
-        if (input.checkValidity()) {
+        const valido = input.checkValidity();
+        if (valido) {
             input.classList.add('is-valid');
             input.classList.remove('is-invalid');
         } else {
             input.classList.add('is-invalid');
             input.classList.remove('is-valid');
         }
+        return valido;
     }
 
     function actualizarBarraProgreso() {

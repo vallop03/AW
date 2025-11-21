@@ -1,5 +1,5 @@
 {
-    "name": "ecomarket-app",
+    "name": "carri-coche-renting-app",
     "version": "1.0.0",
     "description": "Aplicación web desarrollada con Node.js y Express.js basada en el portal EcoMarket",
     "main": "index.js",

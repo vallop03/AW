@@ -13,8 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!valido) {
             event.preventDefault();
             event.stopPropagation();
+            console.log("ESTA MAL");
         }
         actualizarBarraProgreso();
+        console.log("holi");
     });
 
     nombre.addEventListener("input", function () {
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function comprobarNombre(input) {
         const valor = input.value.trim();
-        let valido = valor.length >= 3;
+        const valido = valor.length >= 3;
         if (valido) {
             input.classList.add('is-valid');
             input.classList.remove('is-invalid');
@@ -63,13 +65,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function comprobarValidacion(input) {
-        if (input.checkValidity()) {
+        const valido = input.checkValidity();
+        if (valido) {
             input.classList.add('is-valid');
             input.classList.remove('is-invalid');
         } else {
             input.classList.add('is-invalid');
             input.classList.remove('is-valid');
         }
+        return valido;
     }
 
     function actualizarBarraProgreso() {
