@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("registroForm");
 
-
     form.addEventListener('submit', function (event) {
         let valido = comprobarNombre(nombre);
         valido = comprobarValidacion(email) && valido;
@@ -13,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!valido) {
             event.preventDefault();
             event.stopPropagation();
-            console.log("ESTA MAL");
         }
         actualizarBarraProgreso();
     });

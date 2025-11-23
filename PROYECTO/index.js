@@ -19,6 +19,11 @@ app.use(session({
     saveUninitialized: false
 }));
 
+app.use(function (request, response, next) {
+    response.locals.usuario = request.session.user || null;
+    next();
+});
+
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -28,7 +33,7 @@ app.set('view engine', 'ejs');
 
 // Simulated database (in-memory)
 const usuarios = [
-    { username: 'admin', password: 'admin' }
+    { username: 'admin', password: 'admin', email:"admin", rol:"administrador" }
 ];
 app.locals.usuarios = usuarios;
 

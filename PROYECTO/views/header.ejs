@@ -31,6 +31,7 @@
                     <a class="nav-link" href="/contacto" aria-label="Ir a contacto" title="alt + A"
                         accesskey="a">Contacto</a>
                 </li>
+                <% if(usuario && usuario.rol === "administrador"){ %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,49 +41,54 @@
                         <li><a id="regUsuario" class="dropdown-item" href="/registro">Usuario</a></li>
                     </ul>
                 </li>
+                <% } %>
+            </ul>
+            <ul class="navbar-nav ms-lg-auto me-2 d-lg-flex align-items-lg-center">
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Ajustes
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <h6 class="dropdown-header">Tema</h6>
-                        </li>
-                        <li><a id="tema-claro" class="dropdown-item" href="#">Claro</a></li>
-                        <li><a id="tema-oscuro" class="dropdown-item" href="#">Oscuro</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <h6 class="dropdown-header">Idioma</h6>
-                        </li>
-                        <li><a class="dropdown-item" href="#">Español</a></li>
-                        <li><a class="dropdown-item" href="#">Inglés</a></li>
-                    </ul>
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-gear-fill fs-3 d-none d-lg-inline"></i>
+                    <span class="d-inline d-lg-none">Ajustes</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <h6 class="dropdown-header">Tema</h6>
+                    </li>
+                    <li><a id="tema-claro" class="dropdown-item" href="#">Claro</a></li>
+                    <li><a id="tema-oscuro" class="dropdown-item" href="#">Oscuro</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <h6 class="dropdown-header">Idioma</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="#">Español</a></li>
+                    <li><a class="dropdown-item" href="#">Inglés</a></li>
+                </ul>
+            </li>
+            
+            <% if(!usuario){ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login" aria-label="Iniciar sesión" title="alt + S" 
+                    accesskey="s">Iniciar sesión</a>
                 </li>
-
-                <% if(!usuario){ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Iniciar sesión</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/registro">Registrarse</a>
-                    </li>
+                
                 <% } else {%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <%= usuario.nombre %>
+                            <i class="bi bi-person-circle fs-2 d-none d-lg-inline"></i>
+                            <span class="d-inline d-lg-none">Mi cuenta</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><span class="dropdown-item-text text-muted"><%= usuario.username %></span></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/perfil">Mi perfil</a></li>
                             <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
                 <% } %>
-
-            </ul>
+            </ul>            
         </div>
     </div>
 </nav>

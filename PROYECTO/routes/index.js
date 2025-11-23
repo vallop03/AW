@@ -1,11 +1,10 @@
 
 const express = require('express');
+const requireLogin = require('../middlewares/login');
 const router = express.Router();
 
-const usuarios = [];
-
 router.get("/", function (request, response) {
-    response.render("index.ejs", {usuario: null});
+    response.render("index.ejs");
 });
 
 router.get("/reservas", function (request, response) {
@@ -13,17 +12,22 @@ router.get("/reservas", function (request, response) {
 });
 
 router.get("/registro", function (request, response) {
-    response.render("registroUsuario.ejs", {usuario: null});
+    response.render("registroUsuario.ejs");
 });
 
 router.post("/registro", function (request, response) {
-    const usuario = {
-        nombre: request.body.nombre,
+    let usuario = {
+        username: request.body.nombre,
         email: request.body.email,
-        password: request.body.password
+        password: request.body.password,
+        rol: "administrador"
     }
+    const usuarios = request.app.locals.usuarios;
 
-    if (usuarios.some(v => v.email === request.body.email))
+    if (usuario.email)
+        usuario.email = usuario.email.toLowerCase();
+
+    if (usuarios.some(v => v.email === usuario.email))
         console.log("Usuario con email repetido");
     else {
         console.log("Usuario nuevo introducido:", usuario);
@@ -33,16 +37,21 @@ router.post("/registro", function (request, response) {
     response.end();
 });
 
-router.get("/verusuarios", function (request, response) {
-    response.render("verusuarios.ejs", { usuarios });
+router.get("/verusuarios", requireLogin, function (request, response) {
+    response.render("verusuarios.ejs");
 });
 
-router.get("/login", function (reques, response) {
-    response.render("login", {error: null});
+router.get("/login", function (request, response) {
+    response.render("login", { error: null });
 });
 
 router.post("/login", function (request, response) {
-    const { email, password } = request.body;
+    let { email, password } = request.body;
+
+    const usuarios = request.app.locals.usuarios;
+
+    if (email)
+        email = email.toLowerCase();
 
     const usuario = usuarios.find(u =>
         u.email === email && u.password === password
@@ -54,7 +63,7 @@ router.post("/login", function (request, response) {
 
     request.session.user = usuario;
 
-    response.render("index.ejs", {usuario: usuario});
+    response.redirect("/");
 });
 
 
