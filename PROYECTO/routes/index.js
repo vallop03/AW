@@ -1,6 +1,7 @@
 
 const express = require('express');
 const requireLogin = require('../middlewares/login');
+const isAdmin = require('../middlewares/isAdmin');
 const DAOUsuario = require('../db/daos/daoUsuario');
 const pool = require('../db/connection');
 const router = express.Router();
@@ -15,11 +16,11 @@ router.get("/reservas", function (request, response) {
     response.render("reservas.ejs");
 });
 
-router.get("/registro", function (request, response) {
+router.get("/registroUsuario", isAdmin, function (request, response) {
     response.render("registroUsuario.ejs");
 });
 
-router.post("/registro", function (request, response) {
+router.post("/registroUsuario", function (request, response) {
     let usuario = {
         username: request.body.nombre,
         email: request.body.email,
@@ -76,5 +77,14 @@ router.post("/login", function (request, response) {
     });
 });
 
+router.get("/logout", function (request, response) {
+    request.session.destroy(function (error) {
+        if (error) {
+            response.status(500);
+            return response.render("error.ejs", { numError: 500, error: "Error al cerrar la sesión" });
+        }
+        response.redirect("/");
+    });
+});
 
 module.exports = router;

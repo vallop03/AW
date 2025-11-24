@@ -35,10 +35,28 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        Registrar
+                        Usuarios
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownRegisterLink">
-                        <li><a id="regUsuario" class="dropdown-item" href="/registro">Usuario</a></li>
+                        <li><a id="regUsuario" class="dropdown-item" href="/registroUsuario">Registrar</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Vehículos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRegisterLink">
+                        <li><a id="regVehiculo" class="dropdown-item" href="/registroVehiculo">Registrar</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Concesionarios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRegisterLink">
+                        <li><a id="regConcesionario" class="dropdown-item" href="/registroConcesionario">Registrar</a></li>
                     </ul>
                 </li>
                 <% } %>
@@ -48,9 +66,9 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-gear-fill fs-3 d-none d-lg-inline"></i>
-                    <span class="d-inline d-lg-none">Ajustes</span>
-                </a>
+                        <i class="bi bi-gear-fill fs-3 d-none d-lg-inline"></i>
+                        <span class="d-inline d-lg-none">Ajustes</span>
+                    </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                     <li>
                         <h6 class="dropdown-header">Tema</h6>
@@ -66,14 +84,14 @@
                     <li><a class="dropdown-item" href="#">Español</a></li>
                     <li><a class="dropdown-item" href="#">Inglés</a></li>
                 </ul>
-            </li>
-            
-            <% if(!usuario){ %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login" aria-label="Iniciar sesión" title="alt + S" 
-                    accesskey="s">Iniciar sesión</a>
                 </li>
-                
+            
+                <% if(!usuario){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login" aria-label="Iniciar sesión" title="alt + S" 
+                        accesskey="s">Iniciar sesión</a>
+                    </li>
+                    
                 <% } else {%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -83,7 +101,6 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><span class="dropdown-item-text text-muted"><%= usuario.nombre %></span></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/perfil">Mi perfil</a></li>
                             <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
                         </ul>
                     </li>
