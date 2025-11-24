@@ -1,7 +1,11 @@
 
 const express = require('express');
 const requireLogin = require('../middlewares/login');
+const DAOUsuario = require('../db/daos/daoUsuario');
+const pool = require('../db/connection');
 const router = express.Router();
+
+const daoUsuario = new DAOUsuario(pool);
 
 router.get("/", function (request, response) {
     response.render("index.ejs");
@@ -48,22 +52,28 @@ router.get("/login", function (request, response) {
 router.post("/login", function (request, response) {
     let { email, password } = request.body;
 
-    const usuarios = request.app.locals.usuarios;
+    //const usuarios = request.app.locals.usuarios;
 
     if (email)
         email = email.toLowerCase();
 
-    const usuario = usuarios.find(u =>
+    /*const usuario = usuarios.find(u =>
         u.email === email && u.password === password
-    );
+    );*/
 
-    if (!usuario) {
-        return response.render("login.ejs", { error: "Usuario o contraseña incorrectos" });
-    }
-
-    request.session.user = usuario;
-
-    response.redirect("/");
+    daoUsuario.verificarUsuario(email, password, function (error, usuario) {
+        if (error) {
+            response.status(500);
+            return response.render("login.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+        }
+        else if (usuario !== null) {
+            request.session.user = usuario;
+            response.redirect("/");
+        }
+        else {
+            return response.render("login.ejs", { error: "Usuario o contraseña incorrectos" });
+        }
+    });
 });
 
 
