@@ -64,7 +64,7 @@ router.post("/login", function (request, response) {
     daoUsuario.verificarUsuario(email, password, function (error, usuario) {
         if (error) {
             response.status(500);
-            return response.render("login.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+            return response.render("error.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
         }
         else if (usuario !== null) {
             request.session.user = usuario;
