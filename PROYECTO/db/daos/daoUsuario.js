@@ -66,6 +66,7 @@ class DAOUsuario {
                 callback(err);
             }
             else {
+                email = email.toLowerCase();
                 const consulta = "SELECT id_usuario, nombre, rol, contrasena FROM usuarios WHERE correo = ?";
                 conexion.query(consulta, [email], function (err, rows) {
                     conexion.release();

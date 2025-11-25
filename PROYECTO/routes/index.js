@@ -16,7 +16,7 @@ router.get("/reservas", function (request, response) {
     response.render("reservas.ejs");
 });
 
-router.get("/registroUsuario", isAdmin, function (request, response) {
+router.get("/registroUsuario", function (request, response) {
     response.render("registroUsuario.ejs");
 });
 
@@ -25,21 +25,23 @@ router.post("/registroUsuario", function (request, response) {
         username: request.body.nombre,
         email: request.body.email,
         password: request.body.password,
-        rol: "administrador"
+        tel: request.body.tel,
+        concesionario: request.body.concesionario,
+        rol: request.body.password
     }
-    const usuarios = request.app.locals.usuarios;
-
-    if (usuario.email)
-        usuario.email = usuario.email.toLowerCase();
-
-    if (usuarios.some(v => v.email === usuario.email))
-        console.log("Usuario con email repetido");
-    else {
-        console.log("Usuario nuevo introducido:", usuario);
-        usuarios.push(usuario);
-    }
-
-    response.end();
+    
+    daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.id_concesionario, function (error, id) {
+        if (error) {
+            response.status(500);
+            return response.render("error.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+        }
+        else if (id > 0) {
+            response.redirect("/");
+        }
+        else {
+            response.render("registroUsuario.ejs");
+        }
+    });
 });
 
 router.get("/verusuarios", requireLogin, function (request, response) {
@@ -54,9 +56,6 @@ router.post("/login", function (request, response) {
     let { email, password } = request.body;
 
     //const usuarios = request.app.locals.usuarios;
-
-    if (email)
-        email = email.toLowerCase();
 
     /*const usuario = usuarios.find(u =>
         u.email === email && u.password === password
