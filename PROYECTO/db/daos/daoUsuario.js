@@ -6,11 +6,8 @@ class DAOUsuario {
     }
 
     verificarPorCorreo(email, callback) {
-        console.log("Estoy verificando el correo");
         this.pool.getConnection(function (err, conexion) {
             if (err) {
-                console.log("explotó verificar el correo");
-
                 return callback(err);
             }
             else {
@@ -30,7 +27,6 @@ class DAOUsuario {
     }
 
     crearUsuario(nombre, email, password, rol, telefono, id_concesionario, callback) {
-        console.log("estoy en el DAO");
         email = email.toLowerCase();
         this.verificarPorCorreo(email, (err, existeUsuario) => {
             if (err) {
@@ -43,12 +39,9 @@ class DAOUsuario {
                 if (err) {
                     return callback(err);
                 }
-                console.log("He llegado al hash");
-
                 const saltRounds = 10;
                 bcrypt.hash(password, saltRounds, (err, hash) => {
                     if (err) {
-                        console.log("ha explotado el hash");
                         conexion.release();
                         return callback(err);
                     };
@@ -56,8 +49,6 @@ class DAOUsuario {
                     conexion.query(insertar, [nombre, email, hash, rol, telefono, id_concesionario], function (err, result) {
                         conexion.release();
                         if (err) {
-                            console.log("ha explotado la insercion", err);
-
                             return callback(err);
                         }
                         else {
