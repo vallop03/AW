@@ -21,16 +21,8 @@ router.get("/registroUsuario", function (request, response) {
 });
 
 router.post("/registroUsuario", function (request, response) {
-    let usuario = {
-        username: request.body.nombre,
-        email: request.body.email,
-        password: request.body.password,
-        tel: request.body.tel,
-        concesionario: request.body.concesionario,
-        rol: request.body.password
-    }
     
-    daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.id_concesionario, function (error, id) {
+    daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
         if (error) {
             response.status(500);
             return response.render("error.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
