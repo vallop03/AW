@@ -9,15 +9,15 @@ const router = express.Router();
 const daoUsuario = new DAOUsuario(pool);
 
 router.get("/", function (request, response) {
-    response.render("index.ejs");
+    response.render("index");
 });
 
 router.get("/reservas", function (request, response) {
-    response.render("reservas.ejs");
+    response.render("reservas");
 });
 
 router.get("/registroUsuario", function (request, response) {
-    response.render("registroUsuario.ejs");
+    response.render("registroUsuario", {mensaje: null});
 });
 
 router.post("/registroUsuario", function (request, response) {
@@ -25,19 +25,23 @@ router.post("/registroUsuario", function (request, response) {
     daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
         if (error) {
             response.status(500);
-            return response.render("error.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+            return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
         }
         else if (id > 0) {
-            response.redirect("/");
+            response.render("registroUsuario", {mensaje: "El usuario se ha registrado correctamente"});
         }
-        else {
-            response.render("registroUsuario.ejs");
+        else if (id === -1){
+            console.log("ya existe el usuario");
+            response.render("registroUsuario", {mensaje: "Ya existe un usuario asociado a ese correo"});
+        }
+        else{
+            response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
         }
     });
 });
 
 router.get("/verusuarios", requireLogin, function (request, response) {
-    response.render("verusuarios.ejs");
+    response.render("verusuarios");
 });
 
 router.get("/login", function (request, response) {
@@ -56,14 +60,14 @@ router.post("/login", function (request, response) {
     daoUsuario.verificarUsuario(email, password, function (error, usuario) {
         if (error) {
             response.status(500);
-            return response.render("error.ejs", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+            return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
         }
         else if (usuario !== null) {
             request.session.user = usuario;
             response.redirect("/");
         }
         else {
-            return response.render("login.ejs", { error: "Usuario o contraseña incorrectos" });
+            return response.render("login", { error: "Usuario o contraseña incorrectos" });
         }
     });
 });
@@ -72,7 +76,7 @@ router.get("/logout", function (request, response) {
     request.session.destroy(function (error) {
         if (error) {
             response.status(500);
-            return response.render("error.ejs", { numError: 500, error: "Error al cerrar la sesión" });
+            return response.render("error", { numError: 500, error: "Error al cerrar la sesión" });
         }
         response.redirect("/");
     });

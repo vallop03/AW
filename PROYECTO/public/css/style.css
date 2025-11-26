@@ -64,3 +64,7 @@ a {
     background-color: #945cf05f;
     border-radius: 5%;
 }
+
+.toast-overlay {
+    z-index: 9999 !important;
+}

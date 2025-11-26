@@ -33,7 +33,8 @@ class DAOUsuario {
                 return callback(err);
             }
             if (existeUsuario) {
-                return callback(null, 0);
+                console.log("ya existe el usuario DAO");
+                return callback(null, -1);
             }
             this.pool.getConnection(function (err, conexion) {
                 if (err) {

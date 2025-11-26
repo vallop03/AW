@@ -15,6 +15,22 @@
     <%- include("header") %>
 
     <main>
+
+        <% if(mensaje){ %>
+            <div aria-live="polite" aria-atomic="true" class="position-fixed top-50 start-50 translate-middle toast-overlay" data-bs-autohide="false">
+                <div class="toast-container p-3" id="registerResultToast">
+                    <div class="toast">
+                        <div class="toast-header">
+                            <strong class="me-auto">Aviso</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            <%= mensaje %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
         <br>
         <div class="container">
             <section id="registro">
@@ -91,7 +107,7 @@
     </main>
 
     <script src="js/paginaPrincipal.js"></script>
-    <script src="js/registro.js"></script>
+    <script src="js/registroUsuario.js"></script>
 
 </body>
 
