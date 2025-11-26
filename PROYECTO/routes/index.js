@@ -45,18 +45,14 @@ router.get("/verusuarios", requireLogin, function (request, response) {
 });
 
 router.get("/login", function (request, response) {
+    if (request.session.user) {
+        return res.redirect("/");
+    }
     response.render("login", { error: null });
 });
 
 router.post("/login", function (request, response) {
     let { email, password } = request.body;
-
-    //const usuarios = request.app.locals.usuarios;
-
-    /*const usuario = usuarios.find(u =>
-        u.email === email && u.password === password
-    );*/
-
     daoUsuario.verificarUsuario(email, password, function (error, usuario) {
         if (error) {
             response.status(500);
