@@ -96,6 +96,23 @@ class DAOUsuario {
             }
         });
     }
+
+    consultarTodosUsuarios(callback){
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            const consulta = "SELECT u.*, c.nombre AS concesionario, c.ciudad AS ciudad FROM usuarios u JOIN concesionarios c ON u.id_concesionario = c.id_concesionario";
+            conexion.query(consulta, [], function (err, rows) {
+                conexion.release();
+                if (err) {
+                    callback(err);
+                }
+                
+                return callback(null, rows);
+            });
+        });
+    }
 }
 
 module.exports = DAOUsuario;

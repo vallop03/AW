@@ -21,27 +21,42 @@ router.get("/registroUsuario", function (request, response) {
 });
 
 router.post("/registroUsuario", function (request, response) {
-    
-    daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
-        if (error) {
-            response.status(500);
-            return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
-        }
-        else if (id > 0) {
-            response.render("registroUsuario", {mensaje: "El usuario se ha registrado correctamente"});
-        }
-        else if (id === -1){
-            console.log("ya existe el usuario");
-            response.render("registroUsuario", {mensaje: "Ya existe un usuario asociado a ese correo"});
-        }
-        else{
-            response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
-        }
-    });
+    if(request.body.nombre === '' && request.body.email && request.body.email && request.body.password && request.body.rol && request.body.telefono && request.body.concesionario){
+        daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
+            if (error) {
+                response.status(500);
+                return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+            }
+            else if (id > 0) {
+                response.render("registroUsuario", {mensaje: "El usuario se ha registrado correctamente"});
+            }
+            else if (id === -1){
+                console.log("ya existe el usuario");
+                response.render("registroUsuario", {mensaje: "Ya existe un usuario asociado a ese correo"});
+            }
+            else{
+                response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
+            }
+        });
+    }
+    else{
+        response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
+    }
 });
 
 router.get("/verusuarios", requireLogin, function (request, response) {
     response.render("verusuarios");
+});
+
+router.get("/usuarios", function (request, response) {
+    daoUsuario.consultarTodosUsuarios(function(err, usuarios){
+        if(err){
+            response.status(500);
+            return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
+        }
+        
+        response.render("usuarios", {usuarios: usuarios});
+    });
 });
 
 router.get("/login", function (request, response) {
