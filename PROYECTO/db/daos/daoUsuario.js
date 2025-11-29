@@ -129,7 +129,23 @@ class DAOUsuario {
             });
         });
     }
-}
+
+    editarUsuario(id, nombre, correo, rol, telefono, id_concesionario, callback) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            const consulta = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, telefono = ?, concesionario = ? WHERE id = ? ";
+            conexion.query(consulta, [nombre, correo, rol, telefono, id_concesionario, id], function (err, result) {
+                    conexion.release();
+                    if (err) {
+                        callback(err);
+                    }
+                    
+                    return callback(null, ); //devolver algo
+                });
+        });
+    }
 
 module.exports = DAOUsuario;
 

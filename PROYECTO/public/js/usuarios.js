@@ -6,6 +6,12 @@ $(function () {
         if (id)
             editarUsuario(id);
     });
+
+    $("#botonModal").on("click", function(event){
+        $.ajax({
+            url: "/api/usuarios/"
+        })
+    });
     
 })
 
@@ -69,4 +75,6 @@ function editarUsuario(id) {
             alert("Se ha producido un error: " + errorThrown);
         }
     });
+
+    
 }
