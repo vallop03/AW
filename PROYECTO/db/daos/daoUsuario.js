@@ -125,7 +125,6 @@ class DAOUsuario {
                 if (err) {
                     callback(err);
                 }
-
                 return callback(null, rows[0] || null);
             });
         });
