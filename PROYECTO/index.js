@@ -46,6 +46,11 @@ app.locals.productosDetalle = productosDetalle;*/
 const mainRoutes = require('./routes/index');
 app.use('/', mainRoutes);
 
+//APIS
+const apiUsuarios = require("./routes/api/usuarios");
+app.use("/api/usuarios", apiUsuarios);
+
+
 // Server
 app.listen(PORT, () => {
     console.log(`EcoMarket EXAM app running at http://localhost:${PORT}`);

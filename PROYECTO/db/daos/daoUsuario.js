@@ -97,7 +97,7 @@ class DAOUsuario {
         });
     }
 
-    consultarTodosUsuarios(callback){
+    consultarTodosUsuarios(callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
                 return callback(err);
@@ -108,8 +108,25 @@ class DAOUsuario {
                 if (err) {
                     callback(err);
                 }
-                
+
                 return callback(null, rows);
+            });
+        });
+    }
+
+    consultarUsuarioPorId(id, callback) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            const consulta = "SELECT u.*, c.nombre AS concesionario, c.ciudad AS ciudad FROM usuarios u JOIN concesionarios c ON u.id_concesionario = c.id_concesionario WHERE u.id_usuario = ?";
+            conexion.query(consulta, [id], function (err, rows) {
+                conexion.release();
+                if (err) {
+                    callback(err);
+                }
+
+                return callback(null, rows[0] || null);
             });
         });
     }

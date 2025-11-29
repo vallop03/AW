@@ -1,10 +1,10 @@
 
 const express = require('express');
+const router = express.Router();
 const requireLogin = require('../middlewares/login');
 const isAdmin = require('../middlewares/isAdmin');
 const DAOUsuario = require('../db/daos/daoUsuario');
 const pool = require('../db/connection');
-const router = express.Router();
 
 const daoUsuario = new DAOUsuario(pool);
 
@@ -21,7 +21,7 @@ router.get("/registroUsuario", function (request, response) {
 });
 
 router.post("/registroUsuario", function (request, response) {
-    if(request.body.nombre === '' && request.body.email && request.body.email && request.body.password && request.body.rol && request.body.telefono && request.body.concesionario){
+    if(request.body.nombre && request.body.email && request.body.password && request.body.rol && request.body.concesionario){
         daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
             if (error) {
                 response.status(500);
