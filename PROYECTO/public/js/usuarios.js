@@ -26,9 +26,47 @@ $(function () {
         };
 
         if (modo === "editar") {
-            editarUsuario(idUsuarioSeleccionado, datos, toast);
+            let valido = comprobarNombre($("#nombre")[0]);
+            valido = comprobarValidacion($("#email")[0]) && valido;
+            valido = comprobarValidacion($("#password")[0]) && valido;
+            valido = comprobarValidacion($("#concesionario")[0]) && valido;
+            valido = comprobarValidacion($("#rol")[0]) && valido;
+            valido = comprobarValidacion($("#tel")[0]) && valido;
+            if (!valido) {
+                event.preventDefault();
+                event.stopPropagation();
+                $("#mensajeToast").text("Algunos campos son no son válidos.");
+                toast.show();
+            }
+            else {
+                editarUsuario(idUsuarioSeleccionado, datos, toast);
+            }
         }
 
+    });
+
+    $("#nombre").on("input", function () {
+        comprobarNombre(this);
+    });
+
+    $("#email").on("input", function () {
+        comprobarValidacion(this);
+    });
+
+    $("#password").on("input", function () {
+        comprobarValidacion(this);
+    });
+
+    $("#rol").on("input", function () {
+        comprobarValidacion(this);
+    });
+
+    $("#tel").on("input", function () {
+        comprobarValidacion(this);
+    });
+
+    $("#concesionario").on("input", function () {
+        comprobarValidacion(this);
     });
 
 })
@@ -82,7 +120,7 @@ function cargarModal(id) {
             $("#nombre").prop("value", usuario.nombre);
             $("#email").prop("value", usuario.correo);
             $("#tel").prop("value", usuario.telefono);
-            $("#concesionario").prop("value", usuario.concesionario);
+            $("#concesionario").prop("value", usuario.id_concesionario);
             $("#rol").prop("value", usuario.rol);
             $("#password").prop("required", false);
         },
@@ -109,4 +147,29 @@ function editarUsuario(id, datos, toast) {
             $("#mensajeToast").text("Error en el servidor");
         }
     })
+}
+
+function comprobarNombre(input) {
+    const valor = input.value.trim();
+    const valido = valor.length >= 3;
+    if (valido) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+    } else {
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    }
+    return valido;
+}
+
+function comprobarValidacion(input) {
+    const valido = input.checkValidity();
+    if (valido) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+    } else {
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    }
+    return valido;
 }
