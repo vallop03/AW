@@ -1,18 +1,48 @@
 $(cargarUsuarios);
 
 $(function () {
+    let modo = "editar";
     $("#infoUsuarios").on("click", ".editButton", function (event) {
         const id = $(this).data("id_usuario");
-        if (id)
+        if (id) {
+            modo = "editar";
+            $("#grupoPassword").hide();
+            $("#modalAccion").modal("show");
             editarUsuario(id);
+        }
     });
 
-    $("#botonModal").on("click", function(event){
-        $.ajax({
-            url: "/api/usuarios/"
-        })
+    $("#botonModal").on("click", function (event) {
+
+        let datos = {
+            nombre: $("#nombre").prop("value"),
+            correo: $("#email").prop("value"),
+            telefono: $("#tel").prop("value"),
+            concesionario: $("#concesionario").prop("value"),
+            rol: $("#rol").prop("value")
+        };
+
+        if (modo === "editar") {
+
+            $.ajax({
+                url: "/api/usuarios/" + id,
+                method: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(datos),
+                success: function (data, textStatus, jqXHR) {
+                    $("#modalAccion").modal("hide");
+                    alert("Usuario creado");
+                    cargarTablaUsuarios();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("Error al crear: " + errorThrown);
+                }
+            })
+
+        }
+
     });
-    
+
 })
 
 function cargarUsuarios() {
@@ -66,15 +96,12 @@ function editarUsuario(id) {
             $("#tel").prop("value", usuario.telefono);
             $("#concesionario").prop("value", usuario.concesionario);
             $("#rol").prop("value", usuario.rol);
-            $("#grupoPassword").hide();
             $("#password").prop("required", false);
-
-            $("#modalAccion").modal("show");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert("Se ha producido un error: " + errorThrown);
         }
     });
 
-    
+
 }

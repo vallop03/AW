@@ -64,7 +64,7 @@ class DAOUsuario {
     verificarUsuario(email, password, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
-                callback(err);
+                return callback(err);
             }
             else {
                 email = email.toLowerCase();
@@ -106,7 +106,7 @@ class DAOUsuario {
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
-                    callback(err);
+                    return callback(err);
                 }
 
                 return callback(null, rows);
@@ -123,7 +123,7 @@ class DAOUsuario {
             conexion.query(consulta, [id], function (err, rows) {
                 conexion.release();
                 if (err) {
-                    callback(err);
+                    return callback(err);
                 }
                 return callback(null, rows[0] || null);
             });
@@ -135,17 +135,19 @@ class DAOUsuario {
             if (err) {
                 return callback(err);
             }
-            const consulta = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, telefono = ?, concesionario = ? WHERE id = ? ";
+            const consulta = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, telefono = ?, id_concesionario = ? WHERE id = ? ";
             conexion.query(consulta, [nombre, correo, rol, telefono, id_concesionario, id], function (err, result) {
-                    conexion.release();
-                    if (err) {
-                        callback(err);
-                    }
-                    
-                    return callback(null, ); //devolver algo
-                });
+                conexion.release();
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, result.affectedRows);
+            });
         });
     }
+
+}
 
 module.exports = DAOUsuario;
 
