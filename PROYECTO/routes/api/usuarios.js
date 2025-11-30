@@ -29,12 +29,14 @@ router.get("/:id", function (request, response) {
 
 router.put("/:id", function (request, response) {
     const id = request.params.id;
-    const { nombre, correo, telefono, concesionario, rol } = req.body;
+    const { nombre, correo, telefono, concesionario, rol } = request.body;
+    console.log("se están editando las cosas");
     daoUsuario.editarUsuario(id, nombre, correo, rol, telefono, concesionario, function (err, resultado) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
         if (resultado === 1) {
+            console.log("OLE");
             response.json({ mensaje: "Usuario actualizado" });
         }
         else {

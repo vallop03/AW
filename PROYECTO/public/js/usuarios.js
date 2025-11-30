@@ -1,16 +1,19 @@
+let modo = "editar";
+let idUsuarioSeleccionado = null;
 $(cargarUsuarios);
-
 $(function () {
-    let modo = "editar";
+    const resultToast = document.querySelector("#registerResultToast .toast");
+    const toast = new bootstrap.Toast(resultToast);
     $("#infoUsuarios").on("click", ".editButton", function (event) {
-        const id = $(this).data("id_usuario");
-        if (id) {
+        idUsuarioSeleccionado = $(this).data("id_usuario");
+        if (idUsuarioSeleccionado) {
             modo = "editar";
             $("#grupoPassword").hide();
             $("#modalAccion").modal("show");
-            editarUsuario(id);
+            cargarModal(idUsuarioSeleccionado);
         }
     });
+
 
     $("#botonModal").on("click", function (event) {
 
@@ -23,22 +26,7 @@ $(function () {
         };
 
         if (modo === "editar") {
-
-            $.ajax({
-                url: "/api/usuarios/" + id,
-                method: "PUT",
-                contentType: "application/json",
-                data: JSON.stringify(datos),
-                success: function (data, textStatus, jqXHR) {
-                    $("#modalAccion").modal("hide");
-                    alert("Usuario creado");
-                    cargarTablaUsuarios();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Error al crear: " + errorThrown);
-                }
-            })
-
+            editarUsuario(idUsuarioSeleccionado, datos, toast);
         }
 
     });
@@ -82,7 +70,7 @@ function cargarUsuarios() {
     });
 }
 
-function editarUsuario(id) {
+function cargarModal(id) {
     $.ajax({
         url: "/api/usuarios/" + id,
         method: "GET",
@@ -102,6 +90,23 @@ function editarUsuario(id) {
             alert("Se ha producido un error: " + errorThrown);
         }
     });
+}
 
-
+function editarUsuario(id, datos, toast) {
+    $.ajax({
+        url: "/api/usuarios/" + idUsuarioSeleccionado,
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            $("#mensajeToast").text("Usuario actualizado correctamente");
+            toast.show();
+            cargarUsuarios();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            toast.show();
+            $("#mensajeToast").text("Error en el servidor");
+        }
+    })
 }

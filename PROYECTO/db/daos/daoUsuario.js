@@ -33,7 +33,6 @@ class DAOUsuario {
                 return callback(err);
             }
             if (existeUsuario) {
-                console.log("ya existe el usuario DAO");
                 return callback(null, -1);
             }
             this.pool.getConnection(function (err, conexion) {
@@ -135,13 +134,12 @@ class DAOUsuario {
             if (err) {
                 return callback(err);
             }
-            const consulta = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, telefono = ?, id_concesionario = ? WHERE id = ? ";
+            const consulta = "UPDATE usuarios SET nombre = ?, correo = ?, rol = ?, telefono = ?, id_concesionario = ? WHERE id_usuario = ? ";
             conexion.query(consulta, [nombre, correo, rol, telefono, id_concesionario, id], function (err, result) {
                 conexion.release();
                 if (err) {
                     return callback(err);
                 }
-
                 return callback(null, result.affectedRows);
             });
         });
