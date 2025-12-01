@@ -51,7 +51,7 @@ $(function () {
             editarUsuario(idUsuarioSeleccionado, datos, toast);
         }
         else if (modo === "anadir") {
-
+            anadirUsuario(datos, toast);
         }
 
 
@@ -150,6 +150,25 @@ function editarUsuario(id, datos, toast) {
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
             $("#mensajeToast").text("Usuario actualizado correctamente");
+            toast.show();
+            cargarUsuarios();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            toast.show();
+            $("#mensajeToast").text("Error en el servidor");
+        }
+    })
+}
+
+function anadirUsuario(datos, toast) {
+    $.ajax({
+        url: "/api/usuarios/",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            $("#mensajeToast").text("Usuario añadido correctamente");
             toast.show();
             cargarUsuarios();
         },
