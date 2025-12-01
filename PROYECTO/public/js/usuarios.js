@@ -14,6 +14,12 @@ $(function () {
         }
     });
 
+    $("#anadirUsuarioBoton").on("click", function (event) {
+        modo = "anadir";
+        $("#grupoPassword").show();
+        $("#modalAccion").modal("show");
+
+    });
 
     $("#botonModal").on("click", function (event) {
 
@@ -25,23 +31,29 @@ $(function () {
             rol: $("#rol").prop("value")
         };
 
-        if (modo === "editar") {
-            let valido = comprobarNombre($("#nombre")[0]);
-            valido = comprobarValidacion($("#email")[0]) && valido;
+        let valido = comprobarNombre($("#nombre")[0]);
+        valido = comprobarValidacion($("#email")[0]) && valido;
+        valido = comprobarValidacion($("#concesionario")[0]) && valido;
+        valido = comprobarValidacion($("#rol")[0]) && valido;
+        valido = comprobarValidacion($("#tel")[0]) && valido;
+        if(modo === "anadir"){
+            datos.password = $("#password").prop("value");           
             valido = comprobarValidacion($("#password")[0]) && valido;
-            valido = comprobarValidacion($("#concesionario")[0]) && valido;
-            valido = comprobarValidacion($("#rol")[0]) && valido;
-            valido = comprobarValidacion($("#tel")[0]) && valido;
-            if (!valido) {
-                event.preventDefault();
-                event.stopPropagation();
-                $("#mensajeToast").text("Algunos campos son no son válidos.");
-                toast.show();
-            }
-            else {
-                editarUsuario(idUsuarioSeleccionado, datos, toast);
-            }
         }
+
+        if (!valido) {
+            event.preventDefault();
+            event.stopPropagation();
+            $("#mensajeToast").text("Algunos campos son no son válidos.");
+            toast.show();
+        }
+        else if (modo === "editar") {
+            editarUsuario(idUsuarioSeleccionado, datos, toast);
+        }
+        else if (modo === "anadir") {
+
+        }
+
 
     });
 
@@ -68,7 +80,6 @@ $(function () {
     $("#concesionario").on("input", function () {
         comprobarValidacion(this);
     });
-
 })
 
 function cargarUsuarios() {
