@@ -30,17 +30,33 @@ router.get("/:id", function (request, response) {
 router.put("/:id", function (request, response) {
     const id = request.params.id;
     const { nombre, correo, telefono, concesionario, rol } = request.body;
-    console.log("se están editando las cosas");
     daoUsuario.editarUsuario(id, nombre, correo, rol, telefono, concesionario, function (err, resultado) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
         if (resultado === 1) {
-            console.log("OLE");
-            response.json({ mensaje: "Usuario actualizado" });
+            return response.json({ mensaje: "Usuario actualizado correctamente" });
         }
         else {
             return response.status(404).json({ error: "Usuario no encontrado" });
+        }
+    });
+});
+
+router.post("/crear", function (request, response) {
+    const { nombre, correo, telefono, concesionario, rol, password } = request.body;
+    daoUsuario.crearUsuario(nombre, correo, password, rol, telefono, concesionario, function (err, resultado) {
+        if (err) {
+            return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+        }
+        if (resultado === -1) {
+            return response.status(500).json({ error: "Ya existe un usuario asociado a ese correo" });
+        }
+        else if (resultado > 0) {
+            return response.json({ mensaje: "Usuario creado correctamente" });
+        }
+        else {
+            return response.status(500).json({ error: "Error interno del servidor" });
         }
     });
 });
