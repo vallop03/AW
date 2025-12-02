@@ -63,11 +63,12 @@ router.put("/:id", function (request, response) {
 
 router.delete("/:id", function (request, response) {
     const id = request.params.id;
+    console.log(id);
     daoUsuario.eliminarUsuario(id, function(err, resultado){
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
-        else if (resultado.affectedRows > 0) {
+        else if (resultado > 0) {
             response.json({ mensaje: "Usuario eliminado correctamente" });
         } else {
             response.status(404).json({ error: "Usuario no encontrado" });

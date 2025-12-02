@@ -79,7 +79,7 @@ $(function () {
             anadirUsuario(datos, toast);
         }
         else if (modo === "Borrando") {
-            borrarUsuario(idUsuarioSeleccionado, datos, toast);
+            borrarUsuario(idUsuarioSeleccionado, toast);
         }
     });
 
@@ -140,8 +140,8 @@ function cargarUsuarios() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            toast.show();
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
         }
     });
 }
@@ -169,8 +169,8 @@ function cargarModal(id, accion) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            toast.show();
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
         }
     });
 }
@@ -188,8 +188,8 @@ function editarUsuario(id, datos, toast) {
             cargarUsuarios();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            toast.show();
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
         }
     })
 }
@@ -207,8 +207,8 @@ function anadirUsuario(datos, toast) {
             cargarUsuarios();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            toast.show();
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
         }
     })
 }
@@ -218,7 +218,6 @@ function borrarUsuario(id, toast) {
         url: "/api/usuarios/" + id,
         method: "DELETE",
         contentType: "application/json",
-        data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
             $("#mensajeToast").text(data.mensaje);
@@ -226,8 +225,8 @@ function borrarUsuario(id, toast) {
             cargarUsuarios();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            toast.show();
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
         }
     })
 }

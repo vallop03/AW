@@ -145,7 +145,7 @@ class DAOUsuario {
         });
     }
 
-    eliminarUsuario(id) {
+    eliminarUsuario(id, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
                 return callback(err);
