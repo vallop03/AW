@@ -5,6 +5,8 @@ $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
 
+    ////////////////PARTE DE LA PRIMERA VISTA (LA TABLA)/////////////
+
     //Cuando se le da al botón de editar (el del lápiz)
     $("#infoUsuarios").on("click", ".editButton", function (event) {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
@@ -17,18 +19,33 @@ $(function () {
         }
     });
 
+    //Cuando se le da al botón de eliminar (la papelera)
+    $("#infoUsuarios").on("click", ".deleteButton", function (event) {
+        $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
+        idUsuarioSeleccionado = $(this).data("id_usuario");
+        if (idUsuarioSeleccionado) {
+            modo = "Borrando";
+            $("#grupoPassword").hide();
+            cargarModal(idUsuarioSeleccionado, modo);
+            $("#modalAccion").modal("show");
+        }
+    });
+
     //Cuando se le da a crear usuario
     $("#anadirUsuarioBoton").on("click", function (event) {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando usuario");
+        $("#botonModal").text("Añadir");
         $("#grupoPassword").show();
         $("#password").prop("required", true);
         $("#registroUsuarioForm")[0].reset(); //para limpiar el form
         $("#modalAccion").modal("show");
     });
 
-    //Cuando se le da a enviar tras crear/ modificar o eliminar
+    /////////////PARTE DEL MODAL/////////////
+
+    //Cuando se le da a enviar tras crear/ modificar o eliminar del modal
     $("#botonModal").on("click", function (event) {
 
         let datos = {
@@ -60,6 +77,9 @@ $(function () {
         }
         else if (modo === "anadir") {
             anadirUsuario(datos, toast);
+        }
+        else if (modo === "Borrando") {
+            borrarUsuario(idUsuarioSeleccionado, datos, toast);
         }
     });
 
@@ -120,7 +140,8 @@ function cargarUsuarios() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Se ha producido un error: " + errorThrown);
+            toast.show();
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
         }
     });
 }
@@ -132,23 +153,31 @@ function cargarModal(id, accion) {
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
             usuario = data.usuario;
+            disable = accion === "Borrando";
             $("#tituloModal").text(accion + " a " + usuario.nombre);
-            $("#nombre").prop("value", usuario.nombre);
-            $("#email").prop("value", usuario.correo);
-            $("#tel").prop("value", usuario.telefono);
-            $("#concesionario").prop("value", usuario.id_concesionario);
-            $("#rol").prop("value", usuario.rol);
-            $("#password").prop("required", false);
+            $("#nombre").prop("value", usuario.nombre).prop("disabled", disable);
+            $("#email").prop("value", usuario.correo).prop("disabled", disable);
+            $("#tel").prop("value", usuario.telefono).prop("disabled", disable);
+            $("#concesionario").prop("value", usuario.id_concesionario).prop("disabled", disable);
+            $("#rol").prop("value", usuario.rol).prop("disabled", disable);
+            $("#password").prop("required", disable);
+            if (disable) {
+                $("#botonModal").text("Borrar");
+            }
+            else {
+                $("#botonModal").text("Editar");
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert("Se ha producido un error: " + errorThrown);
+            toast.show();
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
         }
     });
 }
 
 function editarUsuario(id, datos, toast) {
     $.ajax({
-        url: "/api/usuarios/" + idUsuarioSeleccionado,
+        url: "/api/usuarios/" + id,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(datos),
@@ -160,7 +189,7 @@ function editarUsuario(id, datos, toast) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             toast.show();
-            $("#mensajeToast").text("errorThrown");
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
         }
     })
 }
@@ -179,7 +208,26 @@ function anadirUsuario(datos, toast) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             toast.show();
-            $("#mensajeToast").text(jqXHR.responseJSON?.error);
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+        }
+    })
+}
+
+function borrarUsuario(id, toast) {
+    $.ajax({
+        url: "/api/usuarios/" + id,
+        method: "DELETE",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            $("#mensajeToast").text(data.mensaje);
+            toast.show();
+            cargarUsuarios();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            toast.show();
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
         }
     })
 }

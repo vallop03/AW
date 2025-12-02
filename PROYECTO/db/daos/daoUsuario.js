@@ -145,6 +145,22 @@ class DAOUsuario {
         });
     }
 
+    eliminarUsuario(id) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            const consulta = "DELETE FROM usuarios WHERE id_usuario = ?";
+            conexion.query(consulta, [id], function (err, result) {
+                conexion.release();
+                if (err) {
+                    return callback(err);
+                }
+                return callback(null, result.affectedRows);
+            });
+        });
+    }
+
 }
 
 module.exports = DAOUsuario;
