@@ -61,7 +61,7 @@ router.get("/usuarios", function (request, response) {
 
 router.get("/login", function (request, response) {
     if (request.session.user) {
-        return res.redirect("/");
+        return response.redirect("/");
     }
     response.render("login", { error: null });
 });

@@ -32,7 +32,7 @@ class DAOConcesionario {
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
-                    callback(err);
+                    return callback(err);
                 }
                 return callback(null, rows);
             });

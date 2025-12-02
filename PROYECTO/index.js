@@ -50,6 +50,9 @@ app.use('/', mainRoutes);
 const apiUsuarios = require("./routes/api/usuarios");
 app.use("/api/usuarios", apiUsuarios);
 
+const apiConcesionarios = require("./routes/api/concesionarios");
+app.use("/api/concesionarios", apiConcesionarios);
+
 
 // Server
 app.listen(PORT, () => {

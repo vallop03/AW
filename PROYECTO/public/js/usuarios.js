@@ -23,11 +23,15 @@ $(function () {
     $("#infoUsuarios").on("click", ".deleteButton", function (event) {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         idUsuarioSeleccionado = $(this).data("id_usuario");
-        if (idUsuarioSeleccionado) {
+        if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
             modo = "Borrando";
             $("#grupoPassword").hide();
             cargarModal(idUsuarioSeleccionado, modo);
             $("#modalAccion").modal("show");
+        }
+        else if(usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario){
+            $("#mensajeToast").text("No te puedes autoeliminar.");
+            toast.show();
         }
     });
 
@@ -36,6 +40,7 @@ $(function () {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando usuario");
+        cargarConcesionarios();
         $("#botonModal").text("Añadir");
         $("#grupoPassword").show();
         $("#password").prop("required", true);
@@ -154,6 +159,7 @@ function cargarModal(id, accion) {
         success: function (data, textStatus, jqXHR) {
             usuario = data.usuario;
             disable = accion === "Borrando";
+            cargarConcesionarios();
             $("#tituloModal").text(accion + " a " + usuario.nombre);
             $("#nombre").prop("value", usuario.nombre).prop("disabled", disable);
             $("#email").prop("value", usuario.correo).prop("disabled", disable);
@@ -205,6 +211,27 @@ function anadirUsuario(datos, toast) {
             $("#mensajeToast").text(data.mensaje);
             toast.show();
             cargarUsuarios();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
+function cargarConcesionarios() {
+    $.ajax({
+        url: "/api/concesionarios/",
+        method: "GET",
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            $("#concesionario").empty();
+            concesionarios = data.concesionarios;
+            concesionarios.forEach(concesionario => {
+                $("#concesionario").append( `
+                    <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
+                );
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
