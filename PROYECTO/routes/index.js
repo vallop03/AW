@@ -20,6 +20,10 @@ router.get("/registroUsuario", function (request, response) {
     response.render("registroUsuario", {mensaje: null});
 });
 
+router.get("/registroConcesionarios", function (request, response) {
+    response.render("registroConcesionarios", {mensaje: null});
+});
+
 router.post("/registroUsuario", function (request, response) {
     if(request.body.nombre && request.body.email && request.body.password && request.body.rol && request.body.concesionario){
         daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {

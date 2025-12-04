@@ -32,14 +32,9 @@
                         accesskey="a">Contacto</a>
                 </li>
                 <% if(usuario && usuario.rol === "admin"){ %>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Usuarios
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRegisterLink">
-                        <li><a id="regUsuario" class="dropdown-item" href="/registroUsuario">Registrar</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/usuarios" aria-label="Ir a Usuarios" title="alt + U"
+                        accesskey="u">Usuarios</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
@@ -50,14 +45,9 @@
                         <li><a id="regVehiculo" class="dropdown-item" href="/registroVehiculo">Registrar</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownRegisterLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Concesionarios
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRegisterLink">
-                        <li><a id="regConcesionario" class="dropdown-item" href="/registroConcesionario">Registrar</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registroConcesionarios" aria-label="Ir a Concecionarios" title="alt + C"
+                        accesskey="c">Concesionarios</a>
                 </li>
                 <% } %>
             </ul>
