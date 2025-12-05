@@ -135,7 +135,7 @@ function cargarVehiculos(id, toast) {
                             </div>
                         </div>
                     </div>
-                    `);
+                `);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
