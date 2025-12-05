@@ -59,5 +59,5 @@ app.use("/api/vehiculos", apiVehiculos);
 
 // Server
 app.listen(PORT, () => {
-    console.log(`EcoMarket EXAM app running at http://localhost:${PORT}`);
+    console.log(`CarriCoche app running at http://localhost:${PORT}`);
 });

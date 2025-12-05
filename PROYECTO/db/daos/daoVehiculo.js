@@ -9,26 +9,28 @@ class DAOVehiculo {
             if (err) {
                 return callback(err);
             }
-            const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE activo = true";
+            const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE v.activo = true";
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
                     return callback(err);
                 }
-                
                 return callback(null, rows);
             });
         });
     }
 
     crearVehiculo(matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, callback) {
-        matricula = matricula.toLowerCase();
+        matricula = matricula.toUpperCase();
+            console.log("llega al DAO");
+
         let resultado = {
             estado: 0,
             id_inactivo: 0
         };
         this.verificarPorMatricula(matricula, (err, existeVehiculo) => {
             if (err) {
+                
                 return callback(err);
             }
             if (existeVehiculo) {
@@ -45,10 +47,11 @@ class DAOVehiculo {
                 if (err) {
                     return callback(err);
                 }
-                const insertar = "INSERT INTO vehiculos (matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario) VALUES (?, ?, ?, ?, ?, ?)";
-                conexion.query(insertar, [nombre, email, hash, rol, telefono, id_concesionario], function (err, result) {
+                const insertar = "INSERT INTO vehiculos (matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                conexion.query(insertar, [matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario], function (err, result) {
                     conexion.release();
                     if (err) {
+                        console.log("EN DAO: " + err);
                         return callback(err);
                     }
                     else {

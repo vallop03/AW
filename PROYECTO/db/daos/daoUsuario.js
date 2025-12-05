@@ -100,7 +100,7 @@ class DAOUsuario {
             }
             else {
                 email = email.toLowerCase();
-                const consulta = "SELECT id_usuario, nombre, rol, contrasena FROM usuarios WHERE correo = ? AND activo = true";
+                const consulta = "SELECT u.*, c.nombre AS concesionario FROM usuarios u JOIN concesionarios c ON c.id_concesionario = u.id_concesionario WHERE u.correo = ? AND u.activo = true";
                 conexion.query(consulta, [email], function (err, rows) {
                     conexion.release();
                     if (err) {
