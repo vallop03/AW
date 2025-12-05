@@ -250,6 +250,7 @@ function cargarConcesionarios(toast) {
         success: function (data, textStatus, jqXHR) {
             $("#concesionario").empty();
             concesionarios = data.concesionarios;
+            $("#concesionario").append(`<option selected disabled value="">Selecciona un concesionario</option>`);
             concesionarios.forEach(concesionario => {
                 $("#concesionario").append(`
                     <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`

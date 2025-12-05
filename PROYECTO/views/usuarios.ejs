@@ -5,7 +5,7 @@
     <!-- Ejercicio 1 - Cabecera -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de un vehículo eléctrico</title>
+    <title>Visualización de usuarios</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="css/bootstrap-icons-1.13.1/bootstrap-icons.css">
     <script src="js/bootstrap.bundle.min.js"></script>
@@ -74,58 +74,60 @@
                         </div>
                         <div id="cuerpoModal" class="modal-body">
                             <form id="registroUsuarioForm" novalidate>
-                                <div class="mb-3">
-                                    <label for="nombre" class="form-label">Nombre*</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un nombre válido con más de 2 carácteres.
-                                    </span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Correo electrónico*</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un correo electrónico válido.
-                                    </span>
-                                </div>
-                                <div id="grupoPassword" class="mb-3">
-                                    <label for="password" class="form-label">Contraseña*</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un
-                                        carácter especial.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="tel" class="form-label">Teléfono</label>
-                                    <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}">
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un número de teléfono válido de 9 dígitos.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="concesionario" class="form-label">Concesionario*</label>
-                                    <select class="form-select" id="concesionario" name="concesionario" required>
-                                        <option selected disabled value="">Selecciona un concesionario</option>
-                                    </select>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, selecciona un concesionario.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="rol" class="form-label">Rol*</label>
-                                    <select class="form-select" id="rol" name="rol" required>
-                                        <option selected disabled value="">Selecciona un rol</option>
-                                        <option value="empleado">Empleado</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, selecciona un rol.
-                                    </span>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="nombre" class="form-label">Nombre*</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce un nombre válido con más de 2 carácteres.
+                                        </span>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">Correo electrónico*</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce un correo electrónico válido.
+                                        </span>
+                                    </div>
+                                    <div id="grupoPassword" class="col-12">
+                                        <label for="password" class="form-label">Contraseña*</label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un
+                                            carácter especial.
+                                        </span>
+                                    </div>
+    
+                                    <div class="col-12">
+                                        <label for="tel" class="form-label">Teléfono</label>
+                                        <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}">
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce un número de teléfono válido de 9 dígitos.
+                                        </span>
+                                    </div>
+    
+                                    <div class="col-12">
+                                        <label for="concesionario" class="form-label">Concesionario*</label>
+                                        <select class="form-select" id="concesionario" name="concesionario" required>
+                                            <option selected disabled value="">Selecciona un concesionario</option>
+                                        </select>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, selecciona un concesionario.
+                                        </span>
+                                    </div>
+    
+                                    <div class="col-12">
+                                        <label for="rol" class="form-label">Rol*</label>
+                                        <select class="form-select" id="rol" name="rol" required>
+                                            <option selected disabled value="">Selecciona un rol</option>
+                                            <option value="empleado">Empleado</option>
+                                            <option value="admin">Administrador</option>
+                                        </select>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, selecciona un rol.
+                                        </span>
+                                    </div>
                                 </div>
                             </form>
                         </div>

@@ -16,7 +16,7 @@ router.get("/reservas", function (request, response) {
     response.render("reservas");
 });
 
-router.get("/registroUsuario", function (request, response) {
+/*router.get("/registroUsuario", function (request, response) {
     response.render("registroUsuario", {mensaje: null});
 });
 
@@ -42,21 +42,15 @@ router.post("/registroUsuario", function (request, response) {
     else{
         response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
     }
+});*/
+
+router.get("/vehiculos", function(request, response){
+
 });
 
-router.get("/verusuarios", requireLogin, function (request, response) {
-    response.render("verusuarios");
-});
 
 router.get("/usuarios", isAdmin, function (request, response) {
-    daoUsuario.consultarTodosUsuarios(function(err, usuarios){
-        if(err){
-            response.status(500);
-            return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
-        }
-        
-        response.render("usuarios", {usuarios: usuarios});
-    });
+    response.render("usuarios");
 });
 
 router.get("/login", function (request, response) {

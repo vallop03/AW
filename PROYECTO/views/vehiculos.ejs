@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Ejercicio 1 - Cabecera -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de vehículos</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="css/bootstrap-icons-1.13.1/bootstrap-icons.css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <%- include("header") %>
+
+        <main>
+            <div aria-live="polite" aria-atomic="true"
+                class="position-fixed top-50 start-50 translate-middle toast-overlay" data-bs-autohide="false">
+                <div class="toast-container p-3" id="registerResultToast">
+                    <div class="toast">
+                        <div class="toast-header">
+                            <strong class="me-auto">Aviso</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div id="mensajeToast" class="toast-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="m-0">Vehículos</h3>
+                    <div>
+                        <button class="btn btn-primary" id="anadirUsuarioBoton">
+                            <i class="bi bi-plus"></i> Añadir vehículo
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover text-center">
+                        <caption>Usuarios</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Concesionario</th>
+                                <th scope="col">Ciudad</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Borrar</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="infoUsuarios">
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tituloModal"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="cuerpoModal" class="modal-body">
+                            <form id="registroUsuarioForm" novalidate>
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre*</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, introduce un nombre válido con más de 2 carácteres.
+                                    </span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo electrónico*</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, introduce un correo electrónico válido.
+                                    </span>
+                                </div>
+                                <div id="grupoPassword" class="mb-3">
+                                    <label for="password" class="form-label">Contraseña*</label>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un
+                                        carácter especial.
+                                    </span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="tel" class="form-label">Teléfono</label>
+                                    <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}">
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, introduce un número de teléfono válido de 9 dígitos.
+                                    </span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="concesionario" class="form-label">Concesionario*</label>
+                                    <select class="form-select" id="concesionario" name="concesionario" required>
+                                        <option selected disabled value="">Selecciona un concesionario</option>
+                                    </select>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, selecciona un concesionario.
+                                    </span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="rol" class="form-label">Rol*</label>
+                                    <select class="form-select" id="rol" name="rol" required>
+                                        <option selected disabled value="">Selecciona un rol</option>
+                                        <option value="empleado">Empleado</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, selecciona un rol.
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button id="botonModal" type="button" class="btn btn-primary"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+        <script src="js/paginaPrincipal.js"></script>
+        <script>
+            const usuarioActual = JSON.parse('<%- JSON.stringify(usuario) %>');
+        </script>
+        <script src="js/usuarios.js"></script>
+
+</body>
+
+</html>
