@@ -1,4 +1,5 @@
 class DAOVehiculo {
+
     constructor(pool) {
         this.pool = pool;
     }
@@ -8,13 +9,13 @@ class DAOVehiculo {
             if (err) {
                 return callback(err);
             }
-            const consulta = "SELECT * FROM vehiculos WHERE activo = true";
+            const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE activo = true";
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
                     return callback(err);
                 }
-
+                
                 return callback(null, rows);
             });
         });
@@ -80,3 +81,5 @@ class DAOVehiculo {
         });
     }
 }
+
+module.exports = DAOVehiculo;

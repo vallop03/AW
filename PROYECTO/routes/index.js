@@ -17,7 +17,7 @@ router.get("/reservas", function (request, response) {
 });
 
 router.get("/vehiculos", function(request, response){
-
+    response.render("vehiculos");
 });
 
 router.get("/usuarios", isAdmin, function (request, response) {

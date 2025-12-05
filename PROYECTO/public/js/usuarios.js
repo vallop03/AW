@@ -24,10 +24,10 @@ $(function () {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         idUsuarioSeleccionado = $(this).data("id_usuario");
         if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
-        modo = "Borrando";
-        $("#grupoPassword").hide();
-        cargarModal(idUsuarioSeleccionado, modo);
-        $("#modalAccion").modal("show");
+            modo = "Borrando";
+            $("#grupoPassword").hide();
+            cargarModal(idUsuarioSeleccionado, modo);
+            $("#modalAccion").modal("show");
         }
         if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
             $("#mensajeToast").text("No te puedes autoeliminar.");
@@ -41,9 +41,9 @@ $(function () {
         modo = "anadir";
         $("#tituloModal").text("Creando usuario");
         cargarConcesionarios(toast);
-        activarModal(false);
+        activarModal(false); //hace que los campos del form se activen para escribir
         $("#botonModal").text("Añadir");
-        $("#grupoPassword").show();
+        $("#grupoPassword").show(); //hace que el campo de contraseña sea visible para escribir
         $("#password").prop("required", true);
         $("#registroUsuarioForm")[0].reset(); //para limpiar el form
         $("#modalAccion").modal("show");
@@ -51,7 +51,8 @@ $(function () {
 
     /////////////PARTE DEL MODAL/////////////
 
-    //Cuando se le da a enviar tras crear/ modificar o eliminar del modal
+    //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
+    //de todos los campos y despues llama a su respectiva funcion de crear/modificar o eliminar
     $("#botonModal").on("click", function (event) {
 
         let datos = {
@@ -75,7 +76,7 @@ $(function () {
         if (!valido) {
             event.preventDefault();
             event.stopPropagation();
-            $("#mensajeToast").text("Algunos campos son no son válidos.");
+            $("#mensajeToast").text("Algunos campos no son válidos.");
             toast.show();
         }
         else if (modo === "Editando") {
@@ -89,6 +90,7 @@ $(function () {
         }
     });
 
+    //comprobacion en vivo de los campos
     $("#nombre").on("input", function () {
         comprobarNombre(this);
     });

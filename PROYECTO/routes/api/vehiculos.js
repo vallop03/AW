@@ -20,7 +20,7 @@ router.get("/", function (request, response) {
 router.post("/crear", multerFactory.single('imagen'), function (request, response) {
     const { matricula, marca, modelo, ano, plazas, autonomia, color, concesionario } = request.body;
     const file = request.file;
-    const ruta = "/uploads/" + file.filename;
+    const ruta = "/img/uploads/" + file.filename;
 
     daoVehiculo.crearVehiculo(matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, function(err, resultado){
         if (err) {
@@ -37,3 +37,5 @@ router.post("/crear", multerFactory.single('imagen'), function (request, respons
         }
     });
 });
+
+module.exports = router;
