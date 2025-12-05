@@ -16,38 +16,9 @@ router.get("/reservas", function (request, response) {
     response.render("reservas");
 });
 
-/*router.get("/registroUsuario", function (request, response) {
-    response.render("registroUsuario", {mensaje: null});
-});
-
-router.post("/registroUsuario", function (request, response) {
-    if(request.body.nombre && request.body.email && request.body.password && request.body.rol && request.body.concesionario){
-        daoUsuario.crearUsuario(request.body.nombre, request.body.email, request.body.password, request.body.rol, request.body.telefono, request.body.concesionario, function (error, id) {
-            if (error) {
-                response.status(500);
-                return response.render("error", { numError: 500, mensaje: "Error interno de acceso a la base de datos" });
-            }
-            else if (id > 0) {
-                response.render("registroUsuario", {mensaje: "El usuario se ha registrado correctamente"});
-            }
-            else if (id === -1){
-                console.log("ya existe el usuario");
-                response.render("registroUsuario", {mensaje: "Ya existe un usuario asociado a ese correo"});
-            }
-            else{
-                response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
-            }
-        });
-    }
-    else{
-        response.render("registroUsuario", {mensaje: "No ha sido posible registrar al usuario"});
-    }
-});*/
-
 router.get("/vehiculos", function(request, response){
 
 });
-
 
 router.get("/usuarios", isAdmin, function (request, response) {
     response.render("usuarios");

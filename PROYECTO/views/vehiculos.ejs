@@ -40,27 +40,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover text-center">
-                        <caption>Usuarios</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Correo</th>
-                                <th scope="col">Rol</th>
-                                <th scope="col">Teléfono</th>
-                                <th scope="col">Concesionario</th>
-                                <th scope="col">Ciudad</th>
-                                <th scope="col">Editar</th>
-                                <th scope="col">Borrar</th>
+                <div id="contenidoVehiculos">
 
-                            </tr>
-                        </thead>
-                        <tbody id="infoUsuarios">
-                        </tbody>
-
-                    </table>
                 </div>
             </div>
 
@@ -72,60 +53,107 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="cuerpoModal" class="modal-body">
-                            <form id="registroUsuarioForm" novalidate>
-                                <div class="mb-3">
-                                    <label for="nombre" class="form-label">Nombre*</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un nombre válido con más de 2 carácteres.
-                                    </span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Correo electrónico*</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un correo electrónico válido.
-                                    </span>
-                                </div>
-                                <div id="grupoPassword" class="mb-3">
-                                    <label for="password" class="form-label">Contraseña*</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un
-                                        carácter especial.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="tel" class="form-label">Teléfono</label>
-                                    <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}">
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce un número de teléfono válido de 9 dígitos.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="concesionario" class="form-label">Concesionario*</label>
-                                    <select class="form-select" id="concesionario" name="concesionario" required>
-                                        <option selected disabled value="">Selecciona un concesionario</option>
-                                    </select>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, selecciona un concesionario.
-                                    </span>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="rol" class="form-label">Rol*</label>
-                                    <select class="form-select" id="rol" name="rol" required>
-                                        <option selected disabled value="">Selecciona un rol</option>
-                                        <option value="empleado">Empleado</option>
-                                        <option value="admin">Administrador</option>
-                                    </select>
-                                    <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, selecciona un rol.
-                                    </span>
-                                </div>
+                            <form id="registroVehiculoForm" novalidate>
+                                <fieldset>
+                                    <legend>Identificación del vehículo</legend>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="matricula" class="form-label">Matrícula*</label>
+                                            <input type="text" class="form-control" id="matricula" name="matricula"
+                                                pattern="^[0-9]{4}[B-DF-HJ-NP-TV-Z]{3}$" placeholder="0000AAA" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una matrícula de 4 números y 3 letras.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="marca" class="form-label">Marca*</label>
+                                            <input type="text" class="form-control" id="marca" name="marca" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una marca.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="modelo" class="form-label">Modelo*</label>
+                                            <input type="text" class="form-control" id="modelo" name="modelo" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un modelo.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="ano" class="form-label">Año de matriculación*</label>
+                                            <input type="text" class="form-control" id="ano" name="ano" maxlength="4"
+                                                pattern="\d{4}" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un año de matriculación.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="concesionario" class="form-label">Concesionario*</label>
+                                            <select class="form-select" id="concesionario" name="concesionario"
+                                                required>
+                                                <option selected disabled value="">Selecciona un concesionario</option>
+                                            </select>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, selecciona un concesionario.
+                                            </span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Características técnicas</legend>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="plazas" class="form-label">Plazas*</label>
+                                            <input type="number" class="form-control" id="plazas" name="plazas" min="2"
+                                                max="9" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un número de plazas entre 2 y 9.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="autonomia" class="form-label">Autonomía*</label>
+                                            <input type="number" class="form-control" id="autonomia" name="autonomia"
+                                                min="50" max="600" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una autonomía entre 50 y 600 km.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="autonomia" class="form-label">Autonomía*</label>
+                                            <input type="number" class="form-control" id="autonomia" name="autonomia"
+                                                min="50" max="600" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una autonomía entre 50 y 600 km.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="color" class="form-label">Color*</label>
+                                            <select class="form-select" id="color" name="color" required>
+                                                <option selected disabled value="">Selecciona un color</option>
+                                                <option value="Blanco">Blanco</option>
+                                                <option value="Negro">Negro</option>
+                                                <option value="Gris">Gris</option>
+                                                <option value="Rojo">Rojo</option>
+                                                <option value="Azul">Azul</option>
+                                                <option value="Verde">Verde</option>
+                                                <option value="Amarillo">Amarillo</option>
+                                                <option value="Marrón">Marrón</option>
+                                                <option value="Naranja">Naranja</option>
+                                                <option value="Violeta">Violeta</option>
+                                            </select>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, selecciona un color.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="imagen" class="form-label">Imagen*</label>
+                                        <input type="file" class="form-control" id="imagen" name="imagen" accept=".jpg,.jpeg,.png" required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce una imagen válida (JPG, PNG, etc.).
+                                        </span>
+                                    </div>
+                                </fieldset>
                             </form>
                         </div>
                         <div class="modal-footer">

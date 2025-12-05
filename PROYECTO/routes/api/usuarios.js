@@ -21,7 +21,6 @@ router.post("/crear", function (request, response) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
         if (resultado.estado === -1) {
-            console.log("ID INACTIVO EN CREAR: " + resultado.id_inactivo);
             return response.json({ mensaje: "Ya existe un usuario asociado a ese correo", id: resultado.id_inactivo });
         }
         else if (resultado.estado > 0) {
@@ -50,7 +49,6 @@ router.put("/editar/:id", function (request, response) {
     const id = request.params.id;
     const { nombre, correo, telefono, concesionario, rol } = request.body;
     daoUsuario.editarUsuario(id, nombre, correo, rol, telefono, concesionario, function (err, resultado) {
-        console.log("Resultado en api en editar " + resultado);
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }

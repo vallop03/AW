@@ -36,12 +36,9 @@ class DAOUsuario {
                 conexion.query(consulta, [estado, id], function (err, result) {
                     conexion.release();
                     if (err) {
-                        console.log(err);
                         return callback(err);
                     }
                     else {
-                        console.log("cambiar estado resultado: " + result);
-                        console.log("cambiar estado lineas afectadas: " + result.affectedRows);
                         return callback(null, result);
                     }
                 });
@@ -52,8 +49,8 @@ class DAOUsuario {
     crearUsuario(nombre, email, password, rol, telefono, id_concesionario, callback) {
         email = email.toLowerCase();
         let resultado = {
-            estado: 0,
-            id_inactivo: 0
+            estado: 0, //para indicar que hay un error
+            id_inactivo: 0 //para saber si hay que reactivar un usuario
         };
         this.verificarPorCorreo(email, (err, existeUsuario) => {
             if (err) {
@@ -61,8 +58,6 @@ class DAOUsuario {
             }
             if (existeUsuario) {
                 resultado.estado = -1;
-                console.log("Usuario: " + existeUsuario);
-                console.log("Activo : " + existeUsuario.activo);
 
                 if (existeUsuario.activo) {
                     return callback(null, resultado);
@@ -199,8 +194,6 @@ class DAOUsuario {
             if (err) {
                 return callback(err);
             }
-            console.log(result);
-            console.log(result.affectedRows);
             return callback(null, result.affectedRows);
         })
     }
