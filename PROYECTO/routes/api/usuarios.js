@@ -20,10 +20,11 @@ router.post("/crear", function (request, response) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
-        if (resultado === -1) {
-            return response.status(500).json({ error: "Ya existe un usuario asociado a ese correo" });
+        if (resultado.estado === -1) {
+            console.log("ID INACTIVO EN CREAR: " + resultado.id_inactivo);
+            return response.json({ mensaje: "Ya existe un usuario asociado a ese correo", id: resultado.id_inactivo });
         }
-        else if (resultado > 0) {
+        else if (resultado.estado > 0) {
             return response.json({ mensaje: "Usuario creado correctamente" });
         }
         else {
@@ -45,10 +46,11 @@ router.get("/:id", function (request, response) {
     });
 });
 
-router.put("/:id", function (request, response) {
+router.put("/editar/:id", function (request, response) {
     const id = request.params.id;
     const { nombre, correo, telefono, concesionario, rol } = request.body;
     daoUsuario.editarUsuario(id, nombre, correo, rol, telefono, concesionario, function (err, resultado) {
+        console.log("Resultado en api en editar " + resultado);
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
@@ -61,9 +63,8 @@ router.put("/:id", function (request, response) {
     });
 });
 
-router.delete("/:id", function (request, response) {
+router.put("/borrar/:id", function (request, response) {
     const id = request.params.id;
-    console.log(id);
     daoUsuario.eliminarUsuario(id, function(err, resultado){
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
@@ -75,7 +76,5 @@ router.delete("/:id", function (request, response) {
         }
     });
 });
-
-
 
 module.exports = router;

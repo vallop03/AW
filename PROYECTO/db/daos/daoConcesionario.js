@@ -28,7 +28,7 @@ class DAOConcesionario {
             if (err) {
                 return callback(err);
             }
-            const consulta = "SELECT * FROM concesionarios";
+            const consulta = "SELECT * FROM concesionarios WHERE activo = true";
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
@@ -44,7 +44,7 @@ class DAOConcesionario {
             if (err) {
                 return callback(err);
             }
-            const consulta = "SELECT * FROM concesionarios WHERE id_concesionario = ?";
+            const consulta = "SELECT * FROM concesionarios WHERE id_concesionario = ? AND activo = true";
             conexion.query(consulta, [id], function (err, rows) {
                 conexion.release();
                 if (err) {

@@ -48,7 +48,7 @@ router.get("/verusuarios", requireLogin, function (request, response) {
     response.render("verusuarios");
 });
 
-router.get("/usuarios", function (request, response) {
+router.get("/usuarios", isAdmin, function (request, response) {
     daoUsuario.consultarTodosUsuarios(function(err, usuarios){
         if(err){
             response.status(500);

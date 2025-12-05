@@ -1,9 +1,9 @@
 let modo = "Editando";
 let idUsuarioSeleccionado = null;
-$(cargarUsuarios);
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
+    cargarUsuarios(toast);
 
     ////////////////PARTE DE LA PRIMERA VISTA (LA TABLA)/////////////
 
@@ -24,12 +24,12 @@ $(function () {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         idUsuarioSeleccionado = $(this).data("id_usuario");
         if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
-            modo = "Borrando";
-            $("#grupoPassword").hide();
-            cargarModal(idUsuarioSeleccionado, modo);
-            $("#modalAccion").modal("show");
+        modo = "Borrando";
+        $("#grupoPassword").hide();
+        cargarModal(idUsuarioSeleccionado, modo);
+        $("#modalAccion").modal("show");
         }
-        else if(usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario){
+        if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
             $("#mensajeToast").text("No te puedes autoeliminar.");
             toast.show();
         }
@@ -40,7 +40,8 @@ $(function () {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando usuario");
-        cargarConcesionarios();
+        cargarConcesionarios(toast);
+        activarModal(false);
         $("#botonModal").text("Añadir");
         $("#grupoPassword").show();
         $("#password").prop("required", true);
@@ -78,7 +79,7 @@ $(function () {
             toast.show();
         }
         else if (modo === "Editando") {
-            editarUsuario(idUsuarioSeleccionado, datos, toast);
+            editarUsuario(idUsuarioSeleccionado, datos, toast, false);
         }
         else if (modo === "anadir") {
             anadirUsuario(datos, toast);
@@ -113,7 +114,7 @@ $(function () {
     });
 })
 
-function cargarUsuarios() {
+function cargarUsuarios(toast) {
     $.ajax({
         url: "/api/usuarios/",
         method: "GET",
@@ -151,7 +152,17 @@ function cargarUsuarios() {
     });
 }
 
-function cargarModal(id, accion) {
+function activarModal(desactivado) {
+    $("#nombre").prop("disabled", desactivado);
+    $("#email").prop("disabled", desactivado);
+    $("#tel").prop("disabled", desactivado);
+    $("#concesionario").prop("disabled", desactivado);
+    $("#rol").prop("disabled", desactivado);
+    $("#password").prop("disabled", desactivado);
+    $("#password").prop("required", desactivado);
+}
+
+function cargarModal(id, accion, toast) {
     $.ajax({
         url: "/api/usuarios/" + id,
         method: "GET",
@@ -159,7 +170,7 @@ function cargarModal(id, accion) {
         success: function (data, textStatus, jqXHR) {
             usuario = data.usuario;
             disable = accion === "Borrando";
-            cargarConcesionarios();
+            cargarConcesionarios(toast);
             $("#tituloModal").text(accion + " a " + usuario.nombre);
             $("#nombre").prop("value", usuario.nombre).prop("disabled", disable);
             $("#email").prop("value", usuario.correo).prop("disabled", disable);
@@ -181,17 +192,24 @@ function cargarModal(id, accion) {
     });
 }
 
-function editarUsuario(id, datos, toast) {
+function editarUsuario(id, datos, toast, reactivar) {
     $.ajax({
-        url: "/api/usuarios/" + id,
+        url: "/api/usuarios/editar/" + id,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
-            $("#mensajeToast").text(data.mensaje);
+            if (reactivar) {
+                console.log("ESTAMOS REACTIVANDO");
+                $("#mensajeToast").text("Usuario reactivado correctamente");
+            }
+            else {
+                console.log("NOOO ESTAMOS REACTIVANDO");
+                $("#mensajeToast").text(data.mensaje);
+            }
             toast.show();
-            cargarUsuarios();
+            cargarUsuarios(toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -208,18 +226,23 @@ function anadirUsuario(datos, toast) {
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
-            $("#mensajeToast").text(data.mensaje);
-            toast.show();
-            cargarUsuarios();
+            if (data.id && data.id > 0) {
+                editarUsuario(data.id, datos, toast);
+            } else {
+                $("#mensajeToast").text(data.mensaje);
+                toast.show();
+            }
+            cargarUsuarios(toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
             toast.show();
+
         }
     })
 }
 
-function cargarConcesionarios() {
+function cargarConcesionarios(toast) {
     $.ajax({
         url: "/api/concesionarios/",
         method: "GET",
@@ -228,7 +251,7 @@ function cargarConcesionarios() {
             $("#concesionario").empty();
             concesionarios = data.concesionarios;
             concesionarios.forEach(concesionario => {
-                $("#concesionario").append( `
+                $("#concesionario").append(`
                     <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
                 );
             });
@@ -242,18 +265,20 @@ function cargarConcesionarios() {
 
 function borrarUsuario(id, toast) {
     $.ajax({
-        url: "/api/usuarios/" + id,
-        method: "DELETE",
+        url: "/api/usuarios/borrar/" + id,
+        method: "PUT",
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
             $("#mensajeToast").text(data.mensaje);
             toast.show();
-            cargarUsuarios();
+            cargarUsuarios(toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
-            toast.show();
+            if (toast) {
+                $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+                toast.show();
+            }
         }
     })
 }
