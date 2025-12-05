@@ -4,7 +4,12 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    cargarVehiculos(toast);
+    if(usuarioActual && usuarioActual.rol === "admin"){
+        cargarVehiculos(null, toast);
+    }
+    else{
+        cargarVehiculos(usuarioActual.id_concesionario, toast);
+    }
 
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
@@ -55,7 +60,7 @@ $(function () {
             anadirVehiculo(toast);
         }
         else if (modo === "Borrando") {
-            borrarUsuario(idVehiculoSeleccionado, toast);
+            borrarVehiculo(idVehiculoSeleccionado, toast);
         }
     });
 
@@ -97,9 +102,13 @@ $(function () {
     });
 })
 
-function cargarVehiculos(toast) {
+function cargarVehiculos(id, toast) {
+    let urlAux = "/api/vehiculos/";
+    if(id){
+        urlAux = "/api/vehiculos/concesionario/" + id;
+    }
     $.ajax({
-        url: "/api/vehiculos/",
+        url: urlAux,
         method: "GET",
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {

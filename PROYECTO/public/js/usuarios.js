@@ -237,7 +237,6 @@ function anadirUsuario(datos, toast) {
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
             toast.show();
-
         }
     })
 }
