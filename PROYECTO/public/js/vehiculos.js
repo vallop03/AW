@@ -109,7 +109,7 @@ function cargarVehiculos(toast) {
                 $("#infoVehiculos").append(`
                     <div class="card mb-3">
                         <div class="row g-0">
-                            <div class="col-md-4">
+                            <div class="col-md-4 d-flex justify-content-center align-items-center">
                                 <img src="${vehiculo.imagen}" class="img-fluid rounded-start"
                                     alt="${vehiculo.marca} ${vehiculo.modelo}">
                             </div>
