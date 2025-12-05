@@ -4,12 +4,12 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    if(usuarioActual && usuarioActual.rol === "admin"){
-        cargarVehiculos(null, toast);
-    }
-    else{
-        cargarVehiculos(usuarioActual.id_concesionario, toast);
-    }
+    //if (usuarioActual && usuarioActual.rol === "admin") {
+    cargarVehiculos(null, toast);
+    //}
+    //else {
+    //    cargarVehiculos(usuarioActual.id_concesionario, toast);
+    //}
 
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
@@ -104,7 +104,7 @@ $(function () {
 
 function cargarVehiculos(id, toast) {
     let urlAux = "/api/vehiculos/";
-    if(id){
+    if (id) {
         urlAux = "/api/vehiculos/concesionario/" + id;
     }
     $.ajax({
@@ -115,6 +115,13 @@ function cargarVehiculos(id, toast) {
             $("#infoVehiculos").empty();
             vehiculos = data.vehiculos;
             vehiculos.forEach(vehiculo => {
+                let estadoADMIN = '';
+                if (usuarioActual && usuarioActual.rol === "admin") {
+                    const estadoColor = vehiculo.estado === 'disponible' ? 'green' : 'red';
+                    const estadoIcon = vehiculo.estado === 'disponible' ? 'bi-check-circle' : 'bi-x-circle';
+                    const estadoTexto = vehiculo.estado.charAt(0).toUpperCase() + vehiculo.estado.slice(1);
+                    estadoADMIN = `<p><i class="bi ${estadoIcon}" style="color: ${estadoColor};"></i> ${estadoTexto}</p>`;
+                }
                 $("#infoVehiculos").append(`
                     <div class="card mb-3">
                         <div class="row g-0">
@@ -122,7 +129,7 @@ function cargarVehiculos(id, toast) {
                                 <img src="${vehiculo.imagen}" class="img-fluid rounded-start"
                                     alt="${vehiculo.marca} ${vehiculo.modelo}">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8 d-flex justify-content-between align-items-start">
                                 <div class="card-body">
                                     <h5 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h5>
                                     <p><i class="bi bi-card-text"></i> Matrícula: ${vehiculo.matricula}</p>
@@ -130,7 +137,19 @@ function cargarVehiculos(id, toast) {
                                     <p><i class="bi bi-people"></i> Plazas: ${vehiculo.numero_plazas}</p>
                                     <p><i class="bi bi-battery-half"></i> Autonomía: ${vehiculo.autonomia_km} km</p>
                                     <p><i class="bi bi-palette"></i> Color: ${vehiculo.color}</p>
+                                    ${estadoADMIN}
                                     <p class="card-text"><small class="text-muted">${vehiculo.concesionario}</small></p>
+                                </div>
+                                <div class="d-flex flex-column gap-2 mt-3 me-3">
+                                    <button class="btn btn-primary btn-sm editButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm deleteButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
