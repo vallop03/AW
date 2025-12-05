@@ -203,11 +203,9 @@ function editarUsuario(id, datos, toast, reactivar) {
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
             if (reactivar) {
-                console.log("ESTAMOS REACTIVANDO");
                 $("#mensajeToast").text("Usuario reactivado correctamente");
             }
             else {
-                console.log("NOOO ESTAMOS REACTIVANDO");
                 $("#mensajeToast").text(data.mensaje);
             }
             toast.show();

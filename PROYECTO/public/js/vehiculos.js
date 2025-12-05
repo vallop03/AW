@@ -4,14 +4,13 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    //cargarVehiculos(toast);
-
+    cargarVehiculos(toast);
 
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando vehículo");
-        //cargarConcesionarios(toast);
+        cargarConcesionarios(toast);
         //activarModal(false);
         $("#botonModal").text("Añadir");
         $("#registroVehiculoForm")[0].reset(); //para limpiar el form
@@ -31,7 +30,7 @@ $(function () {
             autonomia: $("#autonomia").prop("value"),
             color: $("#color").prop("value"),
             imagen: $("#imagen").prop("value"),
-            concesionario: $("#concesionario").prop("value") 
+            concesionario: $("#concesionario").prop("value")
         };
 
         let valido = comprobarValidacion($("#matricula")[0]);
@@ -53,7 +52,7 @@ $(function () {
             editarVehiculo(idVehiculoSeleccionado, datos, toast, false);
         }
         else if (modo === "anadir") {
-            anadirVehiculo(datos, toast);
+            anadirVehiculo(toast);
         }
         else if (modo === "Borrando") {
             borrarUsuario(idVehiculoSeleccionado, toast);
@@ -107,7 +106,27 @@ function cargarVehiculos(toast) {
             $("#infoVehiculos").empty();
             vehiculos = data.vehiculos;
             vehiculos.forEach(vehiculo => {
-                $("#infoVehiculos").append(``);
+                $("#infoVehiculos").append(`
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="${vehiculo.imagen}" class="img-fluid rounded-start"
+                                    alt="${vehiculo.marca} ${vehiculo.modelo}">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h5>
+                                    <p><i class="bi bi-card-text"></i> Matrícula: ${vehiculo.matricula}</p>
+                                    <p><i class="bi bi-calendar"></i> Año: ${vehiculo.ano_matriculacion}</p>
+                                    <p><i class="bi bi-people"></i> Plazas: ${vehiculo.numero_plazas}</p>
+                                    <p><i class="bi bi-battery-half"></i> Autonomía: ${vehiculo.autonomia_km} km</p>
+                                    <p><i class="bi bi-palette"></i> Color: ${vehiculo.color}</p>
+                                    <p class="card-text"><small class="text-muted">${vehiculo.concesionario}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -116,6 +135,57 @@ function cargarVehiculos(toast) {
         }
     });
 }
+
+function anadirVehiculo(toast) {
+    const form = $("#registroVehiculoForm")[0];
+    console.log("se metio en anadir de ajax");
+    const formData = new FormData(form);
+    $.ajax({
+        url: "/api/vehiculos/crear",
+        method: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data, textStatus, jqXHR) {
+            console.log("llego al success del ajax");
+            $("#modalAccion").modal("hide");
+            if (data.id && data.id > 0) {
+                editarUsuario(data.id, formData, toast);
+            } else {
+                $("#mensajeToast").text(data.mensaje);
+                toast.show();
+            }
+            cargarVehiculos(toast);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
+function cargarConcesionarios(toast) {
+    $.ajax({
+        url: "/api/concesionarios/",
+        method: "GET",
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            $("#concesionario").empty();
+            concesionarios = data.concesionarios;
+            $("#concesionario").append(`<option selected disabled value="">Selecciona un concesionario</option>`);
+            concesionarios.forEach(concesionario => {
+                $("#concesionario").append(`
+                    <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
+                );
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
 
 function comprobarValidacion(input) {
     const valido = input.checkValidity();

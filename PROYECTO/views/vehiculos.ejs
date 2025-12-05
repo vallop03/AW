@@ -53,12 +53,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="cuerpoModal" class="modal-body">
-                            <form id="registroVehiculoForm" novalidate>
+                            <form id="registroVehiculoForm" enctype="multipart/form-data" novalidate>
                                 <div class="row g-3">
                                     <div class="col-12">
                                         <label for="matricula" class="form-label">Matrícula*</label>
                                         <input type="text" class="form-control" id="matricula" name="matricula"
-                                            pattern="^[0-9]{4}[B-DF-HJ-NP-TV-Z]{3}$" placeholder="0000AAA" required>
+                                            pattern="^\d{4}[A-Za-z]{3}$" placeholder="0000AAA" required>
                                         <span class="invalid-feedback" aria-live="polite">
                                             Por favor, introduce una matrícula de 4 números y 3 letras.
                                         </span>
@@ -115,16 +115,16 @@
                                         <label for="color" class="form-label">Color*</label>
                                         <select class="form-select" id="color" name="color" required>
                                             <option selected disabled value="">Selecciona un color</option>
-                                            <option value="Blanco">Blanco</option>
-                                            <option value="Negro">Negro</option>
-                                            <option value="Gris">Gris</option>
-                                            <option value="Rojo">Rojo</option>
-                                            <option value="Azul">Azul</option>
-                                            <option value="Verde">Verde</option>
-                                            <option value="Amarillo">Amarillo</option>
-                                            <option value="Marrón">Marrón</option>
-                                            <option value="Naranja">Naranja</option>
-                                            <option value="Violeta">Violeta</option>
+                                            <option value="blanco">Blanco</option>
+                                            <option value="negro">Negro</option>
+                                            <option value="gris">Gris</option>
+                                            <option value="rojo">Rojo</option>
+                                            <option value="azul">Azul</option>
+                                            <option value="verde">Verde</option>
+                                            <option value="amarillo">Amarillo</option>
+                                            <option value="marrón">Marrón</option>
+                                            <option value="naranja">Naranja</option>
+                                            <option value="violeta">Violeta</option>
                                         </select>
                                         <span class="invalid-feedback" aria-live="polite">
                                             Por favor, selecciona un color.
@@ -150,21 +150,7 @@
             </div>
         </main>
 
-        <div class="card mb-3">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="${vehiculo.imagen}" class="img-fluid rounded-start" alt="${vehiculo.marca} ${vehiculo.modelo}">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
 
         <script src="js/paginaPrincipal.js"></script>
