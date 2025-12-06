@@ -4,7 +4,7 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    if (usuarioActual && usuarioActual.rol === "admin") {
+    if ((usuarioActual && usuarioActual.rol === "admin") || !usuarioActual) {
         cargarVehiculos(null, toast);
     }
     else {
@@ -92,8 +92,8 @@ $(function () {
             }
             else if (modo === "Reservando") {
                 let datos = {
-                    idVehiculo : idVehiculoSeleccionado,
-                    idUsuario : usuarioActual.id_usuario
+                    idVehiculo: idVehiculoSeleccionado,
+                    idUsuario: usuarioActual.id_usuario
                 }
                 reservarVehiculo(datos, toast);
             }
@@ -140,12 +140,13 @@ $(function () {
         comprobarValidacion(this);
     });
 
-    $("#recogida").on("input", function () {
+    $("#recogida").on("input change", function () {
+        console.log("que");
         comprobarRecogida(this);
     });
 
-    $("#devolucion").on("input", function () {
-        comprobarDevolucion(this);
+    $("#devolucion").on("input change", function () {
+        comprobarDevolucion(this, $("#recogida")[0]);
     });
 
     $("#modalAccion").on("hide.bs.modal", function () {
@@ -307,9 +308,9 @@ function borrarVehiculo(id, toast) {
     })
 }
 
-function reservarVehiculo(datos, toast){
+function reservarVehiculo(datos, toast) {
     $.ajax({
-        
+        url: "/api/reservas/"
     })
 }
 
@@ -356,6 +357,7 @@ function cargarModal(id, accion, toast, callback) {
             $("#prevImagen").prop("src", vehiculo.imagen);
             $("#prevImagen").prop("alt", "Imagen de " + vehiculo.marca + " " + vehiculo.modelo);
             $("#imagen").prop("required", false);
+            $("#imagen").prop("value", "");
             $("#imagen").prop("disabled", disable);
             $("#grupoReserva").hide();
             $("#recogida").prop("required", false);
@@ -442,27 +444,27 @@ function comprobarRecogida(input) {
     const valido = fechaSeleccionada >= fechaActual;
     fechaActual.setHours(0, 0, 0, 0);
     if (valido) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
+        $(input).classList.add('is-valid');
+        $(input).classList.remove('is-invalid');
     }
     else {
-        input.classList.add('is-invalid');
-        input.classList.remove('is-valid');
+        $(input).classList.add('is-invalid');
+        $(input).classList.remove('is-valid');
     }
     return valido;
 }
 
-function comprobarDevolucion(input) {
-    const fechaRecogida = new Date(recogida.value);
+function comprobarDevolucion(input, inputRecogida) {
+    const fechaRecogida = new Date(inputRecogida.value);
     const fechaDevolucion = new Date(input.value);
     const valido = fechaDevolucion > fechaRecogida;
     if (valido) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
+        $(input).classList.add('is-valid');
+        $(input).classList.remove('is-invalid');
     }
     else {
-        input.classList.add('is-invalid');
-        input.classList.remove('is-valid');
+        $(input).classList.add('is-invalid');
+        $(input).classList.remove('is-valid');
     }
     return valido;
 }
