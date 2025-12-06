@@ -11,13 +11,38 @@ $(function () {
     //    cargarVehiculos(usuarioActual.id_concesionario, toast);
     //}
 
+    //Cuando se le da al botón de editar (el del lápiz)
+    $("#infoVehiculos").on("click", ".editButton", function (event) {
+        $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
+        idVehiculoSeleccionado = $(this).data("id_vehiculo");
+        if (idVehiculoSeleccionado) {
+            modo = "Editando";
+            $("#grupoPassword").hide();
+            cargarConcesionarios(toast);
+            cargarModal(idVehiculoSeleccionado, modo, toast);
+            $("#modalAccion").modal("show");
+        }
+    });
+
+    //Cuando se le da al botón de eliminar (la papelera)
+    $("#infoVehiculos").on("click", ".deleteButton", function (event) {
+        $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
+        idVehiculoSeleccionado = $(this).data("id_vehiculo");
+        modo = "Borrando";
+        $("#grupoPassword").hide();
+        cargarModal(idVehiculoSeleccionado, modo);
+        $("#modalAccion").modal("show");
+    });
+
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando vehículo");
         cargarConcesionarios(toast);
+        $("#prevImagen").hide();
         //activarModal(false);
         $("#botonModal").text("Añadir");
+        $("#imagen").prop("required", true);
         $("#registroVehiculoForm")[0].reset(); //para limpiar el form
         $("#modalAccion").modal("show");
     });
@@ -54,7 +79,7 @@ $(function () {
             toast.show();
         }
         else if (modo === "Editando") {
-            editarVehiculo(idVehiculoSeleccionado, datos, toast, false);
+            editarVehiculo(idVehiculoSeleccionado, toast, false);
         }
         else if (modo === "anadir") {
             anadirVehiculo(toast);
@@ -166,7 +191,6 @@ function cargarVehiculos(id, toast) {
 
 function anadirVehiculo(toast) {
     const form = $("#registroVehiculoForm")[0];
-    console.log("se metio en anadir de ajax");
     const formData = new FormData(form);
     $.ajax({
         url: "/api/vehiculos/crear",
@@ -178,12 +202,52 @@ function anadirVehiculo(toast) {
             console.log("llego al success del ajax");
             $("#modalAccion").modal("hide");
             if (data.id && data.id > 0) {
-                editarUsuario(data.id, formData, toast);
+                editarVehiculo(data.id, toast, true);
             } else {
                 $("#mensajeToast").text(data.mensaje);
                 toast.show();
             }
-            cargarVehiculos(toast);
+            //if (usuarioActual && usuarioActual.rol === "admin") {
+            cargarVehiculos(null, toast);
+            //}
+            //else {
+            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
+            //}
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
+function editarVehiculo(id, toast, reactivar) {
+    const form = $("#registroVehiculoForm")[0];
+    const formData = new FormData(form);
+    const rutaAntiguaCompleta = $("#prevImagen").prop("src");
+    const rutaRelativa = new URL(rutaAntiguaCompleta).pathname;
+    formData.append("imagenAnterior", rutaRelativa);
+    $.ajax({
+        url: "/api/vehiculos/editar/" + id,
+        method: "PUT",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            if (reactivar) {
+                $("#mensajeToast").text("Vehículo reactivado correctamente");
+            }
+            else {
+                $("#mensajeToast").text(data.mensaje);
+            }
+            toast.show();
+            //if (usuarioActual && usuarioActual.rol === "admin") {
+                cargarVehiculos(null, toast);
+            //}
+            //else {
+            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
+            //}
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -222,18 +286,20 @@ function cargarModal(id, accion, toast) {
         success: function (data, textStatus, jqXHR) {
             vehiculo = data.vehiculo;
             disable = accion === "Borrando";
-            cargarConcesionarios(toast);
             $("#tituloModal").text(accion + " " + vehiculo.marca + " " + vehiculo.modelo);
             $("#matricula").prop("value", vehiculo.matricula).prop("disabled", disable);
             $("#marca").prop("value", vehiculo.marca).prop("disabled", disable);
             $("#modelo").prop("value", vehiculo.modelo).prop("disabled", disable);
             $("#ano").prop("value", vehiculo.ano_matriculacion).prop("disabled", disable);
+            console.log(vehiculo.id_concesionario);
             $("#concesionario").prop("value", vehiculo.id_concesionario).prop("disabled", disable);
             $("#plazas").prop("value", vehiculo.numero_plazas).prop("disabled", disable);
             $("#autonomia").prop("value", vehiculo.autonomia_km).prop("disabled", disable);
             $("#color").prop("value", vehiculo.color).prop("disabled", disable);
-            //$("#imagen").prop("value", vehiculo.imagen).prop("disabled", disable);
-            
+            $("#prevImagen").show();
+            $("#prevImagen").prop("src", vehiculo.imagen);
+            $("#imagen").prop("required", false);
+            $("#imagen").prop("disabled", disable);
 
             if (disable) {
                 $("#botonModal").text("Borrar");

@@ -14,7 +14,7 @@ $(function () {
         if (idUsuarioSeleccionado) {
             modo = "Editando";
             $("#grupoPassword").hide();
-            cargarModal(idUsuarioSeleccionado, modo);
+            cargarModal(idUsuarioSeleccionado, modo, toast);
             $("#modalAccion").modal("show");
         }
     });
@@ -23,16 +23,16 @@ $(function () {
     $("#infoUsuarios").on("click", ".deleteButton", function (event) {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         idUsuarioSeleccionado = $(this).data("id_usuario");
-        //if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
-        modo = "Borrando";
-        $("#grupoPassword").hide();
-        cargarModal(idUsuarioSeleccionado, modo);
-        $("#modalAccion").modal("show");
-        //}
-        //if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
-        //    $("#mensajeToast").text("No te puedes autoeliminar.");
-        //    toast.show();
-        //}
+        if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
+            modo = "Borrando";
+            $("#grupoPassword").hide();
+            cargarModal(idUsuarioSeleccionado, modo);
+            $("#modalAccion").modal("show");
+        }
+        if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
+            $("#mensajeToast").text("No te puedes autoeliminar.");
+            toast.show();
+        }
     });
 
     //Cuando se le da a crear usuario
@@ -95,7 +95,7 @@ $(function () {
         comprobarNombre(this);
     });
 
-    
+
     $("#email").on("input", function () {
         const patron = /^[A-Za-z0-9._%+-]+@carricoche\.es$/;
         if (patron.test(this.value)) {
@@ -235,7 +235,7 @@ function anadirUsuario(datos, toast) {
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion").modal("hide");
             if (data.id && data.id > 0) {
-                editarUsuario(data.id, datos, toast);
+                editarUsuario(data.id, datos, toast, true);
             } else {
                 $("#mensajeToast").text(data.mensaje);
                 toast.show();

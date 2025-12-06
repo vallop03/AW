@@ -20,7 +20,7 @@ router.get("/", function (request, response) {
 router.post("/crear", function (request, response) {
     multerFactory.single('imagen')(request, response, function (err) {
         if (err) {
-            return response.status(500).json({ error: "Error Multer" });
+            return response.status(500).json({ error: "Error procesando los datos" });
         }
         const { matricula, marca, modelo, ano, plazas, autonomia, color, concesionario } = request.body;
         const file = request.file;
@@ -43,15 +43,46 @@ router.post("/crear", function (request, response) {
     });
 });
 
-router.post("/crear", function (req, res) {
-    multerFactory.single('imagen')(req, res, function (err) {
+router.put("/editar/:id", function (request, response) {
+    multerFactory.single('imagen')(request, response, function (err) {
         if (err) {
-            return res.status(500).json({ error: "Error Multer" });
+            return response.status(500).json({ error: "Error procesando los datos" });
         }
-        const { matricula, marca, modelo, ano, plazas, autonomia, color, concesionario } = req.body;
-        const file = req.file;
-        const ruta = "/img/uploads/" + file.filename;
-        console.log("ruta", ruta);
+        const id = request.params.id;
+        const { matricula, marca, modelo, ano, plazas, autonomia, color, concesionario, imagenAnterior } = request.body;
+        const file = request.file;
+        let ruta = "";
+        if (file) {
+            ruta = "/img/uploads/" + file.filename;
+        }
+        else {
+            ruta = imagenAnterior;
+        }
+        daoVehiculo.editarVehiculo(id, matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, function (err, resultado) {
+            if (err) {
+                return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+            }
+            if (resultado === 1) {
+                return response.json({ mensaje: "Vehículo actualizado correctamente" });
+            }
+            else {
+                return response.status(404).json({ error: "Vehículo no encontrado" });
+            }
+
+        });
+    });
+});
+
+router.get("/:id", function (request, response) {
+    const id = request.params.id;
+    daoVehiculo.consultarVehiculoPorId(id, function (err, vehiculo) {
+        if (err) {
+            return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+        }
+        if (!vehiculo) {
+            return response.status(404).json({ error: "Vehiculo no encontrado" });
+        }
+        response.json({ vehiculo: vehiculo });
     });
 });
 

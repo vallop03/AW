@@ -60,6 +60,48 @@ class DAOVehiculo {
         });
     }
 
+    editarVehiculo(id, matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, callback) {
+        this.pool.getConnection((err, conexion) => {
+            if (err) {
+                return callback(err);
+            }
+            matricula = matricula.toUpperCase();
+            this.verificarPorMatricula(matricula, (err, existeVehiculo) => {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (existeVehiculo && existeVehiculo.id_vehiculo != id) {
+                    return callback(null, -1);
+                }
+                const consulta = "UPDATE vehiculos SET matricula = ?, marca = ?, modelo = ?, ano_matriculacion = ?, numero_plazas = ?, autonomia_km = ?, color = ?, imagen = ?, id_concesionario = ?, activo = true WHERE id_vehiculo = ? ";
+                conexion.query(consulta, [matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, id], function (err, result) {
+                    conexion.release();
+                    if (err) {
+                        return callback(err);
+                    }
+                    return callback(null, result.affectedRows);
+                });
+            });
+        });
+    }
+
+    consultarVehiculoPorId(id, callback) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE v.id_vehiculo = ? AND v.activo = true";
+            conexion.query(consulta, [id], function (err, rows) {
+                conexion.release();
+                if (err) {
+                    return callback(err);
+                }
+                return callback(null, rows[0] || null);
+            });
+        });
+    }
+
     verificarPorMatricula(matricula, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
