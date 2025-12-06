@@ -73,6 +73,20 @@ router.put("/editar/:id", function (request, response) {
     });
 });
 
+router.put("/borrar/:id", function (request, response) {
+    const id = request.params.id;
+    daoVehiculo.eliminarVehiculo(id, function(err, resultado){
+        if (err) {
+            return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+        }
+        else if (resultado > 0) {
+            response.json({ mensaje: "Vehículo eliminado correctamente" });
+        } else {
+            response.status(404).json({ error: "Vehículo no encontrado" });
+        }
+    });
+});
+
 router.get("/:id", function (request, response) {
     const id = request.params.id;
     daoVehiculo.consultarVehiculoPorId(id, function (err, vehiculo) {

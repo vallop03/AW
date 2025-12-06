@@ -86,6 +86,26 @@ class DAOVehiculo {
         });
     }
 
+    eliminarVehiculo(id, callback){
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            else {
+                const consulta = "UPDATE vehiculos SET activo = false WHERE id_vehiculo = ?";
+                conexion.query(consulta, [id], function (err, result) {
+                    conexion.release();
+                    if (err) {
+                        return callback(err);
+                    }
+                    else {
+                        return callback(null, result.affectedRows);
+                    }
+                });
+            }
+        });
+    }
+
     consultarVehiculoPorId(id, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {

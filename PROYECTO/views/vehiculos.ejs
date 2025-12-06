@@ -130,7 +130,7 @@
                                             Por favor, selecciona un color.
                                         </span>
                                     </div>
-                                    <div class="col-12">
+                                    <div id="grupoImagen" class="col-12">
                                         <label for="imagen" class="form-label">Imagen*</label>
                                         <input type="file" class="form-control" id="imagen" name="imagen"
                                             accept=".jpg,.jpeg,.png" required>
@@ -138,10 +138,10 @@
                                             Por favor, introduce una imagen válida (JPG, PNG, etc.).
                                         </span>
                                     </div>
-
-                                    <img id="prevImagen" src="" class="img-fluid rounded"
-                                        style="max-width: 200px;">
-
+                                    <div id="imagenAntigua">
+                                        <p id="textoImagen" class="text-muted"></p>
+                                        <img id="prevImagen" src="" alt="" width="200">
+                                    </div>
                                 </div>
                             </form>
                         </div>

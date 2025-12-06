@@ -17,10 +17,11 @@ $(function () {
         idVehiculoSeleccionado = $(this).data("id_vehiculo");
         if (idVehiculoSeleccionado) {
             modo = "Editando";
-            $("#grupoPassword").hide();
-            cargarConcesionarios(toast);
-            cargarModal(idVehiculoSeleccionado, modo, toast);
-            $("#modalAccion").modal("show");
+            cargarConcesionarios(toast, function () {
+                cargarModal(idVehiculoSeleccionado, modo, toast, function () {
+                    $("#modalAccion").modal("show");
+                });
+            });
         }
     });
 
@@ -29,22 +30,24 @@ $(function () {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         idVehiculoSeleccionado = $(this).data("id_vehiculo");
         modo = "Borrando";
-        $("#grupoPassword").hide();
-        cargarModal(idVehiculoSeleccionado, modo);
-        $("#modalAccion").modal("show");
+        cargarModal(idVehiculoSeleccionado, modo, toast, function () {
+            $("#modalAccion").modal("show");
+        });
     });
 
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando vehículo");
-        cargarConcesionarios(toast);
-        $("#prevImagen").hide();
-        //activarModal(false);
+        $("#imagenAntigua").hide();
+        $("#grupoImagen").show();
+        activarModal();
         $("#botonModal").text("Añadir");
         $("#imagen").prop("required", true);
         $("#registroVehiculoForm")[0].reset(); //para limpiar el form
-        $("#modalAccion").modal("show");
+        cargarConcesionarios(toast, function () {
+            $("#modalAccion").modal("show");
+        });
     });
 
     //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
@@ -124,6 +127,10 @@ $(function () {
 
     $("#concesionario").on("input", function () {
         comprobarValidacion(this);
+    });
+
+    $("#modalAccion").on("hide.bs.modal", function () {
+        $(this).find(":focus").blur();
     });
 })
 
@@ -243,7 +250,7 @@ function editarVehiculo(id, toast, reactivar) {
             }
             toast.show();
             //if (usuarioActual && usuarioActual.rol === "admin") {
-                cargarVehiculos(null, toast);
+            cargarVehiculos(null, toast);
             //}
             //else {
             //    cargarVehiculos(usuarioActual.id_concesionario, toast);
@@ -256,7 +263,32 @@ function editarVehiculo(id, toast, reactivar) {
     })
 }
 
-function cargarConcesionarios(toast) {
+function borrarVehiculo(id, toast) {
+    $.ajax({
+        url: "/api/vehiculos/borrar/" + id,
+        method: "PUT",
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            $("#mensajeToast").text(data.mensaje);
+            toast.show();
+            //if (usuarioActual && usuarioActual.rol === "admin") {
+            cargarVehiculos(null, toast);
+            //}
+            //else {
+            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
+            //}
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (toast) {
+                $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+                toast.show();
+            }
+        }
+    })
+}
+
+function cargarConcesionarios(toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
         method: "GET",
@@ -270,6 +302,7 @@ function cargarConcesionarios(toast) {
                     <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
                 );
             });
+            callback();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -278,7 +311,7 @@ function cargarConcesionarios(toast) {
     })
 }
 
-function cargarModal(id, accion, toast) {
+function cargarModal(id, accion, toast, callback) {
     $.ajax({
         url: "/api/vehiculos/" + id,
         method: "GET",
@@ -291,28 +324,48 @@ function cargarModal(id, accion, toast) {
             $("#marca").prop("value", vehiculo.marca).prop("disabled", disable);
             $("#modelo").prop("value", vehiculo.modelo).prop("disabled", disable);
             $("#ano").prop("value", vehiculo.ano_matriculacion).prop("disabled", disable);
-            console.log(vehiculo.id_concesionario);
-            $("#concesionario").prop("value", vehiculo.id_concesionario).prop("disabled", disable);
             $("#plazas").prop("value", vehiculo.numero_plazas).prop("disabled", disable);
             $("#autonomia").prop("value", vehiculo.autonomia_km).prop("disabled", disable);
             $("#color").prop("value", vehiculo.color).prop("disabled", disable);
-            $("#prevImagen").show();
+            $("#imagenAntigua").show();
             $("#prevImagen").prop("src", vehiculo.imagen);
+            $("#prevImagen").prop("alt", "Imagen de " + vehiculo.marca + " " + vehiculo.modelo);
             $("#imagen").prop("required", false);
             $("#imagen").prop("disabled", disable);
+            cargarConcesionarios(toast, function () {
+                $("#concesionario").prop("value", vehiculo.id_concesionario).prop("disabled", disable);
+            });
 
             if (disable) {
+                $("#grupoImagen").hide();
+                $("#textoImagen").text("Imagen actual");
                 $("#botonModal").text("Borrar");
             }
             else {
+                $("#grupoImagen").show();
+                $("#textoImagen").text("Imagen anterior");
                 $("#botonModal").text("Editar");
             }
+            callback();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
             toast.show();
         }
     });
+}
+
+function activarModal() {
+    $("#matricula").prop("disabled", false);
+    $("#marca").prop("disabled", false);
+    $("#modelo").prop("disabled", false);
+    $("#ano").prop("disabled", false);
+    $("#concesionario").prop("disabled", false);
+    $("#plazas").prop("disabled", false);
+    $("#autonomia").prop("disabled", false);
+    $("#color").prop("disabled", false);
+    $("#color").prop("disabled", false);
+    $("#imagen").prop("disabled", false);
 }
 
 
