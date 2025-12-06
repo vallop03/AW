@@ -27,10 +27,10 @@ router.post("/crear", function (request, response) {
         const ruta = "/img/uploads/" + file.filename;
         daoVehiculo.crearVehiculo(matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, function (err, resultado) {
             if (err) {
-                console.log("EN API: " + err);
                 return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
             }
             if (resultado.estado === -1) {
+
                 return response.json({ mensaje: "Ya existe un vehículo asociado a esa matrícula", id: resultado.id_inactivo });
             }
             else if (resultado.estado > 0) {
@@ -52,6 +52,16 @@ router.post("/crear", function (req, res) {
         const file = req.file;
         const ruta = "/img/uploads/" + file.filename;
         console.log("ruta", ruta);
+    });
+});
+
+router.get("/concesionario/:id", function (request, response) {
+    const id = request.params.id;
+    daoVehiculo.consultarVehiculosPorConcesionario(id, (err, rows) => {
+        if (err) {
+            return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+        }
+        response.json({ vehiculos: rows });
     });
 });
 

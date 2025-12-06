@@ -22,15 +22,13 @@ class DAOVehiculo {
 
     crearVehiculo(matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, callback) {
         matricula = matricula.toUpperCase();
-            console.log("llega al DAO");
-
         let resultado = {
             estado: 0,
             id_inactivo: 0
         };
         this.verificarPorMatricula(matricula, (err, existeVehiculo) => {
             if (err) {
-                
+
                 return callback(err);
             }
             if (existeVehiculo) {
@@ -51,7 +49,6 @@ class DAOVehiculo {
                 conexion.query(insertar, [matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario], function (err, result) {
                     conexion.release();
                     if (err) {
-                        console.log("EN DAO: " + err);
                         return callback(err);
                     }
                     else {
@@ -63,21 +60,42 @@ class DAOVehiculo {
         });
     }
 
-    verificarPorMatricula(email, callback) {
+    verificarPorMatricula(matricula, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
                 return callback(err);
             }
             else {
                 const consulta = "SELECT id_vehiculo, matricula, activo FROM vehiculos WHERE matricula = ?";
-                email = email.toLowerCase();
-                conexion.query(consulta, [email], function (err, rows) {
+                matricula = matricula.toUpperCase();
+                conexion.query(consulta, [matricula], function (err, rows) {
                     conexion.release();
                     if (err) {
                         return callback(err);
                     }
                     else {
                         return callback(null, rows[0] || null);
+                    }
+                });
+            }
+        });
+    }
+
+    consultarVehiculosPorConcesionario(id, callback) {
+        this.pool.getConnection(function (err, conexion) {
+            if (err) {
+                return callback(err);
+            }
+            else {
+                const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON c.id_concesionario = v.id_concesionario WHERE v.id_concesionario = ? AND v.activo = true AND v.estado = 'disponible'";
+                conexion.query(consulta, [id], function (err, rows) {
+                    conexion.release();
+                    if (err) {
+                        console.log(err);
+                        return callback(err);
+                    }
+                    else {
+                        return callback(null, rows);
                     }
                 });
             }
