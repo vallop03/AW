@@ -23,16 +23,16 @@ $(function () {
     $("#infoUsuarios").on("click", ".deleteButton", function (event) {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         idUsuarioSeleccionado = $(this).data("id_usuario");
-        if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
-            modo = "Borrando";
-            $("#grupoPassword").hide();
-            cargarModal(idUsuarioSeleccionado, modo);
-            $("#modalAccion").modal("show");
-        }
-        if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
-            $("#mensajeToast").text("No te puedes autoeliminar.");
-            toast.show();
-        }
+        //if (idUsuarioSeleccionado && usuarioActual && idUsuarioSeleccionado != usuarioActual.id_usuario) {
+        modo = "Borrando";
+        $("#grupoPassword").hide();
+        cargarModal(idUsuarioSeleccionado, modo);
+        $("#modalAccion").modal("show");
+        //}
+        //if (usuarioActual && idUsuarioSeleccionado === usuarioActual.id_usuario) {
+        //    $("#mensajeToast").text("No te puedes autoeliminar.");
+        //    toast.show();
+        //}
     });
 
     //Cuando se le da a crear usuario
@@ -95,8 +95,16 @@ $(function () {
         comprobarNombre(this);
     });
 
+    
     $("#email").on("input", function () {
-        comprobarValidacion(this);
+        const patron = /^[A-Za-z0-9._%+-]+@carricoche\.es$/;
+        if (patron.test(this.value)) {
+            this.classList.add('is-valid');
+            this.classList.remove('is-invalid');
+        } else {
+            this.classList.add('is-invalid');
+            this.classList.remove('is-valid');
+        }
     });
 
     $("#password").on("input", function () {
