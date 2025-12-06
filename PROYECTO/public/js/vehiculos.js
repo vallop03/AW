@@ -4,12 +4,12 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    //if (usuarioActual && usuarioActual.rol === "admin") {
-    cargarVehiculos(null, toast);
-    //}
-    //else {
-    //    cargarVehiculos(usuarioActual.id_concesionario, toast);
-    //}
+    if (usuarioActual && usuarioActual.rol === "admin") {
+        cargarVehiculos(null, toast);
+    }
+    else {
+        cargarVehiculos(usuarioActual.id_concesionario, toast);
+    }
 
     //Cuando se le da al botón de editar (el del lápiz)
     $("#infoVehiculos").on("click", ".editButton", function (event) {
@@ -17,11 +17,10 @@ $(function () {
         idVehiculoSeleccionado = $(this).data("id_vehiculo");
         if (idVehiculoSeleccionado) {
             modo = "Editando";
-            cargarConcesionarios(toast, function () {
-                cargarModal(idVehiculoSeleccionado, modo, toast, function () {
-                    $("#modalAccion").modal("show");
-                });
+            cargarModal(idVehiculoSeleccionado, modo, toast, function () {
+                $("#modalAccion").modal("show");
             });
+
         }
     });
 
@@ -35,6 +34,7 @@ $(function () {
         });
     });
 
+    //Al darle al boton de añadir vehiculo
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
@@ -214,12 +214,12 @@ function anadirVehiculo(toast) {
                 $("#mensajeToast").text(data.mensaje);
                 toast.show();
             }
-            //if (usuarioActual && usuarioActual.rol === "admin") {
-            cargarVehiculos(null, toast);
-            //}
-            //else {
-            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
-            //}
+            if (usuarioActual && usuarioActual.rol === "admin") {
+                cargarVehiculos(null, toast);
+            }
+            else {
+                cargarVehiculos(usuarioActual.id_concesionario, toast);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -249,12 +249,12 @@ function editarVehiculo(id, toast, reactivar) {
                 $("#mensajeToast").text(data.mensaje);
             }
             toast.show();
-            //if (usuarioActual && usuarioActual.rol === "admin") {
-            cargarVehiculos(null, toast);
-            //}
-            //else {
-            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
-            //}
+            if (usuarioActual && usuarioActual.rol === "admin") {
+                cargarVehiculos(null, toast);
+            }
+            else {
+                cargarVehiculos(usuarioActual.id_concesionario, toast);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -272,12 +272,12 @@ function borrarVehiculo(id, toast) {
             $("#modalAccion").modal("hide");
             $("#mensajeToast").text(data.mensaje);
             toast.show();
-            //if (usuarioActual && usuarioActual.rol === "admin") {
-            cargarVehiculos(null, toast);
-            //}
-            //else {
-            //    cargarVehiculos(usuarioActual.id_concesionario, toast);
-            //}
+            if (usuarioActual && usuarioActual.rol === "admin") {
+                cargarVehiculos(null, toast);
+            }
+            else {
+                cargarVehiculos(usuarioActual.id_concesionario, toast);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (toast) {

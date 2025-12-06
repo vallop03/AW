@@ -40,13 +40,14 @@ $(function () {
         $("#registroUsuarioForm .is-valid, #registroUsuarioForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
         $("#tituloModal").text("Creando usuario");
-        cargarConcesionarios(toast);
         activarModal(false); //hace que los campos del form se activen para escribir
         $("#botonModal").text("Añadir");
         $("#grupoPassword").show(); //hace que el campo de contraseña sea visible para escribir
         $("#password").prop("required", true);
         $("#registroUsuarioForm")[0].reset(); //para limpiar el form
-        $("#modalAccion").modal("show");
+        cargarConcesionarios(toast, function () {
+            $("#modalAccion").modal("show");
+        });
     });
 
     /////////////PARTE DEL MODAL/////////////
@@ -172,7 +173,7 @@ function activarModal(desactivado) {
     $("#password").prop("required", desactivado);
 }
 
-function cargarModal(id, accion, toast) {
+function cargarModal(id, accion, toast, callback) {
     $.ajax({
         url: "/api/usuarios/" + id,
         method: "GET",
@@ -180,12 +181,13 @@ function cargarModal(id, accion, toast) {
         success: function (data, textStatus, jqXHR) {
             usuario = data.usuario;
             disable = accion === "Borrando";
-            cargarConcesionarios(toast);
+            cargarConcesionarios(toast, function(){
+                $("#concesionario").prop("value", usuario.id_concesionario).prop("disabled", disable);
+            });
             $("#tituloModal").text(accion + " a " + usuario.nombre);
             $("#nombre").prop("value", usuario.nombre).prop("disabled", disable);
             $("#email").prop("value", usuario.correo).prop("disabled", disable);
             $("#tel").prop("value", usuario.telefono).prop("disabled", disable);
-            $("#concesionario").prop("value", usuario.id_concesionario).prop("disabled", disable);
             $("#rol").prop("value", usuario.rol).prop("disabled", disable);
             $("#password").prop("required", disable);
             if (disable) {
@@ -194,6 +196,7 @@ function cargarModal(id, accion, toast) {
             else {
                 $("#botonModal").text("Editar");
             }
+            callback();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -249,7 +252,7 @@ function anadirUsuario(datos, toast) {
     })
 }
 
-function cargarConcesionarios(toast) {
+function cargarConcesionarios(toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
         method: "GET",
@@ -263,6 +266,7 @@ function cargarConcesionarios(toast) {
                     <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
                 );
             });
+            callback();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);

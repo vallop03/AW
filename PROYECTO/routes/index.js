@@ -16,7 +16,7 @@ router.get("/reservas", function (request, response) {
     response.render("reservas");
 });
 
-router.get("/vehiculos", function(request, response){
+router.get("/vehiculos", requireLogin, function(request, response){
     response.render("vehiculos");
 });
 
