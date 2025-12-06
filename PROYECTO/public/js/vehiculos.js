@@ -11,7 +11,7 @@ $(function () {
         cargarVehiculos(usuarioActual.id_concesionario, toast);
     }
 
-    //Cuando se le da al botón de editar (el del lápiz)
+    //EDITAR
     $("#infoVehiculos").on("click", ".editButton", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         idVehiculoSeleccionado = $(this).data("id_vehiculo");
@@ -24,7 +24,7 @@ $(function () {
         }
     });
 
-    //Cuando se le da al botón de eliminar (la papelera)
+    //ELIMINAR
     $("#infoVehiculos").on("click", ".deleteButton", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         idVehiculoSeleccionado = $(this).data("id_vehiculo");
@@ -34,7 +34,17 @@ $(function () {
         });
     });
 
-    //Al darle al boton de añadir vehiculo
+    //RESERVAR
+    $("#infoVehiculos").on("click", ".reserveButton", function (event) {
+        $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
+        idVehiculoSeleccionado = $(this).data("id_vehiculo");
+        modo = "Reservando";
+        cargarModal(idVehiculoSeleccionado, modo, toast, function () {
+            $("#modalAccion").modal("show");
+        });
+    });
+
+    //AÑADIR
     $("#anadirVehiculoBoton").on("click", function (event) {
         $("#registroVehiculoForm .is-valid, #registroVehiculoForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
@@ -44,6 +54,9 @@ $(function () {
         activarModal();
         $("#botonModal").text("Añadir");
         $("#imagen").prop("required", true);
+        $("#grupoReserva").hide();
+        $("#recogida").prop("required", false);
+        $("#devolucion").prop("required", false);
         $("#registroVehiculoForm")[0].reset(); //para limpiar el form
         cargarConcesionarios(toast, function () {
             $("#modalAccion").modal("show");
@@ -53,39 +66,37 @@ $(function () {
     //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
     //de todos los campos y despues llama a su respectiva funcion de crear/modificar o eliminar
     $("#botonModal").on("click", function (event) {
+        if (modo !== "Borrando") {
 
-        let datos = {
-            matricula: $("#matricula").prop("value"),
-            marca: $("#marca").prop("value"),
-            modelo: $("#modelo").prop("value"),
-            ano: $("#ano").prop("value"),
-            plazas: $("#plazas").prop("value"),
-            autonomia: $("#autonomia").prop("value"),
-            color: $("#color").prop("value"),
-            imagen: $("#imagen").prop("value"),
-            concesionario: $("#concesionario").prop("value")
-        };
+            let valido = comprobarValidacion($("#matricula")[0]);
+            valido = comprobarValidacion($("#marca")[0]) && valido;
+            valido = comprobarValidacion($("#modelo")[0]) && valido;
+            valido = comprobarValidacion($("#ano")[0]) && valido;
+            valido = comprobarValidacion($("#plazas")[0]) && valido;
+            valido = comprobarValidacion($("#autonomia")[0]) && valido;
+            valido = comprobarValidacion($("#color")[0]) && valido;
+            valido = comprobarValidacion($("#imagen")[0]) && valido;
+            valido = comprobarValidacion($("#concesionario")[0]) && valido;
 
-        let valido = comprobarValidacion($("#matricula")[0]);
-        valido = comprobarValidacion($("#marca")[0]) && valido;
-        valido = comprobarValidacion($("#modelo")[0]) && valido;
-        valido = comprobarValidacion($("#ano")[0]) && valido;
-        valido = comprobarValidacion($("#plazas")[0]) && valido;
-        valido = comprobarValidacion($("#autonomia")[0]) && valido;
-        valido = comprobarValidacion($("#color")[0]) && valido;
-        valido = comprobarValidacion($("#imagen")[0]) && valido;
-        valido = comprobarValidacion($("#concesionario")[0]) && valido;
-        if (!valido) {
-            event.preventDefault();
-            event.stopPropagation();
-            $("#mensajeToast").text("Algunos campos no son válidos.");
-            toast.show();
-        }
-        else if (modo === "Editando") {
-            editarVehiculo(idVehiculoSeleccionado, toast, false);
-        }
-        else if (modo === "anadir") {
-            anadirVehiculo(toast);
+            if (!valido) {
+                event.preventDefault();
+                event.stopPropagation();
+                $("#mensajeToast").text("Algunos campos no son válidos.");
+                toast.show();
+            }
+            else if (modo === "Editando") {
+                editarVehiculo(idVehiculoSeleccionado, toast, false);
+            }
+            else if (modo === "anadir") {
+                anadirVehiculo(toast);
+            }
+            else if (modo === "Reservando") {
+                let datos = {
+                    idVehiculo : idVehiculoSeleccionado,
+                    idUsuario : usuarioActual.id_usuario
+                }
+                reservarVehiculo(datos, toast);
+            }
         }
         else if (modo === "Borrando") {
             borrarVehiculo(idVehiculoSeleccionado, toast);
@@ -127,6 +138,14 @@ $(function () {
 
     $("#concesionario").on("input", function () {
         comprobarValidacion(this);
+    });
+
+    $("#recogida").on("input", function () {
+        comprobarRecogida(this);
+    });
+
+    $("#devolucion").on("input", function () {
+        comprobarDevolucion(this);
     });
 
     $("#modalAccion").on("hide.bs.modal", function () {
@@ -288,6 +307,12 @@ function borrarVehiculo(id, toast) {
     })
 }
 
+function reservarVehiculo(datos, toast){
+    $.ajax({
+        
+    })
+}
+
 function cargarConcesionarios(toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
@@ -318,7 +343,7 @@ function cargarModal(id, accion, toast, callback) {
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
             vehiculo = data.vehiculo;
-            disable = accion === "Borrando";
+            disable = accion === "Borrando" || accion === "Reservando";
             $("#tituloModal").text(accion + " " + vehiculo.marca + " " + vehiculo.modelo);
             $("#matricula").prop("value", vehiculo.matricula).prop("disabled", disable);
             $("#marca").prop("value", vehiculo.marca).prop("disabled", disable);
@@ -332,6 +357,9 @@ function cargarModal(id, accion, toast, callback) {
             $("#prevImagen").prop("alt", "Imagen de " + vehiculo.marca + " " + vehiculo.modelo);
             $("#imagen").prop("required", false);
             $("#imagen").prop("disabled", disable);
+            $("#grupoReserva").hide();
+            $("#recogida").prop("required", false);
+            $("#devolucion").prop("required", false);
             cargarConcesionarios(toast, function () {
                 $("#concesionario").prop("value", vehiculo.id_concesionario).prop("disabled", disable);
             });
@@ -339,7 +367,15 @@ function cargarModal(id, accion, toast, callback) {
             if (disable) {
                 $("#grupoImagen").hide();
                 $("#textoImagen").text("Imagen actual");
-                $("#botonModal").text("Borrar");
+                if (accion === "Borrando") {
+                    $("#botonModal").text("Borrar");
+                }
+                else {
+                    $("#botonModal").text("Reservar");
+                    $("#grupoReserva").show();
+                    $("#recogida").prop("required", true);
+                    $("#devolucion").prop("required", true);
+                }
             }
             else {
                 $("#grupoImagen").show();
@@ -353,6 +389,25 @@ function cargarModal(id, accion, toast, callback) {
             toast.show();
         }
     });
+}
+
+function cargarModalReserva(id, toast, callback) {
+    $.ajax({
+        url: "/api/vehiculos/" + id,
+        method: "GET",
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            vehiculo = data.vehiculo;
+            $("#tituloReserva").text("Reservando " + vehiculo.marca + " " + vehiculo.modelo);
+            $("#vehiculoElegido").prop("value", vehiculo.marca + " " + vehiculo.modelo);
+            callback();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+
 }
 
 function activarModal() {
@@ -375,6 +430,37 @@ function comprobarValidacion(input) {
         input.classList.add('is-valid');
         input.classList.remove('is-invalid');
     } else {
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    }
+    return valido;
+}
+
+function comprobarRecogida(input) {
+    const fechaSeleccionada = new Date(input.value);
+    const fechaActual = new Date();
+    const valido = fechaSeleccionada >= fechaActual;
+    fechaActual.setHours(0, 0, 0, 0);
+    if (valido) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+    }
+    else {
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    }
+    return valido;
+}
+
+function comprobarDevolucion(input) {
+    const fechaRecogida = new Date(recogida.value);
+    const fechaDevolucion = new Date(input.value);
+    const valido = fechaDevolucion > fechaRecogida;
+    if (valido) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+    }
+    else {
         input.classList.add('is-invalid');
         input.classList.remove('is-valid');
     }

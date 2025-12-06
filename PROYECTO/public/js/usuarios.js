@@ -125,6 +125,7 @@ $(function () {
     });
 })
 
+//CARGAR TABLA DE USUARIOS
 function cargarUsuarios(toast) {
     $.ajax({
         url: "/api/usuarios/",
@@ -163,6 +164,7 @@ function cargarUsuarios(toast) {
     });
 }
 
+//ACTIVAR O DESACTIVAR EL FORM
 function activarModal(desactivado) {
     $("#nombre").prop("disabled", desactivado);
     $("#email").prop("disabled", desactivado);
@@ -173,6 +175,7 @@ function activarModal(desactivado) {
     $("#password").prop("required", desactivado);
 }
 
+//CARGAR FORM BORRAR O EDITAR
 function cargarModal(id, accion, toast, callback) {
     $.ajax({
         url: "/api/usuarios/" + id,
@@ -205,6 +208,7 @@ function cargarModal(id, accion, toast, callback) {
     });
 }
 
+//EDITAR USUARIO
 function editarUsuario(id, datos, toast, reactivar) {
     $.ajax({
         url: "/api/usuarios/editar/" + id,
@@ -229,6 +233,7 @@ function editarUsuario(id, datos, toast, reactivar) {
     })
 }
 
+//AÑADIR USUARIO
 function anadirUsuario(datos, toast) {
     $.ajax({
         url: "/api/usuarios/crear",
@@ -252,6 +257,7 @@ function anadirUsuario(datos, toast) {
     })
 }
 
+//CARGAR SELECT DE CONCESIONARIOS DEL FORM 
 function cargarConcesionarios(toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
@@ -275,6 +281,7 @@ function cargarConcesionarios(toast, callback) {
     })
 }
 
+//BORRAR USUARIO
 function borrarUsuario(id, toast) {
     $.ajax({
         url: "/api/usuarios/borrar/" + id,
@@ -295,6 +302,7 @@ function borrarUsuario(id, toast) {
     })
 }
 
+////Validaciones////
 function comprobarNombre(input) {
     const valor = input.value.trim();
     const valido = valor.length >= 3;

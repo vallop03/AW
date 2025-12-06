@@ -41,7 +41,46 @@
                     </div>
                 </div>
                 <div id="infoVehiculos">
+                </div>
+            </div>
 
+            <div class="modal fade" id="modalReserva" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tituloReserva"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="cuerpoReserva" class="modal-body">
+                            <form id="registroReserva" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="vehiculoElegido" class="form-label">Vehículo</label>
+                                        <input type="text" class="form-control" id="vehiculoElegido"
+                                            name="vehiculoElegido" disabled>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="recogida" class="form-label">Recogida* </label>
+                                        <input class="form-control" type="datetime-local" id="recogida" name="recogida"
+                                            required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce una fecha y hora de recogida posterior a la fecha
+                                            actual.
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="devolucion" class="form-label">Devolución* </label>
+                                        <input class="form-control" type="datetime-local" id="devolucion"
+                                            name="devolucion" required>
+                                        <span class="invalid-feedback" aria-live="polite">
+                                            Por favor, introduce una fecha y hora de devolución posterior a la fecha de
+                                            recogida.
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -60,7 +99,8 @@
                                         <input type="text" class="form-control" id="matricula" name="matricula"
                                             pattern="^\d{4}[A-Za-z]{3}$" placeholder="0000AAA" required>
                                         <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce una matrícula de 4 números y 3 letras.
+                                            Por favor, introduce una matrícula de 4 números y 3
+                                            letras.
                                         </span>
                                     </div>
                                     <div class="col-12">
@@ -78,7 +118,8 @@
                                         </span>
                                     </div>
                                     <div class="col-12">
-                                        <label for="ano" class="form-label">Año de matriculación*</label>
+                                        <label for="ano" class="form-label">Año de
+                                            matriculación*</label>
                                         <input type="text" class="form-control" id="ano" name="ano" maxlength="4"
                                             pattern="\d{4}" required>
                                         <span class="invalid-feedback" aria-live="polite">
@@ -88,7 +129,8 @@
                                     <div class="col-12">
                                         <label for="concesionario" class="form-label">Concesionario*</label>
                                         <select class="form-select" id="concesionario" name="concesionario" required>
-                                            <option selected disabled value="">Selecciona un concesionario</option>
+                                            <option selected disabled value="">Selecciona un
+                                                concesionario</option>
                                         </select>
                                         <span class="invalid-feedback" aria-live="polite">
                                             Por favor, selecciona un concesionario.
@@ -114,7 +156,8 @@
                                     <div class="col-12">
                                         <label for="color" class="form-label">Color*</label>
                                         <select class="form-select" id="color" name="color" required>
-                                            <option selected disabled value="">Selecciona un color</option>
+                                            <option selected disabled value="">Selecciona un color
+                                            </option>
                                             <option value="Blanco">Blanco</option>
                                             <option value="Negro">Negro</option>
                                             <option value="Gris">Gris</option>
@@ -142,6 +185,26 @@
                                         <p id="textoImagen" class="text-muted"></p>
                                         <img id="prevImagen" src="" alt="" width="200">
                                     </div>
+                                    <div id="grupoReserva" class="row">
+                                        <div class="col-md-6">
+                                            <label for="recogida" class="form-label">Recogida* </label>
+                                            <input class="form-control" type="datetime-local" id="recogida" name="recogida"
+                                                required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una fecha y hora de recogida posterior a la fecha
+                                                actual.
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="devolucion" class="form-label">Devolución* </label>
+                                            <input class="form-control" type="datetime-local" id="devolucion"
+                                                name="devolucion" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una fecha y hora de devolución posterior a la fecha de
+                                                recogida.
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -152,6 +215,8 @@
                     </div>
                 </div>
             </div>
+
+
         </main>
 
 
