@@ -20,8 +20,12 @@ router.get("/vehiculos", function(request, response){
     response.render("vehiculos");
 });
 
-router.get("/usuarios", isAdmin, function (request, response) {
+router.get("/usuarios", function (request, response) {
     response.render("usuarios");
+});
+
+router.get("/concesionarios", function(request, response){
+    response.render("concesionarios");
 });
 
 router.get("/login", function (request, response) {
