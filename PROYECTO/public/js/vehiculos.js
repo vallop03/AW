@@ -4,12 +4,19 @@ let idVehiculoSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    if ((usuarioActual && usuarioActual.rol === "admin") || !usuarioActual) {
+    if (usuarioActual && usuarioActual.rol === "admin") {
+        $("#anadirVehiculoBoton").show();
         cargarVehiculos(null, toast);
     }
-    else {
+    else if (usuarioActual && usuarioActual.rol === "empleado") {
+        $("#anadirVehiculoBoton").hide();
         cargarVehiculos(usuarioActual.id_concesionario, toast);
     }
+    else {
+        $("#anadirVehiculoBoton").hide();
+        cargarVehiculos(null, toast);
+    }
+
 
     //EDITAR
     $("#infoVehiculos").on("click", ".editButton", function (event) {
@@ -67,7 +74,6 @@ $(function () {
     //de todos los campos y despues llama a su respectiva funcion de crear/modificar o eliminar
     $("#botonModal").on("click", function (event) {
         if (modo !== "Borrando") {
-
             let valido = comprobarValidacion($("#matricula")[0]);
             valido = comprobarValidacion($("#marca")[0]) && valido;
             valido = comprobarValidacion($("#modelo")[0]) && valido;
@@ -77,6 +83,13 @@ $(function () {
             valido = comprobarValidacion($("#color")[0]) && valido;
             valido = comprobarValidacion($("#imagen")[0]) && valido;
             valido = comprobarValidacion($("#concesionario")[0]) && valido;
+            if (modo === "Reservando") {
+                valido = comprobarValidacion($("#recogida")[0]) && valido;
+                valido = comprobarValidacion($("#devolucion")[0]) && valido;
+                valido = comprobarRecogida($("#recogida")[0]) && valido;
+                valido = comprobarDevolucion($("#devolucion")[0], $("#recogida")[0]) && valido;
+                console.log(valido);
+            }
 
             if (!valido) {
                 event.preventDefault();
@@ -93,9 +106,11 @@ $(function () {
             else if (modo === "Reservando") {
                 let datos = {
                     idVehiculo: idVehiculoSeleccionado,
-                    idUsuario: usuarioActual.id_usuario
+                    idUsuario: usuarioActual.id_usuario,
+                    recogida: $("#recogida").prop("value"),
+                    devolucion: $("#devolucion").prop("value")
                 }
-                reservarVehiculo(datos, toast);
+                comprobarReservaVehiculo(datos, toast);
             }
         }
         else if (modo === "Borrando") {
@@ -140,13 +155,15 @@ $(function () {
         comprobarValidacion(this);
     });
 
-    $("#recogida").on("input change", function () {
-        console.log("que");
-        comprobarRecogida(this);
-    });
-
     $("#devolucion").on("input change", function () {
         comprobarDevolucion(this, $("#recogida")[0]);
+    });
+
+    $("#recogida").on("input change", function () {
+        comprobarRecogida(this);
+        if ($("#devolucion").val()) {
+            comprobarDevolucion($("#devolucion")[0], this);
+        }
     });
 
     $("#modalAccion").on("hide.bs.modal", function () {
@@ -154,6 +171,7 @@ $(function () {
     });
 })
 
+//CARGAR TABLA DE VEHICULOS
 function cargarVehiculos(id, toast) {
     let urlAux = "/api/vehiculos/";
     if (id) {
@@ -167,12 +185,27 @@ function cargarVehiculos(id, toast) {
             $("#infoVehiculos").empty();
             vehiculos = data.vehiculos;
             vehiculos.forEach(vehiculo => {
-                let estadoADMIN = '';
-                if (usuarioActual && usuarioActual.rol === "admin") {
-                    const estadoColor = vehiculo.estado === 'disponible' ? 'green' : 'red';
-                    const estadoIcon = vehiculo.estado === 'disponible' ? 'bi-check-circle' : 'bi-x-circle';
-                    const estadoTexto = vehiculo.estado.charAt(0).toUpperCase() + vehiculo.estado.slice(1);
-                    estadoADMIN = `<p><i class="bi ${estadoIcon}" style="color: ${estadoColor};"></i> ${estadoTexto}</p>`;
+                let botones = '';
+                if (usuarioActual) {
+                    if (usuarioActual.rol === 'admin') {
+                        // Admin puede editar, eliminar y reservar
+                        botones = `
+                            <button class="btn btn-primary btn-sm editButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                Editar <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm deleteButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                Eliminar <i class="bi bi-trash3"></i>
+                            </button>
+                            <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                Reservar <i class="bi bi-check-circle"></i>
+                            </button>`;
+                    } else if (usuarioActual.rol === 'empleado') {
+                        // Empleado solo puede reservar
+                        botones = `
+                            <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
+                                Reservar <i class="bi bi-check-circle"></i>
+                            </button>`;
+                    }
                 }
                 $("#infoVehiculos").append(`
                     <div class="card mb-3">
@@ -189,19 +222,10 @@ function cargarVehiculos(id, toast) {
                                     <p><i class="bi bi-people"></i> Plazas: ${vehiculo.numero_plazas}</p>
                                     <p><i class="bi bi-battery-half"></i> Autonomía: ${vehiculo.autonomia_km} km</p>
                                     <p><i class="bi bi-palette"></i> Color: ${vehiculo.color}</p>
-                                    ${estadoADMIN}
                                     <p class="card-text"><small class="text-muted">${vehiculo.concesionario}</small></p>
                                 </div>
                                 <div class="d-flex flex-column gap-2 mt-3 me-3">
-                                    <button class="btn btn-primary btn-sm editButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm deleteButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                    <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                        <i class="bi bi-check-circle"></i>
-                                    </button>
+                                    ${botones}
                                 </div>
                             </div>
                         </div>
@@ -216,6 +240,7 @@ function cargarVehiculos(id, toast) {
     });
 }
 
+//CREAR
 function anadirVehiculo(toast) {
     const form = $("#registroVehiculoForm")[0];
     const formData = new FormData(form);
@@ -248,6 +273,7 @@ function anadirVehiculo(toast) {
     })
 }
 
+//EDITAR
 function editarVehiculo(id, toast, reactivar) {
     const form = $("#registroVehiculoForm")[0];
     const formData = new FormData(form);
@@ -283,6 +309,7 @@ function editarVehiculo(id, toast, reactivar) {
     })
 }
 
+//BAJA DE VEHICULO
 function borrarVehiculo(id, toast) {
     $.ajax({
         url: "/api/vehiculos/borrar/" + id,
@@ -308,12 +335,52 @@ function borrarVehiculo(id, toast) {
     })
 }
 
-function reservarVehiculo(datos, toast) {
+//COMPRUEBA DISPONIBILIDAD
+function comprobarReservaVehiculo(datos, toast) {
     $.ajax({
-        url: "/api/reservas/"
+        url: "/api/reservas/comprobarFechas",
+        method: "GET",
+        data: {
+            idVehiculo: datos.idVehiculo,
+            recogida: datos.recogida,
+            devolucion: datos.devolucion
+        },
+        success: function (data, textStatus, jqXHR) {
+            if (data.reservado) {
+                $("#mensajeToast").text("Vehículo no disponible en las fechas solicitadas");
+                toast.show();
+            }
+            else {
+                reservarVehiculo(datos, toast);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
     })
 }
 
+//REALIZA LA RESERVA
+function reservarVehiculo(datos, toast) {
+    $.ajax({
+        url: "/api/reservas/reservar",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqXHR) {
+            $("#modalAccion").modal("hide");
+            $("#mensajeToast").text(data.mensaje);
+            toast.show();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
+//CARGA DEL SELECT DE CONCESIONARIOS
 function cargarConcesionarios(toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
@@ -337,6 +404,7 @@ function cargarConcesionarios(toast, callback) {
     })
 }
 
+//CARGA DEL FORM
 function cargarModal(id, accion, toast, callback) {
     $.ajax({
         url: "/api/vehiculos/" + id,
@@ -360,6 +428,8 @@ function cargarModal(id, accion, toast, callback) {
             $("#imagen").prop("value", "");
             $("#imagen").prop("disabled", disable);
             $("#grupoReserva").hide();
+            $("#recogida").prop("value", "");
+            $("#devolucion").prop("value", "");
             $("#recogida").prop("required", false);
             $("#devolucion").prop("required", false);
             cargarConcesionarios(toast, function () {
@@ -393,25 +463,6 @@ function cargarModal(id, accion, toast, callback) {
     });
 }
 
-function cargarModalReserva(id, toast, callback) {
-    $.ajax({
-        url: "/api/vehiculos/" + id,
-        method: "GET",
-        contentType: "application/json",
-        success: function (data, textStatus, jqXHR) {
-            vehiculo = data.vehiculo;
-            $("#tituloReserva").text("Reservando " + vehiculo.marca + " " + vehiculo.modelo);
-            $("#vehiculoElegido").prop("value", vehiculo.marca + " " + vehiculo.modelo);
-            callback();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
-            toast.show();
-        }
-    })
-
-}
-
 function activarModal() {
     $("#matricula").prop("disabled", false);
     $("#marca").prop("disabled", false);
@@ -424,7 +475,6 @@ function activarModal() {
     $("#color").prop("disabled", false);
     $("#imagen").prop("disabled", false);
 }
-
 
 function comprobarValidacion(input) {
     const valido = input.checkValidity();
@@ -440,31 +490,35 @@ function comprobarValidacion(input) {
 
 function comprobarRecogida(input) {
     const fechaSeleccionada = new Date(input.value);
-    const fechaActual = new Date();
-    const valido = fechaSeleccionada >= fechaActual;
-    fechaActual.setHours(0, 0, 0, 0);
+    const ahora = new Date();
+    const valido = fechaSeleccionada >= ahora;
+
     if (valido) {
-        $(input).classList.add('is-valid');
-        $(input).classList.remove('is-invalid');
+        input.classList.add("is-valid");
+        input.classList.remove("is-invalid");
+    } else {
+        input.classList.add("is-invalid");
+        input.classList.remove("is-valid");
     }
-    else {
-        $(input).classList.add('is-invalid');
-        $(input).classList.remove('is-valid');
-    }
+
     return valido;
 }
 
 function comprobarDevolucion(input, inputRecogida) {
     const fechaRecogida = new Date(inputRecogida.value);
     const fechaDevolucion = new Date(input.value);
-    const valido = fechaDevolucion > fechaRecogida;
+
+    let valido = true;
+    if (inputRecogida.value != "")
+        valido = fechaDevolucion > fechaRecogida;
+
     if (valido) {
-        $(input).classList.add('is-valid');
-        $(input).classList.remove('is-invalid');
+        input.classList.add("is-valid");
+        input.classList.remove("is-invalid");
+    } else {
+        input.classList.add("is-invalid");
+        input.classList.remove("is-valid");
     }
-    else {
-        $(input).classList.add('is-invalid');
-        $(input).classList.remove('is-valid');
-    }
+
     return valido;
 }

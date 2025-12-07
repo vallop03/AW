@@ -56,6 +56,9 @@ app.use("/api/concesionarios", apiConcesionarios);
 const apiVehiculos = require("./routes/api/vehiculos");
 app.use("/api/vehiculos", apiVehiculos);
 
+const apiReservas = require("./routes/api/reservas");
+app.use("/api/reservas", apiReservas);
+
 
 // Server
 app.listen(PORT, () => {
