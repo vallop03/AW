@@ -7,6 +7,7 @@ const DAOUsuario = require('../db/daos/daoUsuario');
 const pool = require('../db/connection');
 
 const daoUsuario = new DAOUsuario(pool);
+//const daoConcesionario = new DAOConcesionario(pool);
 
 router.get("/", function (request, response) {
     response.render("index");
@@ -20,11 +21,11 @@ router.get("/vehiculos", function(request, response){
     response.render("vehiculos");
 });
 
-router.get("/usuarios", function (request, response) {
+router.get("/usuarios", isAdmin, function (request, response) {
     response.render("usuarios");
 });
 
-router.get("/concesionarios", function(request, response){
+router.get("/concesionarios", isAdmin, function(request, response){
     response.render("concesionarios");
 });
 

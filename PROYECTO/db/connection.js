@@ -4,7 +4,7 @@ const pool = mysql.createPool({
     port: 3307,                // Puerto (por defecto 3306)
     user: 'root',              // Usuario de la base de datos
     password: '',   // Contraseña
-    database: 'carricoche_bd',       // Nombre de la base de datos
+    database: 'cbd',       // Nombre de la base de datos
 
     // Parámetros del pool
     connectionLimit: 10,       // Máximo de conexiones simultáneas en el pool
