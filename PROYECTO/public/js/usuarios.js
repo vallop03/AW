@@ -42,6 +42,7 @@ $(function () {
         $("#tituloModal").text("Creando usuario");
         activarModal(false); //hace que los campos del form se activen para escribir
         $("#botonModal").text("Añadir");
+        $("#botonModal").prop("aria-label", "Añadir usuario");
         $("#grupoPassword").show(); //hace que el campo de contraseña sea visible para escribir
         $("#password").prop("required", true);
         $("#registroUsuarioForm")[0].reset(); //para limpiar el form
@@ -145,12 +146,12 @@ function cargarUsuarios(toast) {
                         <td>${usuario.concesionario}</td>
                         <td>${usuario.ciudad}</td>
                         <td>
-                            <button class="btn btn-primary editButton" type="button" data-id_usuario="${usuario.id_usuario}">
+                            <button class="btn btn-primary editButton" type="button" aria-label="Editar a ${usuario.nombre}" data-id_usuario="${usuario.id_usuario}">
                                 <i class="bi bi-pencil"></i>
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-danger deleteButton" type="button" data-id_usuario="${usuario.id_usuario}">
+                            <button class="btn btn-danger deleteButton" type="button" aria-label="Eliminar a ${usuario.nombre}" data-id_usuario="${usuario.id_usuario}">
                                 <i class="bi bi-trash3"></i>
                             </button>
                         </td>
@@ -184,7 +185,7 @@ function cargarModal(id, accion, toast, callback) {
         success: function (data, textStatus, jqXHR) {
             usuario = data.usuario;
             disable = accion === "Borrando";
-            cargarConcesionarios(toast, function(){
+            cargarConcesionarios(toast, function () {
                 $("#concesionario").prop("value", usuario.id_concesionario).prop("disabled", disable);
             });
             $("#tituloModal").text(accion + " a " + usuario.nombre);
@@ -195,9 +196,11 @@ function cargarModal(id, accion, toast, callback) {
             $("#password").prop("required", disable);
             if (disable) {
                 $("#botonModal").text("Borrar");
+                $("#botonModal").prop("aria-label", "Borrar a " + usuario.nombre);
             }
             else {
                 $("#botonModal").text("Editar");
+                $("#botonModal").prop("aria-label", "Editar a " + usuario.nombre);
             }
             callback();
         },

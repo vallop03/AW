@@ -60,6 +60,8 @@ $(function () {
         $("#grupoImagen").show();
         activarModal();
         $("#botonModal").text("Añadir");
+        $("#botonModal").prop("aria-label", "Añadir vehículo");
+        $("#botonModal").prop("title", "Añadir");
         $("#imagen").prop("required", true);
         $("#grupoReserva").hide();
         $("#recogida").prop("required", false);
@@ -441,9 +443,13 @@ function cargarModal(id, accion, toast, callback) {
                 $("#textoImagen").text("Imagen actual");
                 if (accion === "Borrando") {
                     $("#botonModal").text("Borrar");
+                    $("#botonModal").prop("aria-label", "Borrar " + vehiculo.marca + " " + vehiculo.modelo);
+                    $("#botonModal").prop("title", "Borrar");
                 }
                 else {
                     $("#botonModal").text("Reservar");
+                    $("#botonModal").prop("aria-label", "Reservar " + vehiculo.marca + " " + vehiculo.modelo);
+                    $("#botonModal").prop("title", "Reservar");
                     $("#grupoReserva").show();
                     $("#recogida").prop("required", true);
                     $("#devolucion").prop("required", true);
@@ -453,6 +459,8 @@ function cargarModal(id, accion, toast, callback) {
                 $("#grupoImagen").show();
                 $("#textoImagen").text("Imagen anterior");
                 $("#botonModal").text("Editar");
+                $("#botonModal").prop("aria-label", "Editar " + vehiculo.marca + " " + vehiculo.modelo);
+                $("#botonModal").prop("title", "Editar");
             }
             callback();
         },
