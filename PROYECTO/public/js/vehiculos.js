@@ -1,6 +1,7 @@
 let modo = "Editando";
 let idVehiculoSeleccionado = null;
 let vehiculos = [];
+let archivoJSON = null;
 
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
@@ -76,6 +77,7 @@ $(function () {
         });
     });
 
+    //AÑADIR POR JSON
     $("#anadirVehiculoJSON").on("click", function (event) {
         $("#formJSON .is-valid, #formJSON .is-invalid").removeClass("is-valid is-invalid");
         $("#carga").prop("value", "");
@@ -101,7 +103,6 @@ $(function () {
                 valido = comprobarValidacion($("#devolucion")[0]) && valido;
                 valido = comprobarRecogida($("#recogida")[0]) && valido;
                 valido = comprobarDevolucion($("#devolucion")[0], $("#recogida")[0]) && valido;
-                console.log(valido);
             }
 
             if (!valido) {
@@ -131,11 +132,24 @@ $(function () {
         }
     });
 
+    $("#botonJSON").on("click", function (event) {
+        const valido = comprobarValidacion($("#carga")[0]);
+        if (!valido) {
+            event.preventDefault();
+            event.stopPropagation();
+            $("#mensajeToast").text("Algunos campos no son válidos.");
+            toast.show();
+        }
+        else {
+            parsearArchivo(toast);
+        }
+    });
+
     $("#filtroAutonomia, #filtroPlazas, #filtroColor").on("input change", function () {
         aplicarFiltros();
     });
 
-    //comprobacion en vivo de los campos
+    //VALIDACIONES A TIEMPO REAL
     $("#matricula").on("input", function () {
         comprobarValidacion(this);
     });
@@ -183,10 +197,130 @@ $(function () {
         }
     });
 
+    //CARGAR EL ARCHIVO
+    $("#carga").on("change", function (event) {
+        archivoJSON = event.target.files[0];
+    });
+
     $("#modalAccion").on("hide.bs.modal", function () {
         $(this).find(":focus").blur();
     });
 })
+
+function parsearArchivo(toast) {
+    console.log("parseando");
+    if (!archivoJSON) {
+        $("#mensajeToast").text("No se ha seleccionado ningún fichero");
+        toast.show();
+        return;
+    }
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        try {
+            const data = JSON.parse(event.target.result);
+            console.log("JSON parseado:", data);
+
+            cargarVehiculosDesdeJSON(data, toast);
+
+        } catch (err) {
+            $("#mensajeToast").text("El formato del fichero no es adecuado");
+            toast.show();
+        }
+    };
+
+    reader.readAsText(archivoJSON);
+}
+
+function cargarVehiculosDesdeJSON(data, toast) {
+    if (Array.isArray(data)) {
+        $("#mensajeToast").text("Solo se permite un vehículo por archivo JSON.");
+        toast.show();
+        return;
+    } else {
+        procesarVehiculo(data, toast);
+    }
+}
+
+function procesarVehiculo(vehiculo, toast) {
+    $.ajax({
+        url: "/api/vehiculos/matricula/" + vehiculo.matricula,
+        method: "GET",
+        success: function (data, textStatus, jqXHR) {
+            if (data.existeVehiculo) {
+                let info = {
+                    id: data.existeVehiculo.id_vehiculo,
+                    datos: vehiculo
+                };
+                $("#cuerpoConfirmacion").append(
+                    "<p>El vehículo con matrícula <strong>" + vehiculo.matricula + "</strong> ya existe. ¿Deseas actualizar sus datos?</p>"
+                );
+                $("#cargarJSON").modal("hide");
+                $("#confirmacionCambio").modal("show");
+                $("#botonAceptar").on("click", function (event) {
+                    $("#confirmacionCambio").modal("hide");
+                    editarVehiculoPorJSON(info.id, info.datos, toast, false);
+                });
+                $("#botonRechazar").on("click", function (event) {
+                    $("#confirmacionCambio").modal("hide");
+                });
+            }
+            else {
+                anadirVehiculoPorJSON(vehiculo, toast);
+            }
+            $("#cargarJSON").modal("hide");
+            cargarVehiculos();
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+
+}
+
+function anadirVehiculoPorJSON(vehiculo, toast) {
+    $.ajax({
+        url: "/api/vehiculos/crearJSON",
+        method: "POST",
+        data: JSON.stringify(vehiculo),
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            if (data.id && data.id > 0) {
+                editarVehiculoPorJSON(data.id, vehiculo, toast, true);
+            }
+            else {
+                $("#mensajeToast").text(data.mensaje);
+                toast.show();
+            }
+            cargarVehiculos(null, toast);
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
+
+function editarVehiculoPorJSON(id, datos, toast, reactivar) {
+    $.ajax({
+        url: "/api/vehiculos/editarJSON/" + id,
+        method: "PUT",
+        data: JSON.stringify(datos),
+        contentType: "application/json",
+        success: function (data, textStatus, jqXHR) {
+            cargarVehiculos(null, toast);
+            $("#mensajeToast").text(data.mensaje);
+            toast.show();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+            toast.show();
+        }
+    })
+}
 
 //CARGAR TABLA DE VEHICULOS
 function cargarVehiculos(id, toast) {
@@ -199,56 +333,11 @@ function cargarVehiculos(id, toast) {
         method: "GET",
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
-            $("#infoVehiculos").empty();
+            $("#filtroAutonomia").prop("value", "");
+            $("#filtroPlazas").prop("value", "");
+            $("#filtroColor").prop("value", "");
             vehiculos = data.vehiculos;
-            vehiculos.forEach(vehiculo => {
-                let botones = '';
-                if (usuarioActual) {
-                    if (usuarioActual.rol === 'admin') {
-                        // Admin puede editar, eliminar y reservar
-                        botones = `
-                            <button class="btn btn-primary btn-sm editButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                Editar <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm deleteButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                Eliminar <i class="bi bi-trash3"></i>
-                            </button>
-                            <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                Reservar <i class="bi bi-check-circle"></i>
-                            </button>`;
-                    } else if (usuarioActual.rol === 'empleado') {
-                        // Empleado solo puede reservar
-                        botones = `
-                            <button class="btn btn-success btn-sm reserveButton" type="button" data-id_vehiculo="${vehiculo.id_vehiculo}">
-                                Reservar <i class="bi bi-check-circle"></i>
-                            </button>`;
-                    }
-                }
-                $("#infoVehiculos").append(`
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                <img src="${vehiculo.imagen}" class="img-fluid rounded-start"
-                                    alt="${vehiculo.marca} ${vehiculo.modelo}">
-                            </div>
-                            <div class="col-md-8 d-flex justify-content-between align-items-start">
-                                <div class="card-body">
-                                    <h5 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h5>
-                                    <p><i class="bi bi-card-text"></i> Matrícula: ${vehiculo.matricula}</p>
-                                    <p><i class="bi bi-calendar"></i> Año: ${vehiculo.ano_matriculacion}</p>
-                                    <p><i class="bi bi-people"></i> Plazas: ${vehiculo.numero_plazas}</p>
-                                    <p><i class="bi bi-battery-half"></i> Autonomía: ${vehiculo.autonomia_km} km</p>
-                                    <p><i class="bi bi-palette"></i> Color: ${vehiculo.color}</p>
-                                    <p class="card-text"><small class="text-muted">${vehiculo.concesionario}</small></p>
-                                </div>
-                                <div class="d-flex flex-column gap-2 mt-3 me-3">
-                                    ${botones}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            });
+            mostrarVehiculos(data.vehiculos);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -268,7 +357,6 @@ function anadirVehiculo(toast) {
         processData: false,
         contentType: false,
         success: function (data, textStatus, jqXHR) {
-            console.log("llego al success del ajax");
             $("#modalAccion").modal("hide");
             if (data.id && data.id > 0) {
                 editarVehiculo(data.id, toast, true);
@@ -276,12 +364,8 @@ function anadirVehiculo(toast) {
                 $("#mensajeToast").text(data.mensaje);
                 toast.show();
             }
-            if (usuarioActual && usuarioActual.rol === "admin") {
-                cargarVehiculos(null, toast);
-            }
-            else {
-                cargarVehiculos(usuarioActual.id_concesionario, toast);
-            }
+            cargarVehiculos(null, toast);
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -312,12 +396,9 @@ function editarVehiculo(id, toast, reactivar) {
                 $("#mensajeToast").text(data.mensaje);
             }
             toast.show();
-            if (usuarioActual && usuarioActual.rol === "admin") {
-                cargarVehiculos(null, toast);
-            }
-            else {
-                cargarVehiculos(usuarioActual.id_concesionario, toast);
-            }
+            cargarVehiculos(null, toast);
+
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -336,12 +417,8 @@ function borrarVehiculo(id, toast) {
             $("#modalAccion").modal("hide");
             $("#mensajeToast").text(data.mensaje);
             toast.show();
-            if (usuarioActual && usuarioActual.rol === "admin") {
-                cargarVehiculos(null, toast);
-            }
-            else {
-                cargarVehiculos(usuarioActual.id_concesionario, toast);
-            }
+            cargarVehiculos(null, toast);
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (toast) {
@@ -494,7 +571,6 @@ function activarModal() {
     $("#concesionario").prop("disabled", false);
     $("#plazas").prop("disabled", false);
     $("#autonomia").prop("disabled", false);
-    $("#color").prop("disabled", false);
     $("#color").prop("disabled", false);
     $("#imagen").prop("disabled", false);
 }

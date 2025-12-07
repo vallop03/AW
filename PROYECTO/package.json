@@ -1,13 +1,13 @@
 {
     "name": "carri-coche-renting-app",
     "version": "1.0.0",
-    "description": "Aplicación web desarrollada con Node.js y Express.js basada en el portal EcoMarket",
+    "description": "Aplicación web desarrollada con Node.js y Express.js basada en el alquiler de coches electricos",
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
         "dev": "nodemon index.js"
     },
-    "author": "Alumno EcoMarket",
+    "author": "Valeria Lopez Taboada y Adriana Karpenstein Aleman",
     "license": "MIT",
     "dependencies": {
         "bcrypt": "^6.0.0",

@@ -23,6 +23,7 @@ router.post("/crear", function (request, response) {
             return response.status(500).json({ error: "Error procesando los datos" });
         }
         const { matricula, marca, modelo, ano, plazas, autonomia, color, concesionario } = request.body;
+
         const file = request.file;
         const ruta = "/img/uploads/" + file.filename;
         daoVehiculo.crearVehiculo(matricula, marca, modelo, ano, plazas, autonomia, color, ruta, concesionario, function (err, resultado) {
@@ -75,7 +76,7 @@ router.put("/editar/:id", function (request, response) {
 
 router.put("/borrar/:id", function (request, response) {
     const id = request.params.id;
-    daoVehiculo.eliminarVehiculo(id, function(err, resultado){
+    daoVehiculo.eliminarVehiculo(id, function (err, resultado) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
@@ -85,6 +86,61 @@ router.put("/borrar/:id", function (request, response) {
             response.status(404).json({ error: "Vehículo no encontrado" });
         }
     });
+});
+
+router.post("/crearJSON", function (request, response) {
+    const { matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario } = request.body;
+    if (!matricula || !marca || !modelo || !ano_matriculacion || !numero_plazas || !autonomia_km || !color || !imagen || !id_concesionario) {
+        return response.status(500).json({ error: "Los campos no han sido rellenados adecuadamente" });
+    }
+    else {
+        daoVehiculo.crearVehiculo(matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario, function (err, resultado) {
+            if (err) {
+                return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+            }
+            if (resultado.estado === -1) {
+                return response.json({ mensaje: "Ya existe un vehículo asociado a esa matrícula", id: resultado.id_inactivo });
+            }
+            else if (resultado.estado > 0) {
+                return response.json({ mensaje: "Vehículo creado correctamente" });
+            }
+            else {
+                return response.status(500).json({ error: "Error interno del servidor" });
+            }
+        });
+    }
+});
+
+router.get("/matricula/:matricula", function (request, response) {
+    const matricula = request.params.matricula;
+    daoVehiculo.verificarPorMatricula(matricula, function (err, existeVehiculo) {
+        if (err) {
+            return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+        }
+        return response.json({ existeVehiculo: existeVehiculo });
+    });
+});
+
+router.put("/editarJSON/:id", function (request, response) {
+    const id = request.params.id;
+    const { matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario } = request.body;
+    if (!matricula || !marca || !modelo || !ano_matriculacion || !numero_plazas || !autonomia_km || !color || !imagen || !id_concesionario) {
+        return response.status(500).json({ error: "Error actualizando con JSON" });
+    }
+    else {
+        daoVehiculo.editarVehiculo(id, matricula, marca, modelo, ano_matriculacion, numero_plazas, autonomia_km, color, imagen, id_concesionario, function (err, resultado) {
+            if (err) {
+                return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
+            }
+            if (resultado === 1) {
+                return response.json({ mensaje: "Vehículo actualizado correctamente" });
+            }
+            else {
+                return response.status(404).json({ error: "Vehículo no encontrado" });
+            }
+
+        });
+    }
 });
 
 router.get("/:id", function (request, response) {

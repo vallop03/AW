@@ -28,7 +28,6 @@ class DAOVehiculo {
         };
         this.verificarPorMatricula(matricula, (err, existeVehiculo) => {
             if (err) {
-
                 return callback(err);
             }
             if (existeVehiculo) {
@@ -86,7 +85,7 @@ class DAOVehiculo {
         });
     }
 
-    eliminarVehiculo(id, callback){
+    eliminarVehiculo(id, callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
                 return callback(err);
@@ -128,7 +127,7 @@ class DAOVehiculo {
                 return callback(err);
             }
             else {
-                const consulta = "SELECT id_vehiculo, matricula, activo FROM vehiculos WHERE matricula = ?";
+                const consulta = "SELECT * FROM vehiculos WHERE matricula = ?";
                 matricula = matricula.toUpperCase();
                 conexion.query(consulta, [matricula], function (err, rows) {
                     conexion.release();

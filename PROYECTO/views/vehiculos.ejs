@@ -92,7 +92,8 @@
                         <div id="cuerpoJSON" class="modal-body">
                             <form id="formJSON" novalidate>
                                 <label for="carga" class="form-label">Archivo JSON*</label>
-                                <input type="file" class="form-control" id="carga" name="carga" accept=".json" required>
+                                <input type="file" class="form-control" id="carga" name="carga" accept=".json, .txt"
+                                    required>
                                 <span class="invalid-feedback" aria-live="polite">
                                     Por favor, introduce un archivo JSON válido
                                 </span>
@@ -105,6 +106,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="confirmacionCambio" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tituloConfirmacion">Vehículo existente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="cuerpoConfirmacion" class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="botonRechazar" type="button" class="btn btn-danger">Rechazar</button>
+                            <button id="botonAceptar" type="button" class="btn btn-primary">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">

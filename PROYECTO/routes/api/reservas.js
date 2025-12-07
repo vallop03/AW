@@ -6,7 +6,6 @@ const pool = require('../../db/connection');
 const daoReserva = new DAOReserva(pool);
 
 router.get("/idUsuario/:id", function (request, response) {
-    console.log("ENTRO EN LA API")
     const id = request.params.id;
     daoReserva.consultarReservasPorUsuario(id, (err, rows) => {
         if (err) {

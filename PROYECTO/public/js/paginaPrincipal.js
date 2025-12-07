@@ -22,7 +22,6 @@ $(function () {
 
     // Botón para cambiar a tema oscuro
     $("#tema-oscuro").on("click", function () {
-        console.log("modo oscuro activando");
         body.addClass("dark-mode");
         if (table) {
             table.addClass("table-dark");
@@ -58,14 +57,11 @@ function cargarTema() {
     const body = $("body");
     const table = $("table");
 
-    console.log("cargando tema");
     $.ajax({
         url: "/api/preferencias/tema",
         method: "GET",
         contentType: "application/json",
         success: function (data) {
-            console.log(data);
-            console.log(data.tema);
             if (data.tema === "oscuro") {
                 body.addClass("dark-mode");
                 if (table) {
