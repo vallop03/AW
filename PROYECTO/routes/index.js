@@ -4,9 +4,11 @@ const router = express.Router();
 const requireLogin = require('../middlewares/login');
 const isAdmin = require('../middlewares/isAdmin');
 const DAOUsuario = require('../db/daos/daoUsuario');
+//const DAOConcesionario = require('../db/daos/daoConcesionario');
 const pool = require('../db/connection');
 
 const daoUsuario = new DAOUsuario(pool);
+//const daoConcesionario = new DAOConcesionario(pool);
 
 router.get("/", function (request, response) {
     response.render("index");

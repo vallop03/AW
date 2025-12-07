@@ -39,10 +39,10 @@
                     <div>
                         <button class="btn btn-primary" id="anadirConcesionarioBoton">
                             <i class="bi bi-plus"></i> Añadir concesionario
-                        </button>
+                        </button><!--
                         <button class="btn btn-primary" id="anadirPorJSONBoton">
                             <i class="bi bi-plus"></i> Añadir con JSON
-                        </button>
+                        </button>-->
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -54,7 +54,9 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Ciudad</th>
                                 <th scope="col">Dirección</th>
-                                <th scope="col">Teléfono</th>
+                                <th scope="col">Teléfono</th>                                
+                                <th scope="col">Editar</th>
+                                <th scope="col">Borrar</th>
                             </tr>
                         </thead>
                         <tbody id="infoConcesionarios">
@@ -64,39 +66,39 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalAccionC" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalAccion_c" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="tituloModal"></h5>
+                            <h5 class="modal-title" id="tituloModal_c"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="cuerpoModal" class="modal-body">
                             <form id="registroConcesionarioForm" novalidate>
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre*</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="nombre_c" name="nombre" required>
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce un nombre válido con más de 2 carácteres.
                                     </span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="ciudad" class="form-label">Ciudad*</label>
-                                    <input type="ciudad" class="form-control" id="ciudad" name="ciudad" required>
+                                    <input type="text" class="form-control" id="ciudad_c" name="ciudad" required>
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce una ciudad válida. 
                                     </span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dir" class="form-label">Direccion*</label>
-                                    <input id="dir" type="text" class="form-control" name="dir">
+                                    <input id="dir_c" type="text" class="form-control" name="dir_c">
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce una direccion válida.
                                     </span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="tel" class="form-label">Teléfono de contacto*</label>
-                                    <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}">
+                                    <input id="tel_c" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce un número de teléfono válido de 9 dígitos.
                                     </span>
@@ -105,7 +107,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button id="botonModal" type="button" class="btn btn-primary"></button>
+                            <button id="botonModal_c" type="button" class="btn btn-primary"></button>
                         </div>
                     </div>
                 </div>
@@ -116,8 +118,7 @@
         <script src="js/paginaPrincipal.js"></script>
         <!-- <script>
             const usuarioActual = JSON.parse('<%- JSON.stringify(usuario) %>');
-        </script>
-        <script src="js/concesionarios.js"></script> -->
+        </script> -->
         <script src="js/concesionarios.js"></script>
 
 </body>
