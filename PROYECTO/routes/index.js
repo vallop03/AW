@@ -4,7 +4,6 @@ const router = express.Router();
 const requireLogin = require('../middlewares/login');
 const isAdmin = require('../middlewares/isAdmin');
 const DAOUsuario = require('../db/daos/daoUsuario');
-//const DAOConcesionario = require('../db/daos/daoConcesionario');
 const pool = require('../db/connection');
 
 const daoUsuario = new DAOUsuario(pool);
@@ -22,11 +21,11 @@ router.get("/vehiculos", function(request, response){
     response.render("vehiculos");
 });
 
-router.get("/usuarios", function (request, response) {
+router.get("/usuarios", isAdmin, function (request, response) {
     response.render("usuarios");
 });
 
-router.get("/concesionarios", function(request, response){
+router.get("/concesionarios", isAdmin, function(request, response){
     response.render("concesionarios");
 });
 
