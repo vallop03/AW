@@ -59,6 +59,9 @@ app.use("/api/vehiculos", apiVehiculos);
 const apiReservas = require("./routes/api/reservas");
 app.use("/api/reservas", apiReservas);
 
+const apiPreferencias = require("./routes/api/preferencias");
+app.use("/api/preferencias", apiPreferencias);
+
 
 // Server
 app.listen(PORT, () => {

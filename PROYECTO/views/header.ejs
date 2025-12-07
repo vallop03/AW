@@ -73,16 +73,17 @@
                     <li>
                         <h6 class="dropdown-header">Tema</h6>
                     </li>
-                    <li><a id="tema-claro" class="dropdown-item" href="#">Claro</a></li>
-                    <li><a id="tema-oscuro" class="dropdown-item" href="#">Oscuro</a></li>
+                    <li><a id="tema-claro" class="dropdown-item" href="">Claro</a></li>
+                    <li><a id="tema-oscuro" class="dropdown-item" href="">Oscuro</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <h6 class="dropdown-header">Idioma</h6>
+                        <h6 class="dropdown-header">Tamaño de fuente</h6>
                     </li>
-                    <li><a class="dropdown-item" href="#">Español</a></li>
-                    <li><a class="dropdown-item" href="#">Inglés</a></li>
+                    <li><a id="fuente-pequena" class="dropdown-item" href="">Pequeña</a></li>
+                    <li><a id="fuente-normal" class="dropdown-item" href="">Normal</a></li>
+                    <li><a id="fuente-grande" class="dropdown-item" href="">Grande</a></li>
                 </ul>
                 </li>
             
@@ -100,6 +101,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><span class="dropdown-item-text text-muted"><%= usuario.nombre %></span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a id="miPerfil" class="dropdown-item" href="">Mi perfil</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
                         </ul>
