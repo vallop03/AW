@@ -3,7 +3,7 @@ let idConcesionarioSeleccionado = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
-    cargarConcesionarios(toast);
+    cargarConcesionarios(true, toast);
 
     ////////////////PARTE DE LA PRIMERA VISTA (LA TABLA)/////////////
 
@@ -29,7 +29,7 @@ $(function () {
         }
     });
 
-    //Cuando se le da a crear usuario
+    //Cuando se le da a crear concesionario
     $("#anadirConcesionarioBoton").on("click", function (event) {
         $("#registroConcesionarioForm .is-valid, #registroConcesionarioForm .is-invalid").removeClass("is-valid is-invalid");
         modo = "anadir";
@@ -61,7 +61,8 @@ $(function () {
                 let fallosDetalle = [];
 
                 if (!Array.isArray(lista)) {
-                    alert("El archivo debe contener una lista JSON.");
+                    $("#mensajeToast").text("El archivo debe contener una lista JSON.");
+                    toast.show();
                     return;
                 }
 
@@ -74,7 +75,7 @@ $(function () {
                     };
 
                     if (comprobarValidacionJSON(datos)) {
-                        anadirConcesionario(datos, toast);
+                        anadirConcesionario(datos, false, toast);
                         exitos++;
 
                     } else {
@@ -84,11 +85,11 @@ $(function () {
                 });
 
                 //Resumen importaciones
-                let mensajeResumen = `Importación finalizada.\nConcesionarios añadidos: ${exitos}\nConcesionarios inválidos: ${fallos}`;
+                let mensajeResumen = `Concesionarios añadidos: ${exitos} \n\n Concesionarios inválidos: ${fallos}`;
                 if (fallosDetalle.length > 0) {
-                    mensajeResumen += `\nFallo en: ${fallosDetalle.join(", ")}`;
+                    mensajeResumen += `\n Concesionarios inválidos: ${fallosDetalle.join(", ")}`;
                 }
-                $("#mensajeToast").html(mensajeResumen);
+                $("#mensajeToast").text(mensajeResumen);
                 toast.show();
 
             } catch (err) {
@@ -129,7 +130,7 @@ $(function () {
             editarConcesionario(idConcesionarioSeleccionado, datos, toast, false);
         }
         else if (modo === "anadir") {
-            anadirConcesionario(datos, toast);
+            anadirConcesionario(datos, true, toast);
         }
         else if (modo === "Borrando") {
             borrarConcesionario(idConcesionarioSeleccionado, toast);
@@ -154,7 +155,7 @@ $(function () {
     });
 })
 
-function cargarConcesionarios(toast) {
+function cargarConcesionarios(singular, toast) {
     $.ajax({
         url: "/api/concesionarios/",
         method: "GET",
@@ -194,8 +195,10 @@ function cargarConcesionarios(toast) {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
-            toast.show();
+            if(singular){
+                $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+                toast.show();
+            }
         }
     });
 }
@@ -249,7 +252,7 @@ function editarConcesionario(id, datos, toast, reactivar) {
                 $("#mensajeToast").text(data.mensaje);
             }
             toast.show();
-            cargarConcesionarios(toast);
+            cargarConcesionarios(true, toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
@@ -258,7 +261,7 @@ function editarConcesionario(id, datos, toast, reactivar) {
     })
 }
 
-function anadirConcesionario(datos, toast) {
+function anadirConcesionario(datos, singular, toast) {
     $.ajax({
         url: "/api/concesionarios/crear",
         method: "POST",
@@ -266,16 +269,17 @@ function anadirConcesionario(datos, toast) {
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion_c").modal("hide");
-            if (toast) {
+            if (toast && singular) {
                 $("#mensajeToast").text(data.mensaje);
                 toast.show();
             }
-            cargarConcesionarios(toast);
+            cargarConcesionarios(singular, toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
-            toast.show();
-
+            if(singular){
+                $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
+                toast.show();
+            }
         }
     })
 }
@@ -289,7 +293,7 @@ function borrarConcesionario(id, toast) {
             $("#modalAccion_c").modal("hide");
             $("#mensajeToast").text(data.mensaje);
             toast.show();
-            cargarConcesionarios(toast);
+            cargarConcesionarios(true, toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (toast) {
