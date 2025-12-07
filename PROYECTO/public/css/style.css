@@ -16,9 +16,10 @@ body.dark-mode {
 }
 
 .titulo {
-    background-color: #000000;
-    color: white;
+    background-color: white;
+    color: rgb(51, 38, 59);
     padding: 20px;
+    text-align: center;
 }
 
 body.dark-mode .titulo {
@@ -46,11 +47,11 @@ a {
 }
 
 .navbar {
-    background-color: #6610f2;
+    background-color:rgb(51, 38, 59);
 }
 
 .navbar {
-    background-color: #6610f2;
+    background-color: rgb(51, 38, 59);
     z-index: 1000;
 }
 
@@ -67,6 +68,14 @@ a {
 
 .toast-overlay {
     z-index: 9999 !important;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.accordion-body {
+    text-align: left;
 }
 
 #registerResultToast .toast {
