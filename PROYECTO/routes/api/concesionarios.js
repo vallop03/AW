@@ -16,7 +16,6 @@ router.get("/", function (request, response) {
 
 router.post("/crear", function (request, response) {
     const { nombre, ciudad, direccion, telefono} = request.body;
-    console.log("BODY recibido:", request.body);
     daoConcesionario.crearConcesionario(nombre, ciudad, direccion, telefono, function (err, resultado) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });

@@ -40,6 +40,67 @@ $(function () {
         $("#modalAccion_c").modal("show");
     });
 
+    //Cuando se le da a anadir por JSON
+    $("#anadirPorJSONBoton").on("click", function (event) {
+        $("#inputJSON").click();  // abre el selector de archivos
+    });
+
+    // Leer el archivo JSON cuando se seleccione
+    $("#inputJSON").on("change", function (event) {
+        const archivo = event.target.files[0];
+        if (!archivo) return;
+
+        const lector = new FileReader();
+
+        lector.onload = function(e) {
+            try {
+                const lista = JSON.parse(e.target.result);
+                
+                let exitos = 0;
+                let fallos = 0;
+                let fallosDetalle = [];
+                
+                if (!Array.isArray(lista)) {
+                    alert("El archivo debe contener una lista JSON.");
+                    return;
+                }
+
+                lista.forEach(concesionario => { //Se añaden los concesionarios uno a uno
+                    const datos = {
+                        nombre: concesionario.nombre || "",
+                        ciudad: concesionario.ciudad || "",
+                        direccion: concesionario.direccion || "",
+                        telefono: concesionario.telefono_contacto || ""
+                    };
+
+                    if (comprobarValidacionJSON(datos)) {
+                        anadirConcesionario(datos, toast);
+                        toast.hide();
+                        exitos++;
+
+                    } else {
+                        fallos++;
+                        fallosDetalle.push(datos.nombre || "Sin nombre");
+                    }
+                });
+
+                //Resumen importaciones
+                let mensajeResumen = `Importación finalizada.\nConcesionarios añadidos: ${exitos}\nConcesionarios inválidos: ${fallos}`;
+                if(fallosDetalle.length > 0){
+                    mensajeResumen += `\nFallo en: ${fallosDetalle.join(", ")}`;
+                }
+                $("#mensajeToast").html(mensajeResumen);
+                toast.show();
+
+            } catch (err) {
+                $("#mensajeToast").text("Algo ha salido mal leyendo el JSON: " + err.message);
+                toast.show();
+            }
+        };
+
+        lector.readAsText(archivo);
+    });
+
      /////////////PARTE DEL MODAL/////////////
 
     //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
@@ -125,7 +186,6 @@ function cargarConcesionarios(toast) {
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
             toast.show();
-            console.log('holees');
         }
     });
 }
@@ -190,7 +250,6 @@ function editarConcesionario(id, datos, toast, reactivar) {
 }
 
 function anadirConcesionario(datos, toast) {
-    console.log('hola', datos);
     $.ajax({
         url: "/api/concesionarios/crear",
         method: "POST",
@@ -253,4 +312,12 @@ function comprobarValidacion(input) {
         input.classList.remove('is-valid');
     }
     return valido;
+}
+
+function comprobarValidacionJSON(input) {
+    if (!input.nombre || input.nombre.trim().length < 3) return false;
+    if (!input.ciudad || input.ciudad.trim() === "") return false;
+    if (!input.direccion || input.direccion.trim() === "") return false;
+    if (!/^\d{9}$/.test(input.telefono || "")) return false;
+    return true;
 }
