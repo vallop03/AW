@@ -11,10 +11,9 @@ body {
 }
 
 .titulo {
-    background-color: white;
-    color: rgb(51, 38, 59);
+    background-color: #000000;
+    color: white;
     padding: 20px;
-    text-align: center;
 }
 
 
@@ -24,11 +23,7 @@ a {
 }
 
 .navbar {
-    background-color:rgb(51, 38, 59);
-}
-
-.navbar {
-    background-color: rgb(51, 38, 59);
+    background-color: #763fcd;
     z-index: 1000;
 }
 
@@ -38,12 +33,19 @@ a {
 }
 
 .navbar .nav-link:hover {
-    background-color: #945cf05f;
+    background-color: #ba96f35f;
     border-radius: 5%;
 }
 
 .toast-overlay {
     z-index: 9999 !important;
+}
+
+#registerResultToast .toast {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.3);
+    min-width: 250px;
 }
 
 .center-text {
@@ -54,27 +56,20 @@ a {
     text-align: left;
 }
 
-#registerResultToast .toast {
-    background-color: #ffffff;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.3);
-    min-width: 250px;
+/*MODO OSCURO*/
+body.dark-mode .card {
+    background-color: #141414 !important;
+    color: #fff;            
 }
 
-/*MODO OSCURO*/
 body.dark-mode {
-    background-color: #000000;
+    background-color: #000000 !important;
     color: white;
 }
 
 body.dark-mode .titulo {
-    background-color: #2f096c;
+    background-color: #250951;
     color: #ffffff;
-}
-
-body.dark-mode .card {
-    background-color: #212222;
-    color: #fff;            
 }
 
 body.dark-mode .modal-content {
@@ -91,6 +86,7 @@ body.dark-mode .modal-footer {
 body.dark-mode .modal .btn-close {
     filter: invert(1);       
 }
+
 
 body.dark-mode input:focus,
 body.dark-mode select:focus {
@@ -125,6 +121,22 @@ body.dark-mode .toast-header {
 
 body.dark-mode .toast .btn-close {
     filter: invert(1);       
+}
+
+body.dark-mode .accordion-item {
+    background-color: #1c1c1c; 
+    color: white;
+    border-color: #444;       
+}
+
+body.dark-mode .accordion {
+    background-color: black; 
+    color: white;            
+}
+
+body.dark-mode .accordion-button {
+    background-color: #1c1c1c;  
+    color: white;              
 }
 
 /*TAMAÑO DE FUENTE*/
