@@ -1,0 +1,11 @@
+{
+  "matricula": "2334ABC",
+  "marca": "Toyota",
+  "modelo": "Corolla",
+  "ano_matriculacion": 2004,
+  "numero_plazas": 5,
+  "autonomia_km": 450,
+  "color": "Rojo",
+  "imagen": "/img/vehiculos/volvo3.png",
+  "id_concesionario": "1"
+}
