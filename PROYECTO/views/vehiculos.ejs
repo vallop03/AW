@@ -31,127 +31,251 @@
                 </div>
             </div>
 
-            <div class="container mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="m-0">Vehículos</h3>
-                    <div>
-                        <button class="btn btn-primary" id="anadirVehiculoBoton">
-                            <i class="bi bi-plus"></i> Añadir vehículo
-                        </button>
+            <div class="card p-3 mb-3">
+                <h5 class="m-0 mb-3">Filtrar vehículos</h5>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="filtroAutonomia" class="form-label">Autonomía mínima</label>
+                        <input type="number" id="filtroAutonomia" class="form-control" placeholder="Ej: 300">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="filtroPlazas" class="form-label">Número de plazas</label>
+                        <input type="number" id="filtroPlazas" class="form-control" placeholder="Ej: 5">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="filtroColor" class="form-label">Color</label>
+                        <select class="form-select" id="filtroColor" name="filtroColor">
+                            <option selected value="">Selecciona un color
+                            </option>
+                            <option value="Blanco">Blanco</option>
+                            <option value="Negro">Negro</option>
+                            <option value="Gris">Gris</option>
+                            <option value="Rojo">Rojo</option>
+                            <option value="Azul">Azul</option>
+                            <option value="Verde">Verde</option>
+                            <option value="Amarillo">Amarillo</option>
+                            <option value="Marrón">Marrón</option>
+                            <option value="Naranja">Naranja</option>
+                            <option value="Violeta">Violeta</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="filtroConcesionario" class="form-label">Concesionario</label>
+                        <select class="form-select" id="filtroConcesionario" name="filtroConcesionario">
+                            <option selected value="">Selecciona un concesionario
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="filtroCiudad" class="form-label">Ciudad</label>
+                        <input type="text" id="filtroCiudad" class="form-control" placeholder="Madrid">
                     </div>
                 </div>
-                <div id="infoVehiculos">
 
+
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="m-0">Vehículos</h3>
+                        <div>
+                            <button class="btn btn-primary" id="anadirVehiculoBoton">
+                                <i class="bi bi-plus"></i> Añadir vehículo
+                            </button>
+                            <button class="btn btn-primary" id="anadirVehiculoJSON">
+                                <i class="bi bi-plus"></i> Añadir vehículo con JSON
+                            </button>
+                        </div>
+                    </div>
+                    <div id="infoVehiculos">
+                    </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="tituloModal"></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div id="cuerpoModal" class="modal-body">
-                            <form id="registroVehiculoForm" enctype="multipart/form-data" novalidate>
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <label for="matricula" class="form-label">Matrícula*</label>
-                                        <input type="text" class="form-control" id="matricula" name="matricula"
-                                            pattern="^\d{4}[A-Za-z]{3}$" placeholder="0000AAA" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce una matrícula de 4 números y 3 letras.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="marca" class="form-label">Marca*</label>
-                                        <input type="text" class="form-control" id="marca" name="marca" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce una marca.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="modelo" class="form-label">Modelo*</label>
-                                        <input type="text" class="form-control" id="modelo" name="modelo" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce un modelo.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="ano" class="form-label">Año de matriculación*</label>
-                                        <input type="text" class="form-control" id="ano" name="ano" maxlength="4"
-                                            pattern="\d{4}" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce un año de matriculación.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="concesionario" class="form-label">Concesionario*</label>
-                                        <select class="form-select" id="concesionario" name="concesionario" required>
-                                            <option selected disabled value="">Selecciona un concesionario</option>
-                                        </select>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, selecciona un concesionario.
-                                        </span>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="plazas" class="form-label">Plazas*</label>
-                                        <input type="number" class="form-control" id="plazas" name="plazas" min="2"
-                                            max="9" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce un número de plazas entre 2 y 9.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="autonomia" class="form-label">Autonomía*</label>
-                                        <input type="number" class="form-control" id="autonomia" name="autonomia"
-                                            min="50" max="600" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce una autonomía entre 50 y 600 km.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="color" class="form-label">Color*</label>
-                                        <select class="form-select" id="color" name="color" required>
-                                            <option selected disabled value="">Selecciona un color</option>
-                                            <option value="blanco">Blanco</option>
-                                            <option value="negro">Negro</option>
-                                            <option value="gris">Gris</option>
-                                            <option value="rojo">Rojo</option>
-                                            <option value="azul">Azul</option>
-                                            <option value="verde">Verde</option>
-                                            <option value="amarillo">Amarillo</option>
-                                            <option value="marrón">Marrón</option>
-                                            <option value="naranja">Naranja</option>
-                                            <option value="violeta">Violeta</option>
-                                        </select>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, selecciona un color.
-                                        </span>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="imagen" class="form-label">Imagen*</label>
-                                        <input type="file" class="form-control" id="imagen" name="imagen"
-                                            accept=".jpg,.jpeg,.png" required>
-                                        <span class="invalid-feedback" aria-live="polite">
-                                            Por favor, introduce una imagen válida (JPG, PNG, etc.).
-                                        </span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button id="botonModal" type="button" class="btn btn-primary"></button>
+                <div class="modal fade" id="cargarJSON" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloJSON">Cargando vehículos por JSON</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div id="cuerpoJSON" class="modal-body">
+                                <form id="formJSON" novalidate>
+                                    <label for="carga" class="form-label">Archivo JSON*</label>
+                                    <input type="file" class="form-control" id="carga" name="carga" accept=".json, .txt"
+                                        required>
+                                    <span class="invalid-feedback" aria-live="polite">
+                                        Por favor, introduce un archivo JSON válido
+                                    </span>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button id="botonJSON" type="button" class="btn btn-primary">Cargar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="modal fade" id="confirmacionCambio" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloConfirmacion">Vehículo existente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div id="cuerpoConfirmacion" class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button id="botonRechazar" type="button" class="btn btn-danger">Rechazar</button>
+                                <button id="botonAceptar" type="button" class="btn btn-primary">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloModal"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div id="cuerpoModal" class="modal-body">
+                                <form id="registroVehiculoForm" enctype="multipart/form-data" novalidate>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="matricula" class="form-label">Matrícula*</label>
+                                            <input type="text" class="form-control" id="matricula" name="matricula"
+                                                pattern="^\d{4}[A-Za-z]{3}$" placeholder="0000AAA" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una matrícula de 4 números y 3
+                                                letras.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="marca" class="form-label">Marca*</label>
+                                            <input type="text" class="form-control" id="marca" name="marca" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una marca.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="modelo" class="form-label">Modelo*</label>
+                                            <input type="text" class="form-control" id="modelo" name="modelo" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un modelo.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="ano" class="form-label">Año de
+                                                matriculación*</label>
+                                            <input type="text" class="form-control" id="ano" name="ano" maxlength="4"
+                                                pattern="\d{4}" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un año de matriculación.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="concesionario" class="form-label">Concesionario*</label>
+                                            <select class="form-select" id="concesionario" name="concesionario"
+                                                required>
+                                                <option selected disabled value="">Selecciona un
+                                                    concesionario</option>
+                                            </select>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, selecciona un concesionario.
+                                            </span>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="plazas" class="form-label">Plazas*</label>
+                                            <input type="number" class="form-control" id="plazas" name="plazas" min="2"
+                                                max="9" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce un número de plazas entre 2 y 9.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="autonomia" class="form-label">Autonomía*</label>
+                                            <input type="number" class="form-control" id="autonomia" name="autonomia"
+                                                min="50" max="600" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una autonomía entre 50 y 600 km.
+                                            </span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="color" class="form-label">Color*</label>
+                                            <select class="form-select" id="color" name="color" required>
+                                                <option selected disabled value="">Selecciona un color
+                                                </option>
+                                                <option value="Blanco">Blanco</option>
+                                                <option value="Negro">Negro</option>
+                                                <option value="Gris">Gris</option>
+                                                <option value="Rojo">Rojo</option>
+                                                <option value="Azul">Azul</option>
+                                                <option value="Verde">Verde</option>
+                                                <option value="Amarillo">Amarillo</option>
+                                                <option value="Marrón">Marrón</option>
+                                                <option value="Naranja">Naranja</option>
+                                                <option value="Violeta">Violeta</option>
+                                            </select>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, selecciona un color.
+                                            </span>
+                                        </div>
+                                        <div id="grupoImagen" class="col-12">
+                                            <label for="imagen" class="form-label">Imagen*</label>
+                                            <input type="file" class="form-control" id="imagen" name="imagen"
+                                                accept=".jpg,.jpeg,.png" required>
+                                            <span class="invalid-feedback" aria-live="polite">
+                                                Por favor, introduce una imagen válida (JPG, PNG, etc.).
+                                            </span>
+                                        </div>
+                                        <div id="imagenAntigua">
+                                            <p id="textoImagen" class="text-muted"></p>
+                                            <img id="prevImagen" src="" alt="" width="200">
+                                        </div>
+                                        <div id="grupoReserva" class="row">
+                                            <div class="col-md-6">
+                                                <label for="recogida" class="form-label">Recogida* </label>
+                                                <input class="form-control" type="datetime-local" id="recogida"
+                                                    name="recogida" required>
+                                                <span class="invalid-feedback" aria-live="polite">
+                                                    Por favor, introduce una fecha y hora de recogida posterior a la
+                                                    fecha
+                                                    actual.
+                                                </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="devolucion" class="form-label">Devolución* </label>
+                                                <input class="form-control" type="datetime-local" id="devolucion"
+                                                    name="devolucion" required>
+                                                <span class="invalid-feedback" aria-live="polite">
+                                                    Por favor, introduce una fecha y hora de devolución posterior a la
+                                                    fecha
+                                                    de
+                                                    recogida.
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button id="botonModal" type="button" class="btn btn-primary"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
         </main>
-
-        
-
 
         <script src="js/paginaPrincipal.js"></script>
         <script>

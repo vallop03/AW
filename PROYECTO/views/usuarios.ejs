@@ -36,7 +36,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="m-0">Usuarios</h3>
                     <div>
-                        <button class="btn btn-primary" id="anadirUsuarioBoton">
+                        <button title="Crear usuario" aria-label="Crear usuario" class="btn btn-primary" id="anadirUsuarioBoton">
                             <i class="bi bi-plus"></i> Añadir usuario
                         </button>
                     </div>
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label for="email" class="form-label">Correo electrónico*</label>
-                                        <input type="email" class="form-control" id="email" name="email" pattern="^[A-Za-z0-9._%+-]+@carricoche.es$" placeholder="user@carricoche.es" required>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="user@carricoche.es" required>
                                         <span class="invalid-feedback" aria-live="polite">
                                             Por favor, introduce un correo electrónico válido.
                                         </span>
@@ -132,8 +132,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button id="botonModal" type="button" class="btn btn-primary"></button>
+                            <button type="button" aria-label="Cerrar" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button id="botonModal" aria-label="" type="button" class="btn btn-primary"></button>
                         </div>
                     </div>
                 </div>
