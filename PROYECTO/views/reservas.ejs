@@ -51,16 +51,18 @@
                             </thead>
                             <tbody id="infoReservas">
                             </tbody>
-    
+
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+        <%- include("footer") %>
         <script src="js/paginaPrincipal.js"></script>
         <script>
             const usuarioActual = JSON.parse('<%- JSON.stringify(usuario) %>');
         </script>
         <script src="js/reservas.js"></script>
 </body>
+
 </html>
