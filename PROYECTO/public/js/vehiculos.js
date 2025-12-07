@@ -6,15 +6,18 @@ $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
     if (usuarioActual && usuarioActual.rol === "admin") {
+        $("#anadirVehiculoJSON").show();
         $("#anadirVehiculoBoton").show();
         cargarVehiculos(null, toast);
     }
     else if (usuarioActual && usuarioActual.rol === "empleado") {
         $("#anadirVehiculoBoton").hide();
+        $("#anadirVehiculoJSON").hide();
         cargarVehiculos(usuarioActual.id_concesionario, toast);
     }
     else {
         $("#anadirVehiculoBoton").hide();
+        $("#anadirVehiculoJSON").hide();
         cargarVehiculos(null, toast);
     }
 
@@ -72,6 +75,13 @@ $(function () {
             $("#modalAccion").modal("show");
         });
     });
+
+    $("#anadirVehiculoJSON").on("click", function (event) {
+        $("#formJSON .is-valid, #formJSON .is-invalid").removeClass("is-valid is-invalid");
+        $("#carga").prop("value", "");
+        $("#cargarJSON").modal("show");
+    });
+
 
     //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
     //de todos los campos y despues llama a su respectiva funcion de crear/modificar o eliminar

@@ -63,7 +63,6 @@
                         </select>
                     </div>
                 </div>
-
             </div>
 
 
@@ -74,12 +73,38 @@
                         <button class="btn btn-primary" id="anadirVehiculoBoton">
                             <i class="bi bi-plus"></i> Añadir vehículo
                         </button>
+                        <button class="btn btn-primary" id="anadirVehiculoJSON">
+                            <i class="bi bi-plus"></i> Añadir vehículo con JSON
+                        </button>
                     </div>
                 </div>
                 <div id="infoVehiculos">
                 </div>
             </div>
 
+            <div class="modal fade" id="cargarJSON" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tituloJSON">Cargando vehículos por JSON</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="cuerpoJSON" class="modal-body">
+                            <form id="formJSON" novalidate>
+                                <label for="carga" class="form-label">Archivo JSON*</label>
+                                <input type="file" class="form-control" id="carga" name="carga" accept=".json" required>
+                                <span class="invalid-feedback" aria-live="polite">
+                                    Por favor, introduce un archivo JSON válido
+                                </span>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button id="botonJSON" type="button" class="btn btn-primary">Cargar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
