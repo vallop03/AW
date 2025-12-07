@@ -20,7 +20,7 @@ router.post("/crear", function (request, response) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
-        if (resultado & resultado > 0) {
+        if (resultado && resultado > 0) {
             return response.json({ mensaje: "Concesionario creado correctamente" });
         } 
         else {

@@ -1,0 +1,44 @@
+[
+  {
+    "id_concesionario": "",
+    "nombre": "AutoMadrid S.A.",
+    "ciudad": "Madrid",
+    "direccion": "Calle de Bravo Murillo, 120",
+    "telefono_contacto": "912345678"
+  },
+  {
+    "id_concesionario": "",
+    "nombre": "MotorValladolid",
+    "ciudad": "Valladolid",
+    "direccion": "Avenida de Salamanca, 45",
+    "telefono_contacto": "9839876549"
+  },
+  {
+    "id_concesionario": "",
+    "nombre": "a",
+    "ciudad": "Barcelona",
+    "direccion": "Carrer de Gran Via, 600",
+    "telefono_contacto": "933123456"
+  },
+  {
+    "id_concesionario": "",
+    "nombre": "MotoSevilla",
+    "ciudad": "Sevilla",
+    "direccion": "Calle Luis de Morales, 18",
+    "telefono_contacto": "95421765"
+  },
+  {
+    "id_concesionario": "",
+    "nombre": "Valencia Motor",
+    "ciudad": "Valencia",
+    "direccion": "Avenida de las Cortes Valencianas, 140",
+    "telefono_contacto": "961234567"
+  },
+  {
+    "id_concesionario": "",
+    "nombre": "Gran Canaria Auto",
+    "ciudad": "Las Palmas de Gran Canaria",
+    "direccion": "Avenida Marítima, 135",
+    "telefono_contacto": "928654321"
+  }
+]
