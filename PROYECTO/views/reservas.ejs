@@ -5,132 +5,62 @@
     <!-- Ejercicio 1 - Cabecera -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de un vehículo eléctrico</title>
+    <title>Visualización de mis reservas</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="css/bootstrap-icons-1.13.1/bootstrap-icons.css">
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
     <%- include("header") %>
 
-    <main>
-        <br>
-        <div class="container">
-            <section id="reservas">
-                <h3>Reservar</h3>
-                <div class="progress sticky-lg-top mt-3 mb-3">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+        <main>
+            <div aria-live="polite" aria-atomic="true"
+                class="position-fixed top-50 start-50 translate-middle toast-overlay" data-bs-autohide="false">
+                <div class="toast-container p-3" id="registerResultToast">
+                    <div class="toast">
+                        <div class="toast-header">
+                            <strong class="me-auto">Aviso</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div id="mensajeToast" class="toast-body">
+                        </div>
                     </div>
                 </div>
-                <form id="reservaForm" novalidate>
-                    <fieldset>
-                        <legend>Datos personales</legend>
-                        <div class="row">
-                            <div class="mb-3 col-md-6">
-                                <label for="nombre" class="form-label">Nombre*</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
-                                <span class="invalid-feedback" aria-live="polite">
-                                    Por favor, introduce tu nombre con mínimo 3 carácteres.
-                                </span>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="apellidos" class="form-label">Apellido*</label>
-                                <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-                                <span class="invalid-feedback" aria-live="polite">
-                                    Por favor, introduce un apellido válido con mínimo 3 carácteres.
-                                </span>
-                            </div>
+            </div>
 
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico*</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                            <span class="invalid-feedback" aria-live="polite">
-                                Por favor, introduce un correo electrónico válido.
-                            </span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña*</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                pattern="(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*?&.,;:_\-]).{8,}" required>
-                            <span class="invalid-feedback" aria-live="polite">
-                                La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter
-                                especial.
-                            </span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tel" class="form-label">Teléfono*</label>
-                            <input id="tel" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
-                            <span class="invalid-feedback" aria-live="polite">
-                                Por favor, introduce un número de teléfono válido de 9 dígitos.
-                            </span>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Datos de la reserva</legend>
-                        <div class="mb-3">
-                            <label for="vehiculo" class="form-label">Vehículo*</label>
-                            <select class="form-select" id="vehiculo" name="vehiculo" required>
-                                <option selected disabled value="">Selecciona un vehículo</option>
-                                <option value="Coche">Coche</option>
-                                <option value="Moto">Moto</option>
-                                <option value="Patinete">Patinete eléctrico</option>
-                            </select>
-                            <span class="invalid-feedback" aria-live="polite">
-                                Por favor, selecciona un vehículo.
-                            </span>
-                        </div>
-                        <div class="row">
-                            <div class="mb-3 col-md-6">
-                                <label for="recogida" class="form-label">Recogida* </label>
-                                <input class="form-control" type="datetime-local" id="recogida" name="recogida"
-                                    required>
-                                <span class="invalid-feedback" aria-live="polite">
-                                    Por favor, introduce una fecha y hora de recogida válidas actuales.
-                                </span>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="devolucion" class="form-label">Devolución* </label>
-                                <input class="form-control" type="datetime-local" id="devolucion" name="devolucion"
-                                    required>
-                                <span class="invalid-feedback" aria-live="polite">
-                                    Por favor, introduce una fecha y hora de devolución válidas actuales.
-                                </span>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Preferencias</legend>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="terminos" required>
-                            <label class="form-check-label" for="terminos">Acepto los términos y condiciones*</label>
-                            <span class="invalid-feedback" aria-live="polite">
-                                Debes aceptar los términos y condiciones para continuar.
-                            </span>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="notificaciones">
-                            <label class="form-check-label" for="notificaciones">Deseo recibir notificaciones y
-                                promociones</label>
-                        </div>
-                    </fieldset>
-                    <div class="mt-3">
-                        <button id="resetBtn" class="btn btn-secondary" type="reset">Limpiar</button>
-                        <button class="btn btn-primary ms-2" type="submit">Enviar</button>
+            <div class="container mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="m-0">Reservas</h3>
+                </div>
+                <div id="contenedorReservas">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover text-center">
+                            <caption>Reservas</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Matrícula</th>
+                                    <th scope="col">Recogida</th>
+                                    <th scope="col">Devolución</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Cambiar estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="infoReservas">
+                            </tbody>
+    
+                        </table>
                     </div>
-                </form>
-                <br>
-            </section>
-        </div>
-    </main>
-
-    <script src="js/paginaPrincipal.js"></script>
-    <script src="js/formulario.js"></script>
-
+                </div>
+            </div>
+        </main>
+        <script src="js/paginaPrincipal.js"></script>
+        <script>
+            const usuarioActual = JSON.parse('<%- JSON.stringify(usuario) %>');
+        </script>
+        <script src="js/reservas.js"></script>
 </body>
-
 </html>

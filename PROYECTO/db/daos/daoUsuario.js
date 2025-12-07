@@ -167,7 +167,7 @@ class DAOUsuario {
             if (err) {
                 return callback(err);
             }
-
+            correo = correo.toLowerCase();
             this.verificarPorCorreo(correo, (err, existeUsuario) => {
                 if (err) {
                     return callback(err);

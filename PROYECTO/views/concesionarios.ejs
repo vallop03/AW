@@ -34,36 +34,39 @@
 
 
             <div class="container mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                     <h3 class="m-0">Concesionarios</h3>
-                    <div>
+                    <div class="d-flex gap-2 mt-2 mt-md-0 align-items-center">
                         <button class="btn btn-primary" id="anadirConcesionarioBoton">
                             <i class="bi bi-plus"></i> Añadir concesionario
                         </button>
                         <button class="btn btn-primary" id="anadirPorJSONBoton">
                             <i class="bi bi-plus"></i> Añadir con JSON
                         </button>
-                        <input type="file" id="inputJSON" accept=".json" style="display:none">
+                        <input type="file" id="inputJSON" accept=".json, .txt" style="display:none">
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover text-center">
-                        <caption>Concesionarios</caption>
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Ciudad</th>
-                                <th scope="col">Dirección</th>
-                                <th scope="col">Teléfono</th>                                
-                                <th scope="col">Editar</th>
-                                <th scope="col">Borrar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="infoConcesionarios">
-                        </tbody>
 
-                    </table>
+                <div id="contenedorConcesionarios">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover text-center">
+                            <caption>Concesionarios</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Ciudad</th>
+                                    <th scope="col">Dirección</th>
+                                    <th scope="col">Teléfono</th>
+                                    <th scope="col">Editar</th>
+                                    <th scope="col">Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="infoConcesionarios">
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -87,19 +90,20 @@
                                     <label for="ciudad" class="form-label">Ciudad*</label>
                                     <input type="text" class="form-control" id="ciudad_c" name="ciudad" required>
                                     <span class="invalid-feedback" aria-live="polite">
-                                        Por favor, introduce una ciudad válida. 
+                                        Por favor, introduce una ciudad válida.
                                     </span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="dir" class="form-label">Direccion*</label>
-                                    <input id="dir_c" type="text" class="form-control" name="dir_c">
+                                    <input id="dir_c" type="text" class="form-control" name="dir_c" required>
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce una direccion válida.
                                     </span>
                                 </div>
                                 <div class="mb-3">
                                     <label for="tel" class="form-label">Teléfono de contacto*</label>
-                                    <input id="tel_c" type="tel" class="form-control" name="tel" pattern="[0-9]{9}" required>
+                                    <input id="tel_c" type="tel" class="form-control" name="tel" pattern="[0-9]{9}"
+                                        required>
                                     <span class="invalid-feedback" aria-live="polite">
                                         Por favor, introduce un número de teléfono válido de 9 dígitos.
                                     </span>

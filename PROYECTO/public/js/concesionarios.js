@@ -4,8 +4,8 @@ $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
     cargarConcesionarios(toast);
-    
-        ////////////////PARTE DE LA PRIMERA VISTA (LA TABLA)/////////////
+
+    ////////////////PARTE DE LA PRIMERA VISTA (LA TABLA)/////////////
 
     //Cuando se le da al botón de editar (el del lápiz)
     $("#infoConcesionarios").on("click", ".editButton", function (event) {
@@ -52,14 +52,14 @@ $(function () {
 
         const lector = new FileReader();
 
-        lector.onload = function(e) {
+        lector.onload = function (e) {
             try {
                 const lista = JSON.parse(e.target.result);
-                
+
                 let exitos = 0;
                 let fallos = 0;
                 let fallosDetalle = [];
-                
+
                 if (!Array.isArray(lista)) {
                     alert("El archivo debe contener una lista JSON.");
                     return;
@@ -75,7 +75,6 @@ $(function () {
 
                     if (comprobarValidacionJSON(datos)) {
                         anadirConcesionario(datos, toast);
-                        toast.hide();
                         exitos++;
 
                     } else {
@@ -86,7 +85,7 @@ $(function () {
 
                 //Resumen importaciones
                 let mensajeResumen = `Importación finalizada.\nConcesionarios añadidos: ${exitos}\nConcesionarios inválidos: ${fallos}`;
-                if(fallosDetalle.length > 0){
+                if (fallosDetalle.length > 0) {
                     mensajeResumen += `\nFallo en: ${fallosDetalle.join(", ")}`;
                 }
                 $("#mensajeToast").html(mensajeResumen);
@@ -95,13 +94,15 @@ $(function () {
             } catch (err) {
                 $("#mensajeToast").text("Algo ha salido mal leyendo el JSON: " + err.message);
                 toast.show();
+            } finally {
+                $("#inputJSON").prop("value", "");
             }
         };
 
         lector.readAsText(archivo);
     });
 
-     /////////////PARTE DEL MODAL/////////////
+    /////////////PARTE DEL MODAL/////////////
 
     //Cuando se le da a enviar tras crear/ modificar o eliminar del modal, comprueba la validacion
     //de todos los campos y despues llama a su respectiva funcion de crear/modificar o eliminar
@@ -150,7 +151,7 @@ $(function () {
 
     $("#tel_c").on("input", function () {
         comprobarValidacion(this);
-    });  
+    });
 })
 
 function cargarConcesionarios(toast) {
@@ -161,8 +162,17 @@ function cargarConcesionarios(toast) {
         success: function (data, textStatus, jqXHR) {
             $("#infoConcesionarios").empty();
             concesionarios = data.concesionarios;
+            if (concesionarios.length === 0) {
+                $("#contenedorConcesionarios").append(`
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-5">
+                        <i class="bi bi-building-fill-exclamation" style="font-size: 3rem; color: #6c757d;"></i>
+                        <h5 class="mt-3">No se han encontrado concesionarios</h5>
+                        <p class="text-muted">Añade un nuevo concesionario.</p>
+                    </div>`
+                );
+                return;
+            }
             concesionarios.forEach(concesionario => {
-                console.log(concesionario);
                 $("#infoConcesionarios").append(
                     `<tr>
                         <td>${concesionario.id_concesionario}</td>
@@ -231,7 +241,6 @@ function editarConcesionario(id, datos, toast, reactivar) {
         contentType: "application/json",
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
-            console.log('hola', data);
             $("#modalAccion_c").modal("hide");
             if (reactivar) {
                 $("#mensajeToast").text("Concesionario reactivado correctamente");
@@ -257,14 +266,16 @@ function anadirConcesionario(datos, toast) {
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
             $("#modalAccion_c").modal("hide");
-            $("#mensajeToast").text(data.mensaje);
-            toast.show();
+            if (toast) {
+                $("#mensajeToast").text(data.mensaje);
+                toast.show();
+            }
             cargarConcesionarios(toast);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("#mensajeToast").text(jqXHR.responseJSON?.error || errorThrown);
             toast.show();
-            
+
         }
     })
 }

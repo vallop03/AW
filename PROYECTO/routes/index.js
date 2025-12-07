@@ -13,7 +13,7 @@ router.get("/", function (request, response) {
     response.render("index");
 });
 
-router.get("/reservas", function (request, response) {
+router.get("/reservas", requireLogin, function (request, response) {
     response.render("reservas");
 });
 

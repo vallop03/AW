@@ -20,7 +20,7 @@ router.post("/crear", function (request, response) {
         if (err) {
             return response.status(500).json({ error: "Error interno de acceso a la base de datos" });
         }
-        if (resultado & resultado > 0) {
+        if (resultado && resultado > 0) {
             return response.json({ mensaje: "Concesionario creado correctamente" });
         } 
         else {
@@ -44,7 +44,6 @@ router.get("/:id", function (request, response) {
 
 router.put("/editar/:id", function (request, response) {
     const id = request.params.id;
-    console.log('id: ', id);
     const {nombre, ciudad, direccion, telefono} = request.body;
     daoConcesionario.editarConcesionario(id, nombre, ciudad, direccion, telefono, function (err, resultado) {
         if (err) {
