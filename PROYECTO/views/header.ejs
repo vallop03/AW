@@ -20,76 +20,80 @@
                         accesskey="i">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/reservas" aria-label="Ir a reservas" title="alt + R"
-                        accesskey="r">Reservas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contacto" aria-label="Ir a contacto" title="alt + A"
-                        accesskey="a">Contacto</a>
-                </li>
-                <% if(usuario && usuario.rol === "admin"){ %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/usuarios" aria-label="Ir a Usuarios" title="alt + U"
-                        accesskey="u">Usuarios</a>
-                </li>                
-                <li class="nav-item">
                     <a class="nav-link" href="/vehiculos" aria-label="Ir a vehículos disponibles" title="alt + V"
                         accesskey="v">Vehículos</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/concesionarios" aria-label="Ir a Concecionarios" title="alt + C"
-                        accesskey="c">Concesionarios</a>
-                </li>
+                <% if(usuario){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reservas" aria-label="Ir a reservas" title="alt + R"
+                            accesskey="r">Reservas</a>
+                    </li>
                 <% } %>
+                <% if(usuario && usuario.rol==="admin" ){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usuarios" aria-label="Ir a Usuarios" title="alt + U"
+                            accesskey="u">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/concesionarios" aria-label="Ir a Concecionarios" title="alt + C"
+                            accesskey="c">Concesionarios</a>
+                    </li>
+                    <% } %>
             </ul>
             <ul class="navbar-nav ms-lg-auto me-2 d-lg-flex align-items-lg-center">
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-gear-fill fs-3 d-none d-lg-inline"></i>
                         <span class="d-inline d-lg-none">Ajustes</span>
                     </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                    <li>
-                        <h6 class="dropdown-header">Tema</h6>
-                    </li>
-                    <li><a id="tema-claro" class="dropdown-item" href="">Claro</a></li>
-                    <li><a id="tema-oscuro" class="dropdown-item" href="">Oscuro</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <h6 class="dropdown-header">Tamaño de fuente</h6>
-                    </li>
-                    <li><a id="fuente-pequena" class="dropdown-item" href="">Pequeña</a></li>
-                    <li><a id="fuente-normal" class="dropdown-item" href="">Normal</a></li>
-                    <li><a id="fuente-grande" class="dropdown-item" href="">Grande</a></li>
-                </ul>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <h6 class="dropdown-header">Tema</h6>
+                        </li>
+                        <li><a id="tema-claro" class="dropdown-item" href="">Claro</a></li>
+                        <li><a id="tema-oscuro" class="dropdown-item" href="">Oscuro</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">Tamaño de fuente</h6>
+                        </li>
+                        <li><a id="fuente-pequena" class="dropdown-item" href="">Pequeña</a></li>
+                        <li><a id="fuente-normal" class="dropdown-item" href="">Normal</a></li>
+                        <li><a id="fuente-grande" class="dropdown-item" href="">Grande</a></li>
+                    </ul>
                 </li>
-            
+
                 <% if(!usuario){ %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login" aria-label="Iniciar sesión" title="alt + S" 
-                        accesskey="s">Iniciar sesión</a>
+                        <a class="nav-link" href="/login" aria-label="Iniciar sesión" title="alt + S"
+                            accesskey="s">Iniciar sesión</a>
                     </li>
-                    
-                <% } else {%>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle fs-2 d-none d-lg-inline"></i>
-                            <span class="d-inline d-lg-none">Mi cuenta</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><span class="dropdown-item-text text-muted"><%= usuario.nombre %></span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a id="miPerfil" class="dropdown-item" href="">Mi perfil</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-                <% } %>
-            </ul>            
+
+                    <% } else {%>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-2 d-none d-lg-inline"></i>
+                                <span class="d-inline d-lg-none">Mi cuenta</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><span class="dropdown-item-text text-muted">
+                                        <%= usuario.nombre %>
+                                    </span></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a id="miPerfil" class="dropdown-item" href="">Mi perfil</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                        <% } %>
+            </ul>
         </div>
     </div>
 </nav>

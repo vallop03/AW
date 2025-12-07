@@ -152,7 +152,6 @@ class DAOVehiculo {
                 conexion.query(consulta, [id], function (err, rows) {
                     conexion.release();
                     if (err) {
-                        console.log(err);
                         return callback(err);
                     }
                     else {

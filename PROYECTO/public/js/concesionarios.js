@@ -161,8 +161,17 @@ function cargarConcesionarios(toast) {
         success: function (data, textStatus, jqXHR) {
             $("#infoConcesionarios").empty();
             concesionarios = data.concesionarios;
+            if (concesionarios.length === 0) {
+                $("#contenedorConcesionarios").append(`
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-5">
+                        <i class="bi bi-building-fill-exclamation" style="font-size: 3rem; color: #6c757d;"></i>
+                        <h5 class="mt-3">No se han encontrado concesionarios</h5>
+                        <p class="text-muted">Añade un nuevo concesionario.</p>
+                    </div>`
+                );
+                return;
+            }
             concesionarios.forEach(concesionario => {
-                console.log(concesionario);
                 $("#infoConcesionarios").append(
                     `<tr>
                         <td>${concesionario.id_concesionario}</td>
@@ -231,7 +240,6 @@ function editarConcesionario(id, datos, toast, reactivar) {
         contentType: "application/json",
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqXHR) {
-            console.log('hola', data);
             $("#modalAccion_c").modal("hide");
             if (reactivar) {
                 $("#mensajeToast").text("Concesionario reactivado correctamente");

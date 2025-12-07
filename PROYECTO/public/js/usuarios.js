@@ -135,6 +135,16 @@ function cargarUsuarios(toast) {
         success: function (data, textStatus, jqXHR) {
             $("#infoUsuarios").empty();
             usuarios = data.usuarios;
+            if (usuarios.length === 0) {
+                $("#contenedorUsuarios").append(`
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-5">
+                        <i class="bi bi-person-exclamation" style="font-size: 3rem; color: #6c757d;"></i>
+                        <h5 class="mt-3">No se han encontrado usuarios</h5>
+                        <p class="text-muted">Añade un nuevo usuario.</p>
+                    </div>`
+                );
+                return;
+            }
             usuarios.forEach(usuario => {
                 $("#infoUsuarios").append(
                     `<tr>

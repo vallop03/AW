@@ -44,7 +44,6 @@ router.get("/:id", function (request, response) {
 
 router.put("/editar/:id", function (request, response) {
     const id = request.params.id;
-    console.log('id: ', id);
     const {nombre, ciudad, direccion, telefono} = request.body;
     daoConcesionario.editarConcesionario(id, nombre, ciudad, direccion, telefono, function (err, resultado) {
         if (err) {

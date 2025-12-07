@@ -212,7 +212,6 @@ $(function () {
 })
 
 function parsearArchivo(toast) {
-    console.log("parseando");
     if (!archivoJSON) {
         $("#mensajeToast").text("No se ha seleccionado ningún fichero");
         toast.show();
@@ -223,7 +222,6 @@ function parsearArchivo(toast) {
     reader.onload = function (event) {
         try {
             const data = JSON.parse(event.target.result);
-            console.log("JSON parseado:", data);
 
             cargarVehiculosDesdeJSON(data, toast);
 
@@ -605,6 +603,17 @@ function aplicarFiltros() {
 
 function mostrarVehiculos(lista) {
     $("#infoVehiculos").empty();
+
+    if (lista.length === 0) {
+        $("#infoVehiculos").append(`
+            <div class="d-flex flex-column align-items-center justify-content-center text-center p-5">
+                <i class="bi bi-car-front-fill" style="font-size: 3rem; color: #6c757d;"></i>
+                <h5 class="mt-3">No se han encontrado vehículos</h5>
+                <p class="text-muted">Intenta cambiar los filtros o añade un nuevo vehículo.</p>
+            </div>
+        `);
+        return;
+    }
 
     lista.forEach(vehiculo => {
         let botones = '';

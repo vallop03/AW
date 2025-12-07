@@ -27,6 +27,17 @@ function cargarReservas(id, toast) {
         success: function (data, textStatus, jqXHR) {
             $("#infoReservas").empty();
             reservas = data.reservas;
+
+            if (reservas.length === 0) {
+                $("#contenedorReservas").append(`
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center p-5">
+                        <i class="bi bi-calendar-event-fill" style="font-size: 3rem; color: #6c757d;"></i>
+                        <h5 class="mt-3">No se han encontrado reservas</h5>
+                        <p class="text-muted">Añade una nueva reserva.</p>
+                    </div>`
+                );
+                return;
+            }
             reservas.forEach(reserva => {
                 const recogida = new Date(reserva.fecha_inicio).toLocaleString("es-ES", {
                     year: "numeric",

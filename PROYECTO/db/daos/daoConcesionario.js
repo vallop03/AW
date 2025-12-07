@@ -26,7 +26,6 @@ class DAOConcesionario {
     consultarTodosConcesionarios(callback) {
         this.pool.getConnection(function (err, conexion) {
             if (err) {
-                console.log(err);
                 return callback(err);
             }
             const consulta = "SELECT * FROM concesionarios WHERE activo = true";
