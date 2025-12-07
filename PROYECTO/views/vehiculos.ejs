@@ -31,6 +31,42 @@
                 </div>
             </div>
 
+            <div class="card p-3 mb-3">
+                <h5 class="m-0 mb-3">Filtrar vehículos</h5>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="filtroAutonomia" class="form-label">Autonomía mínima</label>
+                        <input type="number" id="filtroAutonomia" class="form-control" placeholder="Ej: 300">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="filtroPlazas" class="form-label">Número de plazas</label>
+                        <input type="number" id="filtroPlazas" class="form-control" placeholder="Ej: 5">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="filtroColor" class="form-label">Color</label>
+                        <select class="form-select" id="filtroColor" name="filtroColor">
+                            <option selected value="">Selecciona un color
+                            </option>
+                            <option value="Blanco">Blanco</option>
+                            <option value="Negro">Negro</option>
+                            <option value="Gris">Gris</option>
+                            <option value="Rojo">Rojo</option>
+                            <option value="Azul">Azul</option>
+                            <option value="Verde">Verde</option>
+                            <option value="Amarillo">Amarillo</option>
+                            <option value="Marrón">Marrón</option>
+                            <option value="Naranja">Naranja</option>
+                            <option value="Violeta">Violeta</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+
             <div class="container mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="m-0">Vehículos</h3>
@@ -43,6 +79,7 @@
                 <div id="infoVehiculos">
                 </div>
             </div>
+
 
             <div class="modal fade" id="modalAccion" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -148,8 +185,8 @@
                                     <div id="grupoReserva" class="row">
                                         <div class="col-md-6">
                                             <label for="recogida" class="form-label">Recogida* </label>
-                                            <input class="form-control" type="datetime-local" id="recogida" name="recogida"
-                                                required>
+                                            <input class="form-control" type="datetime-local" id="recogida"
+                                                name="recogida" required>
                                             <span class="invalid-feedback" aria-live="polite">
                                                 Por favor, introduce una fecha y hora de recogida posterior a la fecha
                                                 actual.
@@ -160,7 +197,8 @@
                                             <input class="form-control" type="datetime-local" id="devolucion"
                                                 name="devolucion" required>
                                             <span class="invalid-feedback" aria-live="polite">
-                                                Por favor, introduce una fecha y hora de devolución posterior a la fecha de
+                                                Por favor, introduce una fecha y hora de devolución posterior a la fecha
+                                                de
                                                 recogida.
                                             </span>
                                         </div>
@@ -178,9 +216,6 @@
 
 
         </main>
-
-
-
 
         <script src="js/paginaPrincipal.js"></script>
         <script>

@@ -1,5 +1,6 @@
 let modo = "Editando";
 let idVehiculoSeleccionado = null;
+let vehiculos = [];
 
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
@@ -118,6 +119,10 @@ $(function () {
         else if (modo === "Borrando") {
             borrarVehiculo(idVehiculoSeleccionado, toast);
         }
+    });
+
+    $("#filtroAutonomia, #filtroPlazas, #filtroColor").on("input change", function () {
+        aplicarFiltros();
     });
 
     //comprobacion en vivo de los campos
@@ -484,6 +489,67 @@ function activarModal() {
     $("#imagen").prop("disabled", false);
 }
 
+/////////////FILTROS/////////////
+function aplicarFiltros() {
+    const minAutonomia = parseInt($("#filtroAutonomia").prop("value")) || 0;
+    const plazas = parseInt($("#filtroPlazas").prop("value")) || 0;
+    const color = $("#filtroColor").prop("value");
+
+    const filtrados = vehiculos.filter(v => {
+        return (
+            v.autonomia_km >= minAutonomia &&
+            (plazas === 0 || v.numero_plazas === plazas) &&
+            (color === "" || v.color === color)
+        );
+    });
+
+    mostrarVehiculos(filtrados);
+}
+
+function mostrarVehiculos(lista) {
+    $("#infoVehiculos").empty();
+
+    lista.forEach(vehiculo => {
+        let botones = '';
+        if (usuarioActual) {
+            if (usuarioActual.rol === 'admin') {
+                botones = `
+                    <button class="btn btn-primary btn-sm editButton" data-id_vehiculo="${vehiculo.id_vehiculo}">Editar <i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-danger btn-sm deleteButton" data-id_vehiculo="${vehiculo.id_vehiculo}">Eliminar <i class="bi bi-trash3"></i></button>
+                    <button class="btn btn-success btn-sm reserveButton" data-id_vehiculo="${vehiculo.id_vehiculo}">Reservar <i class="bi bi-check-circle"></i></button>`;
+            } else if (usuarioActual.rol === 'empleado') {
+                botones = `
+                    <button class="btn btn-success btn-sm reserveButton" data-id_vehiculo="${vehiculo.id_vehiculo}">Reservar <i class="bi bi-check-circle"></i></button>`;
+            }
+        }
+
+        $("#infoVehiculos").append(`
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <img src="${vehiculo.imagen}" class="img-fluid rounded-start" alt="${vehiculo.marca}">
+                    </div>
+                    <div class="col-md-8 d-flex justify-content-between align-items-start">
+                        <div class="card-body">
+                            <h5 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h5>
+                            <p>Matrícula: ${vehiculo.matricula}</p>
+                            <p>Año: ${vehiculo.ano_matriculacion}</p>
+                            <p>Plazas: ${vehiculo.numero_plazas}</p>
+                            <p>Autonomía: ${vehiculo.autonomia_km} km</p>
+                            <p>Color: ${vehiculo.color}</p>
+                            <p><small class="text-muted">${vehiculo.concesionario}</small></p>
+                        </div>
+                        <div class="d-flex flex-column gap-2 mt-3 me-3">
+                            ${botones}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    });
+}
+
+/////////////VALIDACION///////
 function comprobarValidacion(input) {
     const valido = input.checkValidity();
     if (valido) {
