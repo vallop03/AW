@@ -6,6 +6,8 @@ let archivoJSON = null;
 $(function () {
     const resultToast = document.querySelector("#registerResultToast .toast");
     const toast = new bootstrap.Toast(resultToast);
+    cargarConcesionarios("#filtroConcesionario", toast, function () {
+    });
     if (usuarioActual && usuarioActual.rol === "admin") {
         $("#anadirVehiculoJSON").show();
         $("#anadirVehiculoBoton").show();
@@ -72,7 +74,7 @@ $(function () {
         $("#recogida").prop("required", false);
         $("#devolucion").prop("required", false);
         $("#registroVehiculoForm")[0].reset(); //para limpiar el form
-        cargarConcesionarios(toast, function () {
+        cargarConcesionarios("#concesionario", toast, function () {
             $("#modalAccion").modal("show");
         });
     });
@@ -132,6 +134,7 @@ $(function () {
         }
     });
 
+    //cargar
     $("#botonJSON").on("click", function (event) {
         const valido = comprobarValidacion($("#carga")[0]);
         if (!valido) {
@@ -145,7 +148,8 @@ $(function () {
         }
     });
 
-    $("#filtroAutonomia, #filtroPlazas, #filtroColor").on("input change", function () {
+    //FILTROS
+    $("#filtroAutonomia, #filtroPlazas, #filtroColor, #filtroConcesionario, #filtroCiudad").on("input change", function () {
         aplicarFiltros();
     });
 
@@ -336,6 +340,8 @@ function cargarVehiculos(id, toast) {
             $("#filtroAutonomia").prop("value", "");
             $("#filtroPlazas").prop("value", "");
             $("#filtroColor").prop("value", "");
+            $("#filtroConcesionario").prop("value", "");
+            $("#filtroCiudad").prop("value", "");
             vehiculos = data.vehiculos;
             mostrarVehiculos(data.vehiculos);
         },
@@ -475,17 +481,18 @@ function reservarVehiculo(datos, toast) {
 }
 
 //CARGA DEL SELECT DE CONCESIONARIOS
-function cargarConcesionarios(toast, callback) {
+function cargarConcesionarios(selector, toast, callback) {
     $.ajax({
         url: "/api/concesionarios/",
         method: "GET",
         contentType: "application/json",
         success: function (data, textStatus, jqXHR) {
-            $("#concesionario").empty();
+            const $select = $(selector);
+            $select.empty();
             concesionarios = data.concesionarios;
-            $("#concesionario").append(`<option selected disabled value="">Selecciona un concesionario</option>`);
+            $select.append(`<option selected value="">Selecciona un concesionario</option>`);
             concesionarios.forEach(concesionario => {
-                $("#concesionario").append(`
+                $select.append(`
                     <option value=${concesionario.id_concesionario}>${concesionario.nombre} - ${concesionario.ciudad}</option>`
                 );
             });
@@ -526,7 +533,7 @@ function cargarModal(id, accion, toast, callback) {
             $("#devolucion").prop("value", "");
             $("#recogida").prop("required", false);
             $("#devolucion").prop("required", false);
-            cargarConcesionarios(toast, function () {
+            cargarConcesionarios("#concesionario", toast, function () {
                 $("#concesionario").prop("value", vehiculo.id_concesionario).prop("disabled", disable);
             });
 
@@ -580,12 +587,16 @@ function aplicarFiltros() {
     const minAutonomia = parseInt($("#filtroAutonomia").prop("value")) || 0;
     const plazas = parseInt($("#filtroPlazas").prop("value")) || 0;
     const color = $("#filtroColor").prop("value");
+    const concesionario = $("#filtroConcesionario").prop("value");
+    const ciudad = $("#filtroCiudad").prop("value");
 
     const filtrados = vehiculos.filter(v => {
         return (
             v.autonomia_km >= minAutonomia &&
             (plazas === 0 || v.numero_plazas === plazas) &&
-            (color === "" || v.color === color)
+            (color === "" || v.color === color) &&
+            (concesionario === "" || v.id_concesionario == concesionario) &&
+            (ciudad === "" || v.ciudad.toLowerCase().includes(ciudad.toLowerCase()))
         );
     });
 

@@ -9,7 +9,7 @@ class DAOVehiculo {
             if (err) {
                 return callback(err);
             }
-            const consulta = "SELECT v.*, c.nombre AS concesionario FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE v.activo = true";
+            const consulta = "SELECT v.*, c.nombre AS concesionario, c.ciudad AS ciudad FROM vehiculos v JOIN concesionarios c ON v.id_concesionario = c.id_concesionario WHERE v.activo = true";
             conexion.query(consulta, [], function (err, rows) {
                 conexion.release();
                 if (err) {
