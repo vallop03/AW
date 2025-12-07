@@ -102,6 +102,22 @@ body.dark-mode textarea::placeholder {
     color: #bbb;
 }
 
+body.dark-mode .toast {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #555 !important;
+}
+
+body.dark-mode .toast-header {
+    background-color: #444 !important;
+    color: #fff !important;
+    border-bottom-color: #666 !important;
+}
+
+body.dark-mode .toast .btn-close {
+    filter: invert(1);       
+}
+
 /*TAMAÑO DE FUENTE*/
 body.fuente-pequena {
     font-size: 0.8rem !important;
