@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 const pool = mysql.createPool({
     host: 'localhost',        // Dirección del servidor MySQL
-    port: 3307,                // Puerto (por defecto 3306)
+    port: 3306,                // Puerto (por defecto 3306)
     user: 'root',              // Usuario de la base de datos
     password: '',   // Contraseña
-    database: 'cb3',       // Nombre de la base de datos
+    database: 'carricoche_bd',       // Nombre de la base de datos
 
     // Parámetros del pool
     connectionLimit: 10,       // Máximo de conexiones simultáneas en el pool
